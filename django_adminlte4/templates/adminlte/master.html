@@ -36,6 +36,7 @@
 
             <div class="app-content {{ adminlte.classes_content }}">
                 <div class="container-fluid">
+                    {% block messages %}{% include "adminlte/partials/messages.html" %}{% endblock %}
                     {% block content %}{% endblock %}
                 </div>
             </div>

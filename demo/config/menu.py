@@ -15,6 +15,7 @@ ADMINLTE_MENU = [
     },
     {"text": "Theme Generate", "url": "generate/theme", "icon": "bi bi-palette"},
     {"text": "Components", "url": "components", "icon": "bi bi-puzzle", "label": "NEW", "label_color": "success"},
+    {"text": "Messages + Pagination", "url": "native/messages-pagination", "icon": "bi bi-bell"},
     {
         "text": "Widgets",
         "icon": "bi bi-box-seam-fill",
