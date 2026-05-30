@@ -1,0 +1,41 @@
+/*!
+ * django-adminlte4 — admin glue.
+ * Reconciles Django's contrib.admin content area with the AdminLTE shell.
+ * Loaded after both adminlte.min.css and admin/css/base.css, so it wins.
+ * Scoped to `.adminlte-admin` (set on <body> by admin/base.html) to never
+ * affect the front-end site.
+ */
+
+/* The AdminLTE shell (.app-content) already provides page padding — let the
+   admin content region flow inside it without doubling spacing. */
+.adminlte-admin .app-content #content { padding: 0; }
+.adminlte-admin .app-content > .container-fluid > .content { padding: 0; }
+
+/* Content title: Bootstrap Reboot enlarges <h1>; keep the admin's scale. */
+.adminlte-admin .app-content #content > h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+.adminlte-admin .app-content #content > h2 { font-size: 1.2rem; margin: 0 0 .75rem; }
+
+/* Messages rendered as Bootstrap-flavoured alerts. */
+.adminlte-admin ul.messagelist { list-style: none; padding: 0; margin: 0 0 1rem; }
+.adminlte-admin ul.messagelist li {
+  padding: .75rem 1rem; margin-bottom: .5rem; border-radius: .375rem;
+  border: 1px solid var(--bs-info-border-subtle);
+  background: var(--bs-info-bg-subtle); color: var(--bs-info-text-emphasis);
+}
+.adminlte-admin ul.messagelist li.success {
+  background: var(--bs-success-bg-subtle); color: var(--bs-success-text-emphasis); border-color: var(--bs-success-border-subtle);
+}
+.adminlte-admin ul.messagelist li.warning {
+  background: var(--bs-warning-bg-subtle); color: var(--bs-warning-text-emphasis); border-color: var(--bs-warning-border-subtle);
+}
+.adminlte-admin ul.messagelist li.error {
+  background: var(--bs-danger-bg-subtle); color: var(--bs-danger-text-emphasis); border-color: var(--bs-danger-border-subtle);
+}
+
+/* Submit row: keep admin buttons inline, not stretched by Bootstrap. */
+.adminlte-admin .submit-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.adminlte-admin .submit-row .deletelink-box { margin-left: auto; }
+
+/* The topbar log-out button is a real <button>; strip Bootstrap focus ring fuzz. */
+.adminlte-admin .app-header #logout-form { margin: 0; }
+.adminlte-admin .app-header #logout-form button { padding-block: 0; }

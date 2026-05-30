@@ -1,0 +1,9 @@
+{% load static django_vite %}
+{# Vite-pipeline assets (dev default). Isolated in its own partial so that
+   `django_vite` is only loaded when ADMINLTE["assets_mode"] == "vite";
+   projects using the pre-built bundle never need django-vite installed. #}
+{% vite_hmr_client %}
+{% vite_asset 'assets/app.js' %}
+{% if adminlte.layout_rtl %}
+    <link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.rtl.min.css' %}">
+{% endif %}

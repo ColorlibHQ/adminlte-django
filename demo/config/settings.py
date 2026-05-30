@@ -10,6 +10,9 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django_components",
+    # django_adminlte4 must precede django.contrib.admin so its admin/* template
+    # overrides (the AdminLTE-themed admin) take loader precedence.
+    "django_adminlte4",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -17,7 +20,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_vite",
-    "django_adminlte4",
     "dashboard",
     "accounts",
 ]

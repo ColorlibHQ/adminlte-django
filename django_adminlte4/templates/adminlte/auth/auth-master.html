@@ -1,11 +1,16 @@
-{% load static i18n django_vite component_tags adminlte %}<!DOCTYPE html>
+{% load static i18n component_tags adminlte %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en' }}" dir="{% if adminlte.layout_rtl %}rtl{% else %}ltr{% endif %}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% adminlte_title %}{% endblock %}</title>
-    {% vite_hmr_client %}
-    {% vite_asset 'assets/app.js' %}
+    {% block adminlte_assets %}
+        {% if adminlte.assets_mode == "static" %}
+            {% include "adminlte/partials/_assets_prebuilt.html" %}
+        {% else %}
+            {% include "adminlte/partials/_assets_vite.html" %}
+        {% endif %}
+    {% endblock %}
     {% component_css_dependencies %}
     {% block extra_css %}{% endblock %}
 </head>

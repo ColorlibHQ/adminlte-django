@@ -1,0 +1,33 @@
+/*!
+ * django-adminlte4 — project overrides shipped with the package.
+ * Loaded after adminlte.min.css so these rules win. These are the same
+ * fixes used by the demo's SCSS, compiled to plain CSS for the Node-optional
+ * (pre-built assets) path.
+ */
+
+/* Keep ApexCharts / jsVectorMap widgets inside their cards: allow shrinking in
+   flex/grid contexts and never let the rendered canvas exceed the container. */
+[data-apexchart],
+[data-jsvectormap] {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.card-body { min-width: 0; }
+.apexcharts-canvas { max-width: 100% !important; }
+
+/* Sidebar "View documentation" CTA: show only the centered icon when the
+   sidebar is collapsed to its mini rail, restore the label on hover-expand. */
+.sidebar-docs-cta .btn { width: 100%; }
+.sidebar-docs-cta__text { white-space: nowrap; }
+.sidebar-mini.sidebar-collapse .sidebar-docs-cta .btn {
+  width: fit-content;
+  margin-inline: auto;
+}
+.sidebar-mini.sidebar-collapse .sidebar-docs-cta__text { display: none; }
+.sidebar-mini.sidebar-collapse:not(.sidebar-without-hover) .app-sidebar:hover .sidebar-docs-cta .btn {
+  width: 100%;
+}
+.sidebar-mini.sidebar-collapse:not(.sidebar-without-hover) .app-sidebar:hover .sidebar-docs-cta__text {
+  display: inline;
+}

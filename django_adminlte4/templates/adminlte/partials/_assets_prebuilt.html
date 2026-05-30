@@ -1,0 +1,16 @@
+{% load static %}
+{# Pre-built (Node-optional) asset bundle shipped inside the package. Used by
+   the themed Django admin, and by master.html when ADMINLTE["assets_mode"] ==
+   "static". No Vite / npm required — just `collectstatic`. #}
+<link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminlte/dist/css/bootstrap-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'adminlte/dist/css/overlayscrollbars.min.css' %}">
+{% if adminlte.layout_rtl %}
+    <link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.rtl.min.css' %}">
+{% endif %}
+<link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.overrides.css' %}">
+
+<script src="{% static 'adminlte/dist/js/bootstrap.bundle.min.js' %}" defer></script>
+<script src="{% static 'adminlte/dist/js/overlayscrollbars.browser.es6.min.js' %}" defer></script>
+<script src="{% static 'adminlte/dist/js/adminlte.min.js' %}" defer></script>
+<script src="{% static 'adminlte/dist/js/adminlte.init.js' %}" defer></script>

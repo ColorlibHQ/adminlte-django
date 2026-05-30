@@ -1,10 +1,11 @@
-# Python
+# Python (anchored to repo root: the package intentionally ships
+# django_adminlte4/static/adminlte/dist/, which must NOT be ignored)
 __pycache__/
 *.py[cod]
 *.egg-info/
 .eggs/
-build/
-dist/
+/build/
+/dist/
 .venv/
 venv/
 
