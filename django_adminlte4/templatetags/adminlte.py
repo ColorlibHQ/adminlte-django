@@ -46,6 +46,40 @@ def adminlte_safe(value: str) -> str:
     return mark_safe(value or "")
 
 
+@register.simple_tag(takes_context=True)
+def adminlte_admin_menu(context):
+    """Sidebar menu for the themed Django admin.
+
+    Uses ``ADMINLTE["admin_menu"]`` if set, else auto-builds from the registered
+    admin apps/models, then runs it through the standard filter pipeline so the
+    current page is marked active and hrefs are resolved.
+    """
+    from ..admin_menu import build_admin_menu
+    from ..menu.builder import MenuBuilder
+
+    request = context.get("request")
+    cfg = get_config()
+    raw = cfg.get("admin_menu") or build_admin_menu(request)
+    return MenuBuilder(raw, cfg.get("filters", []), request).menu("sidebar")
+
+
+@register.simple_tag(takes_context=True)
+def adminlte_admin_menu(context):
+    """Sidebar menu for the themed Django admin.
+
+    Uses ``ADMINLTE["admin_menu"]`` if set, else auto-builds from the registered
+    admin apps/models, then runs it through the standard filter pipeline so the
+    current page is marked active and hrefs are resolved.
+    """
+    from ..admin_menu import build_admin_menu
+    from ..menu.builder import MenuBuilder
+
+    request = context.get("request")
+    cfg = get_config()
+    raw = cfg.get("admin_menu") or build_admin_menu(request)
+    return MenuBuilder(raw, cfg.get("filters", []), request).menu("sidebar")
+
+
 @register.filter
 def add_class(field, css: str):
     """Render a bound Django form field with extra CSS classes on its widget.

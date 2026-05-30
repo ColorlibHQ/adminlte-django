@@ -89,6 +89,14 @@ DEFAULTS: dict[str, Any] = {
     "classes_topnav_container": "container-fluid",
     # --- Color mode toggle ---
     "color_mode_toggle": True,
+    # --- Front-end asset delivery ---
+    # "vite": load assets via django-vite (the demo/dev default).
+    # "static": load the pre-built bundle shipped in the package (no Node).
+    "assets_mode": "vite",
+    # --- Django admin theming ---
+    "admin_enabled": True,          # apply the AdminLTE skin to django.contrib.admin
+    "admin_brand": "",              # admin sidebar brand text (falls back to `logo`)
+    "admin_menu": None,             # override the auto app/model sidebar (menu-item dicts)
     # --- Menu (see menu/builder.py for the item schema) ---
     "menu": [],
     # --- Menu filter pipeline (dotted paths) ---

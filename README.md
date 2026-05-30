@@ -198,6 +198,44 @@ npm i apexcharts jsvectormap tabulator-tables quill sortablejs   # pick what you
 {% component "adminlte_tabs" items=tabs %}{% endcomponent %}
 ```
 
+## Django admin theme
+
+`django.contrib.admin` is themed with the AdminLTE 4 shell out of the box — the
+topbar, and a sidebar **auto-generated from your registered apps/models** (it
+reuses the same menu builder + filter pipeline as the app sidebar, so it honours
+per-user view permissions and active-state). The native admin change-list /
+change-form content renders inside the shell.
+
+Enable it by putting `django_adminlte4` **before** `django.contrib.admin` in
+`INSTALLED_APPS` (so its `admin/*` template overrides win):
+
+```python
+INSTALLED_APPS = [
+    "django_components",
+    "django_adminlte4",          # must precede django.contrib.admin
+    "django.contrib.admin",
+    # ...
+]
+```
+
+Customise via the `ADMINLTE` dict: `admin_brand` (sidebar brand text) and
+`admin_menu` (a list of menu-item dicts to replace the auto app/model menu).
+
+## Pre-built assets (no Node required)
+
+The package ships a compiled asset bundle (`static/adminlte/dist/`), so you can
+run with **zero Node/npm** — just `collectstatic`. The themed admin always uses
+it; switch the front-end layout to it with:
+
+```python
+ADMINLTE = {"assets_mode": "static"}   # default "vite"
+```
+
+`"vite"` keeps the HMR/dev pipeline (and the optional plugin set) via
+`django-vite`; `"static"` serves the shipped bundle (Bootstrap + AdminLTE +
+Bootstrap Icons + OverlayScrollbars + color-mode/init). With `"static"`,
+`django-vite` is not imported at all.
+
 ## Management commands
 
 | Command | Purpose |

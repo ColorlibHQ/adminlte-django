@@ -1,4 +1,4 @@
-{% load static i18n django_vite component_tags adminlte %}<!DOCTYPE html>
+{% load static i18n component_tags adminlte %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en' }}"
       dir="{% if adminlte.layout_rtl %}rtl{% else %}ltr{% endif %}"
       {% if adminlte.dark_mode %}data-bs-theme="dark"{% endif %}>
@@ -11,14 +11,15 @@
 
     {% block adminlte_css %}{% endblock %}
 
-    {# Compiled AdminLTE + Bootstrap from the Vite pipeline (imports CSS via app.js). #}
-    {% vite_hmr_client %}
-    {% vite_asset 'assets/app.js' %}
-
-    {% if adminlte.layout_rtl %}
-        {# AdminLTE ships a prebuilt RTL stylesheet; copied to static by `adminlte_install`. #}
-        <link rel="stylesheet" href="{% static 'adminlte/css/adminlte.rtl.min.css' %}">
-    {% endif %}
+    {# Front-end assets. Default "vite" pipeline (HMR/dev); "static" loads the
+       pre-built bundle shipped in the package so no Node/npm is required. #}
+    {% block adminlte_assets %}
+        {% if adminlte.assets_mode == "static" %}
+            {% include "adminlte/partials/_assets_prebuilt.html" %}
+        {% else %}
+            {% include "adminlte/partials/_assets_vite.html" %}
+        {% endif %}
+    {% endblock %}
 
     {% component_css_dependencies %}
     {% block extra_css %}{% endblock %}

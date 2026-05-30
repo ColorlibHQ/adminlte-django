@@ -1,0 +1,64 @@
+{% load i18n static %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{ title }} | {{ site_title|default:_('Django site admin') }}</title>
+  {% include "adminlte/partials/_assets_prebuilt.html" %}
+</head>
+<body class="login-page bg-body-secondary adminlte-admin">
+  <div class="login-box">
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a href="{% url 'admin:index' %}" class="h1">{{ site_header|default:_('Django administration') }}</a>
+      </div>
+      <div class="card-body">
+        <p class="login-box-msg">{% trans 'Sign in to start your session' %}</p>
+
+        {% if form.errors and not form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+          </div>
+        {% endif %}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+          </div>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <div class="alert alert-warning" role="alert">
+            {% blocktranslate trimmed %}You are authenticated as {{ username }}, but are not authorized to access this page. Would you like to login to a different account?{% endblocktranslate %}
+          </div>
+        {% endif %}
+
+        <form action="{{ app_path }}" method="post" id="login-form">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}"
+                   value="{{ form.username.value|default:'' }}" autocapitalize="none" autocomplete="username"
+                   class="form-control{% if form.username.errors %} is-invalid{% endif %}"
+                   placeholder="{{ form.username.label }}" required autofocus>
+            <div class="input-group-text"><span class="bi bi-person-fill"></span></div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}"
+                   autocomplete="current-password"
+                   class="form-control{% if form.password.errors %} is-invalid{% endif %}"
+                   placeholder="{% trans 'Password' %}" required>
+            <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+          </div>
+          <input type="hidden" name="next" value="{{ next }}">
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">{% trans 'Log in' %}</button>
+          </div>
+        </form>
+
+        {% url 'admin_password_reset' as password_reset_url %}
+        {% if password_reset_url %}
+          <p class="mb-0 mt-3"><a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>
