@@ -1,0 +1,37 @@
+<div class="card direct-chat direct-chat-{{ theme }}"{{ attrs }}>
+    <div class="card-header">
+        {% if title %}<h3 class="card-title">{{ title }}</h3>{% endif %}
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-lte-toggle="chat-pane" title="Contacts">
+                <i class="bi bi-chat-text"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="direct-chat-messages">
+            {% for item in items %}
+                <div class="direct-chat-msg{% if item.is_own %} end{% endif %}">
+                    <div class="direct-chat-infos clearfix">
+                        <span class="direct-chat-name float-{% if item.is_own %}end{% else %}start{% endif %}">{{ item.name|default:'' }}</span>
+                        <span class="direct-chat-timestamp float-{% if item.is_own %}start{% else %}end{% endif %}">{{ item.time|default:'' }}</span>
+                    </div>
+                    <img class="direct-chat-img" src="{{ item.avatar|default:'https://placehold.co/40x40' }}" alt="Message user image">
+                    <div class="direct-chat-text">{{ item.message }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="direct-chat-contacts">
+            {% slot "default" default %}{% endslot %}
+        </div>
+    </div>
+    <div class="card-footer">
+        <form action="{{ send_url }}" method="post">
+            <div class="input-group">
+                <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-{{ theme }}">Send</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>

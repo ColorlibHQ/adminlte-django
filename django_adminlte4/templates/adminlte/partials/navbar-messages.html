@@ -1,0 +1,28 @@
+{% load static i18n %}
+<li class="nav-item dropdown">
+    <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-label="{% trans 'Messages' %}">
+        <i class="bi bi-chat-text"></i>
+        {% if adminlte.navbar_messages.count %}<span class="navbar-badge badge text-bg-danger">{{ adminlte.navbar_messages.count }}</span>{% endif %}
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+        {% for msg in adminlte.navbar_messages.items %}
+            <a href="{{ msg.url|default:'#' }}" class="dropdown-item">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <img src="{% static msg.image %}" alt="User Avatar" class="img-size-50 rounded-circle me-3" width="50" height="50">
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="dropdown-item-title">
+                            {{ msg.name }}
+                            {% if msg.star %}<span class="float-end fs-7 text-{{ msg.star }}"><i class="bi bi-star-fill"></i></span>{% endif %}
+                        </h3>
+                        <p class="fs-7">{{ msg.text }}</p>
+                        <p class="fs-7 text-secondary"><i class="bi bi-clock-fill me-1"></i> {{ msg.time }}</p>
+                    </div>
+                </div>
+            </a>
+            <div class="dropdown-divider"></div>
+        {% endfor %}
+        <a href="#" class="dropdown-item dropdown-footer">{% trans 'See All Messages' %}</a>
+    </div>
+</li>

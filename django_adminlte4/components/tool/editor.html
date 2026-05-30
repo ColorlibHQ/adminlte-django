@@ -1,0 +1,7 @@
+<div class="mb-3 {{ fgroup_class }}">
+    {% if label %}<label for="{{ editor_id }}" class="form-label">{{ label }}</label>{% endif %}
+    <input type="hidden" name="{{ name }}" id="{{ editor_id }}-value" value="{{ value }}">
+    <div id="{{ editor_id }}" class="quill-editor{% if has_error %} is-invalid{% endif %}"
+         data-quill data-quill-config="{{ config_json }}" data-quill-target="#{{ editor_id }}-value"{{ attrs }}></div>
+    {% if has_error %}<div class="invalid-feedback d-block">{{ error_message }}</div>{% endif %}
+</div>

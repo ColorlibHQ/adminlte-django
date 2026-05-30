@@ -1,0 +1,7 @@
+include LICENSE README.md CHANGELOG.md
+recursive-include django_adminlte4/templates *
+recursive-include django_adminlte4/components *.html
+recursive-include django_adminlte4/static *
+recursive-include django_adminlte4/frontend *
+recursive-include django_adminlte4/locale *
+global-exclude __pycache__ *.py[cod]

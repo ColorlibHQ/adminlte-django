@@ -1,0 +1,29 @@
+// AdminLTE 4 front-end entry point for your Vite build.
+//
+// Copied into your project's `assets/` by `python manage.py adminlte_install`.
+// Reference it from your base template with `{% vite_asset 'assets/app.js' %}`.
+
+// Styles (compiled/bundled by Vite — see app.scss).
+import "./app.scss";
+
+// Third-party CSS that AdminLTE relies on.
+import "overlayscrollbars/overlayscrollbars.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Bootstrap 5 behavior (dropdowns, modals, tabs, toasts, collapse).
+import * as bootstrap from "bootstrap";
+window.bootstrap = bootstrap;
+
+// OverlayScrollbars (AdminLTE's sidebar scrollbar).
+import { OverlayScrollbars } from "overlayscrollbars";
+window.OverlayScrollbars = OverlayScrollbars;
+
+// AdminLTE 4 behavior: treeview, push-menu sidebar toggle, card
+// collapse/maximize/remove (data-lte-toggle), color mode, accessibility.
+import "admin-lte";
+
+// AdminLTE Tool components (Chart, VectorMap, Datatable, Editor, Sortable).
+// The initializer lazily imports each plugin library only when a matching
+// element is on the page — install just the ones you use (see package.json).
+import { initAdminltePlugins } from "./adminlte-plugins.js";
+document.addEventListener("DOMContentLoaded", () => initAdminltePlugins());

@@ -1,0 +1,17 @@
+<div class="modal fade" id="{{ id }}" tabindex="-1" aria-labelledby="{{ id }}-label" aria-hidden="true"
+     {% if static_backdrop %}data-bs-backdrop="static" data-bs-keyboard="false"{% endif %}{{ attrs }}>
+    <div class="{{ dialog_class }}">
+        <div class="modal-content">
+            <div class="modal-header {% if theme %}text-bg-{{ theme }}{% endif %}">
+                <h5 class="modal-title" id="{{ id }}-label">{{ title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% slot "default" default %}{% endslot %}
+            </div>
+            {% if has_footer %}
+                <div class="modal-footer">{% slot "footer" %}{% endslot %}</div>
+            {% endif %}
+        </div>
+    </div>
+</div>

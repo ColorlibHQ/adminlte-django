@@ -1,0 +1,5 @@
+<div class="{{ progress_class }}" role="progressbar"
+     aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100"
+     {% if height %}style="height: {{ height }}"{% endif %}{{ attrs }}>
+    <div class="{{ bar_class }}" style="width: {{ value }}%">{% if show_label %}{{ value }}%{% endif %}</div>
+</div>

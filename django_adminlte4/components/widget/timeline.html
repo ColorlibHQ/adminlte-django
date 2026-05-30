@@ -1,0 +1,20 @@
+{% load i18n %}<div class="{{ timeline_class }}"{{ attrs }}>
+    {% for item in items %}
+        <div class="timeline-item">
+            <span class="timeline-icon {{ item.icon_bg|default:'bg-primary' }}">
+                <i class="{{ item.icon|default:'bi bi-info-circle' }}"></i>
+            </span>
+            <div class="timeline-content">
+                {% if item.title %}
+                    <h3 class="timeline-header">
+                        {% if item.url %}<a href="{{ item.url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
+                    </h3>
+                {% endif %}
+                {% if item.body %}<p class="timeline-body">{{ item.body }}</p>{% endif %}
+                {% if item.footer %}<div class="timeline-footer">{{ item.footer }}</div>{% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">{% trans 'No items' %}</p>
+    {% endfor %}
+</div>

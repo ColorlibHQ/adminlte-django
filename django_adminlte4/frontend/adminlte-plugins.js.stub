@@ -1,0 +1,81 @@
+// AdminLTE 4 — plugin initializer for the Tool components.
+//
+// Each plugin-backed component (Chart, VectorMap, Datatable, Editor, Sortable)
+// renders a container with a `data-<plugin>` marker and a `data-<plugin>-config`
+// JSON attribute. This module scans for them and boots the widget, lazily
+// importing each library only when a matching element exists.
+//
+// Usage (in your Vite entry, after AdminLTE):
+//   import { initAdminltePlugins } from "./adminlte-plugins.js";
+//   document.addEventListener("DOMContentLoaded", () => initAdminltePlugins());
+
+const parse = (json) => {
+  try { return JSON.parse(json || "{}"); } catch { return {}; }
+};
+
+async function initApexCharts(root) {
+  const els = root.querySelectorAll("[data-apexchart]");
+  if (!els.length) return;
+  const { default: ApexCharts } = await import("apexcharts");
+  els.forEach((el) => {
+    if (el.dataset.lteInit) return;
+    el.dataset.lteInit = "1";
+    new ApexCharts(el, parse(el.dataset.apexchartConfig)).render();
+  });
+}
+
+async function initVectorMaps(root) {
+  const els = root.querySelectorAll("[data-jsvectormap]");
+  if (!els.length) return;
+  const { default: jsVectorMap } = await import("jsvectormap");
+  await import("jsvectormap/dist/maps/world.js");
+  els.forEach((el) => {
+    if (el.dataset.lteInit) return;
+    el.dataset.lteInit = "1";
+    new jsVectorMap({ selector: el, ...parse(el.dataset.jsvectormapConfig) });
+  });
+}
+
+async function initTabulator(root) {
+  const els = root.querySelectorAll("[data-tabulator]");
+  if (!els.length) return;
+  const { TabulatorFull: Tabulator } = await import("tabulator-tables");
+  els.forEach((el) => {
+    if (el.dataset.lteInit) return;
+    el.dataset.lteInit = "1";
+    new Tabulator(el, parse(el.dataset.tabulatorConfig));
+  });
+}
+
+async function initQuill(root) {
+  const els = root.querySelectorAll("[data-quill]");
+  if (!els.length) return;
+  const { default: Quill } = await import("quill");
+  els.forEach((el) => {
+    if (el.dataset.lteInit) return;
+    el.dataset.lteInit = "1";
+    const quill = new Quill(el, parse(el.dataset.quillConfig));
+    const target = el.dataset.quillTarget && document.querySelector(el.dataset.quillTarget);
+    if (target && target.value) quill.root.innerHTML = target.value;
+    if (target) quill.on("text-change", () => { target.value = quill.root.innerHTML; });
+  });
+}
+
+async function initSortable(root) {
+  const els = root.querySelectorAll("[data-sortable]");
+  if (!els.length) return;
+  const { default: Sortable } = await import("sortablejs");
+  els.forEach((el) => {
+    if (el.dataset.lteInit) return;
+    el.dataset.lteInit = "1";
+    new Sortable(el, parse(el.dataset.sortableConfig));
+  });
+}
+
+export function initAdminltePlugins(root = document) {
+  initApexCharts(root);
+  initVectorMaps(root);
+  initTabulator(root);
+  initQuill(root);
+  initSortable(root);
+}

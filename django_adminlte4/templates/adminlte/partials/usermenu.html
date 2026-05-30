@@ -1,0 +1,55 @@
+{% load static i18n %}
+{% url 'logout' as logout_url %}
+{% url 'login' as login_url %}
+{% if adminlte.usermenu %}
+    {# Rich user card (mirrors the HTML demo topbar). #}
+    <li class="nav-item dropdown user-menu">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <img src="{% static adminlte.usermenu.image %}" class="user-image rounded-circle shadow" alt="{% trans 'User Image' %}">
+            <span class="d-none d-md-inline">{{ adminlte.usermenu.name }}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+            <li class="user-header text-bg-primary">
+                <img src="{% static adminlte.usermenu.image %}" class="rounded-circle shadow" alt="{% trans 'User Image' %}">
+                <p>
+                    {{ adminlte.usermenu.name }}{% if adminlte.usermenu.description %} - {{ adminlte.usermenu.description }}{% endif %}
+                    {% if adminlte.usermenu.since %}<small>{{ adminlte.usermenu.since }}</small>{% endif %}
+                </p>
+            </li>
+            {% if adminlte.usermenu.stats %}
+            <li class="user-body">
+                <div class="row">
+                    {% for stat in adminlte.usermenu.stats %}
+                        <div class="col-4 text-center"><a href="{{ stat.url|default:'#' }}">{{ stat.label }}</a></div>
+                    {% endfor %}
+                </div>
+            </li>
+            {% endif %}
+            <li class="user-footer">
+                <a href="{{ adminlte.usermenu_profile_url|default:'#' }}" class="btn btn-outline-secondary">{% trans 'Profile' %}</a>
+                {% if logout_url %}
+                    <form method="post" action="{{ logout_url }}" class="float-end d-inline">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">{% trans 'Sign out' %}</button></form>
+                {% else %}
+                    <a href="#" class="btn btn-outline-danger float-end">{% trans 'Sign out' %}</a>
+                {% endif %}
+            </li>
+        </ul>
+    </li>
+{% else %}
+    {# Simple user menu driven by the authenticated Django user. #}
+    <li class="nav-item dropdown user-menu">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+            <span class="d-none d-md-inline">{% if user.is_authenticated %}{{ user.get_username }}{% else %}{% trans 'Guest' %}{% endif %}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            {% if user.is_authenticated %}
+                {% if logout_url %}
+                    <li><form method="post" action="{{ logout_url }}">{% csrf_token %}<button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>{% trans 'Sign out' %}</button></form></li>
+                {% endif %}
+            {% elif login_url %}
+                <li><a href="{{ login_url }}" class="dropdown-item"><i class="bi bi-box-arrow-in-right me-2"></i>{% trans 'Sign in' %}</a></li>
+            {% endif %}
+        </ul>
+    </li>
+{% endif %}

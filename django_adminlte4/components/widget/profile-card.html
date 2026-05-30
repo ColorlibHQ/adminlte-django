@@ -1,0 +1,21 @@
+<div class="card card-primary card-outline {{ extra_class }}"{{ attrs }}>
+    <div class="card-body box-profile">
+        {% if image %}
+            <div class="text-center">
+                <img class="profile-user-img img-fluid rounded-circle" src="{{ image }}" alt="{{ image_alt }}">
+            </div>
+        {% endif %}
+        <h3 class="profile-username text-center">{{ name }}</h3>
+        {% if title %}<p class="text-body-secondary text-center">{{ title }}</p>{% endif %}
+        {% if description %}<p class="text-body-secondary text-center">{{ description }}</p>{% endif %}
+        {% if socials %}
+            <div class="text-center">
+                {% for social in socials %}
+                    <a href="{{ social.url }}" class="btn btn-sm btn-{{ social.color|default:'primary' }}" target="_blank" rel="noopener noreferrer">
+                        <i class="{{ social.icon }}"></i>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>

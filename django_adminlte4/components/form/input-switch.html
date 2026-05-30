@@ -1,0 +1,8 @@
+<div class="mb-3 {{ fgroup_class }}">
+    <div class="form-check form-switch">
+        <input type="checkbox" name="{{ name }}" id="{{ id }}" value="{{ switch_value }}"
+               class="{{ control_class }}"{% if checked %} checked{% endif %}{{ attrs }}>
+        {% if label %}<label class="form-check-label" for="{{ id }}">{{ label }}</label>{% endif %}
+        {% if has_error %}<div class="invalid-feedback d-block">{{ error_message }}</div>{% endif %}
+    </div>
+</div>

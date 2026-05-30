@@ -1,0 +1,18 @@
+<li class="nav-item dropdown">
+    <a class="nav-link" data-bs-toggle="dropdown" href="#">
+        <i class="{{ icon }}"></i>
+        {% if count %}<span class="navbar-badge badge text-bg-{{ badge_theme }}">{{ count }}</span>{% endif %}
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+        <span class="dropdown-item dropdown-header">{{ count }} {{ header }}</span>
+        <div class="dropdown-divider"></div>
+        {% for item in items %}
+            <a href="{{ item.url|default:'#' }}" class="dropdown-item">
+                <i class="{{ item.icon }} me-2"></i> {{ item.text }}
+                <span class="float-end text-secondary fs-7">{{ item.time }}</span>
+            </a>
+            <div class="dropdown-divider"></div>
+        {% endfor %}
+        <a href="{{ footer_url }}" class="dropdown-item dropdown-footer">{{ footer_text }}</a>
+    </div>
+</li>

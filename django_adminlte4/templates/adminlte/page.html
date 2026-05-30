@@ -1,0 +1,21 @@
+{% extends "adminlte/master.html" %}
+{% load adminlte %}
+{# The primary layout most pages extend. Provide {% block page_title %},
+   {% block breadcrumb %} and {% block content %}. #}
+
+{% block content_header %}
+    <div class="app-content-header {{ adminlte.classes_content_header }}">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="mb-0">{% block page_title %}{% endblock %}</h3>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        {% block breadcrumb %}{% endblock %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

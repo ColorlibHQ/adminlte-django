@@ -1,0 +1,20 @@
+<div{{ attrs }}>
+    <ul class="nav nav-{{ variant }}{% if justified %} nav-justified{% endif %}{% if fill %} nav-fill{% endif %}" role="tablist">
+        {% for item in items %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link{% if item.active %} active{% endif %}" id="{{ item.id }}-tab"
+                        data-bs-toggle="tab" data-bs-target="#{{ item.id }}" type="button" role="tab"
+                        aria-controls="{{ item.id }}" aria-selected="{% if item.active %}true{% else %}false{% endif %}">
+                    {% if item.icon %}<i class="{{ item.icon }} me-2"></i>{% endif %}{{ item.title }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content pt-3">
+        {% for item in items %}
+            <div class="tab-pane fade{% if item.active %} show active{% endif %}" id="{{ item.id }}" role="tabpanel" aria-labelledby="{{ item.id }}-tab">
+                {{ item.content|safe }}
+            </div>
+        {% endfor %}
+    </div>
+</div>

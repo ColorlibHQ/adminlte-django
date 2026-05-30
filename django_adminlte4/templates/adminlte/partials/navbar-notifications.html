@@ -1,0 +1,19 @@
+{% load i18n %}
+<li class="nav-item dropdown">
+    <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-label="{% trans 'Notifications' %}">
+        <i class="bi bi-bell-fill"></i>
+        {% if adminlte.navbar_notifications.count %}<span class="navbar-badge badge text-bg-warning">{{ adminlte.navbar_notifications.count }}</span>{% endif %}
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+        <span class="dropdown-item dropdown-header">{{ adminlte.navbar_notifications.count }} {% trans 'Notifications' %}</span>
+        <div class="dropdown-divider"></div>
+        {% for note in adminlte.navbar_notifications.items %}
+            <a href="{{ note.url|default:'#' }}" class="dropdown-item">
+                <i class="{{ note.icon }} me-2"></i> {{ note.text }}
+                <span class="float-end text-secondary fs-7">{{ note.time }}</span>
+            </a>
+            <div class="dropdown-divider"></div>
+        {% endfor %}
+        <a href="#" class="dropdown-item dropdown-footer">{% trans 'See All Notifications' %}</a>
+    </div>
+</li>

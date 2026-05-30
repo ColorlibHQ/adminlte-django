@@ -1,0 +1,370 @@
+{% extends "adminlte/page.html" %}
+{% load static %}
+{% block page_title %}Kanban Board{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Kanban</li>
+{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <p class="text-secondary mb-0 small">
+      Drag cards between lanes. Try dropping &ldquo;In progress&rdquo; items into
+      &ldquo;Done&rdquo;.
+    </p>
+  </div>
+  <div class="btn-group btn-group-sm">
+    <button class="btn btn-outline-secondary" type="button">
+      <i class="bi bi-funnel me-1" aria-hidden="true"></i>Filter
+    </button>
+    <button class="btn btn-outline-secondary" type="button">
+      <i class="bi bi-sort-down me-1" aria-hidden="true"></i>Sort
+    </button>
+    <button class="btn btn-primary" type="button">
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Add lane
+    </button>
+  </div>
+</div>
+
+<div class="kanban-board" id="kanban-board">
+  <div class="kanban-lane" data-lane-id="backlog">
+    <div class="kanban-lane-header">
+      <h2 class="h6 mb-0 d-flex align-items-center gap-2">
+        <span class="badge text-bg-secondary" style="font-size: 0.65rem"> 3 </span>
+        Backlog
+      </h2>
+      <button
+        class="btn btn-sm btn-link text-secondary p-0"
+        type="button"
+        title="Lane actions"
+        aria-label="Lane actions"
+      >
+        <i class="bi bi-three-dots" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="kanban-cards" data-lane-id="backlog">
+      <article class="kanban-card">
+        <span class="badge text-bg-secondary mb-2"> tech debt </span>
+        <p class="fw-semibold mb-1 small">Audit unused SCSS variables</p>
+        <p class="text-secondary small mb-2">
+          Identify deprecated Bootstrap 5.3.4 variables and add comments.
+        </p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="DM"> DM </span>
+          </div>
+        </div>
+      </article>
+      <article class="kanban-card">
+        <span class="badge text-bg-info mb-2"> docs </span>
+        <p class="fw-semibold mb-1 small">Document hreflang setup</p>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="JD"> JD </span>
+          </div>
+        </div>
+      </article>
+      <article class="kanban-card">
+        <span class="badge text-bg-danger mb-2"> bug </span>
+        <p class="fw-semibold mb-1 small">Investigate Safari iOS calendar drag bug</p>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="OB"> OB </span
+            ><span class="kanban-assignee" title="MK"> MK </span>
+          </div>
+          <small class="text-secondary">
+            <i class="bi bi-calendar-event me-1" aria-hidden="true"></i>
+            May 28
+          </small>
+        </div>
+      </article>
+    </div>
+    <button class="kanban-add-card mt-2" type="button" data-add-card-for="backlog">
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+      Add card
+    </button>
+  </div>
+  <div class="kanban-lane" data-lane-id="todo">
+    <div class="kanban-lane-header">
+      <h2 class="h6 mb-0 d-flex align-items-center gap-2">
+        <span class="badge text-bg-primary" style="font-size: 0.65rem"> 2 </span>
+        To do
+      </h2>
+      <button
+        class="btn btn-sm btn-link text-secondary p-0"
+        type="button"
+        title="Lane actions"
+        aria-label="Lane actions"
+      >
+        <i class="bi bi-three-dots" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="kanban-cards" data-lane-id="todo">
+      <article class="kanban-card">
+        <span class="badge text-bg-primary mb-2"> feature </span>
+        <p class="fw-semibold mb-1 small">Add Tom Select recommended-integration doc</p>
+        <p class="text-secondary small mb-2">
+          Cover install, theming, single + multi select examples.
+        </p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="JD"> JD </span>
+          </div>
+          <small class="text-secondary">
+            <i class="bi bi-calendar-event me-1" aria-hidden="true"></i>
+            May 24
+          </small>
+        </div>
+      </article>
+      <article class="kanban-card">
+        <span class="badge text-bg-primary mb-2"> feature </span>
+        <p class="fw-semibold mb-1 small">Wire up profile page avatar upload</p>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="EM"> EM </span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <button class="kanban-add-card mt-2" type="button" data-add-card-for="todo">
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+      Add card
+    </button>
+  </div>
+  <div class="kanban-lane" data-lane-id="in-progress">
+    <div class="kanban-lane-header">
+      <h2 class="h6 mb-0 d-flex align-items-center gap-2">
+        <span class="badge text-bg-warning" style="font-size: 0.65rem"> 2 </span>
+        In progress
+      </h2>
+      <button
+        class="btn btn-sm btn-link text-secondary p-0"
+        type="button"
+        title="Lane actions"
+        aria-label="Lane actions"
+      >
+        <i class="bi bi-three-dots" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="kanban-cards" data-lane-id="in-progress">
+      <article class="kanban-card">
+        <span class="badge text-bg-primary mb-2"> feature </span>
+        <p class="fw-semibold mb-1 small">Build kanban board demo</p>
+        <p class="text-secondary small mb-2">
+          SortableJS, draggable between lanes, MIT license.
+        </p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="JD"> JD </span>
+          </div>
+          <small class="text-secondary">
+            <i class="bi bi-calendar-event me-1" aria-hidden="true"></i>
+            Today
+          </small>
+        </div>
+      </article>
+      <article class="kanban-card">
+        <span class="badge text-bg-warning mb-2"> qa </span>
+        <p class="fw-semibold mb-1 small">Tabulator + FullCalendar integration QA</p>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="OB"> OB </span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <button class="kanban-add-card mt-2" type="button" data-add-card-for="in-progress">
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+      Add card
+    </button>
+  </div>
+  <div class="kanban-lane" data-lane-id="done">
+    <div class="kanban-lane-header">
+      <h2 class="h6 mb-0 d-flex align-items-center gap-2">
+        <span class="badge text-bg-success" style="font-size: 0.65rem"> 3 </span>
+        Done
+      </h2>
+      <button
+        class="btn btn-sm btn-link text-secondary p-0"
+        type="button"
+        title="Lane actions"
+        aria-label="Lane actions"
+      >
+        <i class="bi bi-three-dots" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="kanban-cards" data-lane-id="done">
+      <article class="kanban-card">
+        <span class="badge text-bg-primary mb-2"> feature </span>
+        <p class="fw-semibold mb-1 small">Upgrade to Bootstrap 5.3.8</p>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="DM"> DM </span>
+          </div>
+        </div>
+      </article>
+      <article class="kanban-card">
+        <span class="badge text-bg-primary mb-2"> feature </span>
+        <p class="fw-semibold mb-1 small">Ship 8 Tier-1 page templates</p>
+        <p class="text-secondary small mb-2">
+          Profile, settings, invoice, pricing, FAQ, 404/500/maintenance.
+        </p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="JD"> JD </span
+            ><span class="kanban-assignee" title="OB"> OB </span>
+          </div>
+        </div>
+      </article>
+      <article class="kanban-card">
+        <span class="badge text-bg-secondary mb-2"> tech debt </span>
+        <p class="fw-semibold mb-1 small">Drop dead eslint-config-xo deps</p>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="kanban-assignees">
+            <span class="kanban-assignee" title="DM"> DM </span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <button class="kanban-add-card mt-2" type="button" data-add-card-for="done">
+      <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+      Add card
+    </button>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<style>
+  .kanban-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    align-items: start;
+  }
+  .kanban-lane {
+    background: var(--bs-tertiary-bg);
+    border-radius: var(--bs-border-radius);
+    padding: 0.75rem;
+    min-height: 8rem;
+  }
+  .kanban-lane-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding: 0 0.25rem;
+  }
+  .kanban-cards {
+    min-height: 4rem;
+  }
+  .kanban-card {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    cursor: grab;
+    transition: box-shadow 0.15s ease;
+  }
+  .kanban-card:hover {
+    box-shadow: var(--bs-box-shadow-sm);
+  }
+  .kanban-card.sortable-ghost {
+    opacity: 0.4;
+    background: var(--bs-primary-bg-subtle);
+    border-style: dashed;
+  }
+  .kanban-card.sortable-drag {
+    cursor: grabbing;
+    box-shadow: var(--bs-box-shadow);
+    transform: rotate(2deg);
+  }
+  .kanban-assignees {
+    display: inline-flex;
+  }
+  .kanban-assignee {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--bs-secondary-bg);
+    color: var(--bs-secondary-color);
+    font-size: 0.7rem;
+    font-weight: 600;
+    border: 2px solid var(--bs-body-bg);
+    margin-left: -0.5rem;
+  }
+  .kanban-assignee:first-child {
+    margin-left: 0;
+  }
+  .kanban-add-card {
+    background: transparent;
+    border: 1px dashed var(--bs-border-color);
+    color: var(--bs-secondary-color);
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: var(--bs-border-radius);
+    font-size: 0.875rem;
+  }
+  .kanban-add-card:hover {
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+</style>
+<script
+  src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.7/Sortable.min.js"
+  crossorigin="anonymous"
+></script>
+<script>
+  const updateLaneCount = (laneEl) => {
+    const lane = laneEl.closest('.kanban-lane');
+    const badge = lane.querySelector('.kanban-lane-header .badge');
+    badge.textContent = laneEl.children.length;
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.kanban-cards').forEach((el) => {
+      new Sortable(el, {
+        group: 'kanban',
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        dragClass: 'sortable-drag',
+        onEnd: (evt) => {
+          updateLaneCount(evt.from);
+          if (evt.from !== evt.to) updateLaneCount(evt.to);
+        },
+      });
+    });
+
+    document.querySelectorAll('[data-add-card-for]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const title = prompt('Card title:');
+        if (!title) return;
+        const laneId = btn.dataset.addCardFor;
+        const lane = document.querySelector(`.kanban-cards[data-lane-id="${laneId}"]`);
+        const card = document.createElement('article');
+        card.className = 'kanban-card';
+        card.innerHTML = `
+          <p class="fw-semibold mb-1 small">${title.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c])}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="kanban-assignees">
+              <span class="kanban-assignee" title="You">YO</span>
+            </div>
+            <small class="text-secondary">just now</small>
+          </div>
+        `;
+        lane.append(card);
+        updateLaneCount(lane);
+      });
+    });
+  });
+</script>
+{% endblock %}

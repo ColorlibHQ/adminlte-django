@@ -1,0 +1,26 @@
+{% load static i18n django_vite component_tags adminlte %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}" dir="{% if adminlte.layout_rtl %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% adminlte_title %}{% endblock %}</title>
+    {% vite_hmr_client %}
+    {% vite_asset 'assets/app.js' %}
+    {% component_css_dependencies %}
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}login-page{% endblock %} bg-body-secondary">
+    <div class="{% block box_class %}login-box{% endblock %}">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="/" class="h1">{{ adminlte.logo|adminlte_safe }}</a>
+            </div>
+            <div class="card-body">
+                {% block auth_body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    {% component_js_dependencies %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

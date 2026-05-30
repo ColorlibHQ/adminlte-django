@@ -1,0 +1,49 @@
+{% load static i18n django_vite component_tags adminlte %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}"
+      dir="{% if adminlte.layout_rtl %}rtl{% else %}ltr{% endif %}"
+      {% if adminlte.dark_mode %}data-bs-theme="dark"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block meta %}{% endblock %}
+
+    <title>{% block title %}{% adminlte_title %}{% endblock %}</title>
+
+    {% block adminlte_css %}{% endblock %}
+
+    {# Compiled AdminLTE + Bootstrap from the Vite pipeline (imports CSS via app.js). #}
+    {% vite_hmr_client %}
+    {% vite_asset 'assets/app.js' %}
+
+    {% if adminlte.layout_rtl %}
+        {# AdminLTE ships a prebuilt RTL stylesheet; copied to static by `adminlte_install`. #}
+        <link rel="stylesheet" href="{% static 'adminlte/css/adminlte.rtl.min.css' %}">
+    {% endif %}
+
+    {% component_css_dependencies %}
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% adminlte_body_classes %}{% endblock %}">
+    {% if adminlte.preloader %}{% include "adminlte/partials/preloader.html" %}{% endif %}
+
+    <div class="app-wrapper">
+        {% include "adminlte/partials/navbar.html" %}
+        {% include "adminlte/partials/sidebar.html" %}
+
+        <main class="app-main">
+            {% block content_header %}{% endblock %}
+
+            <div class="app-content {{ adminlte.classes_content }}">
+                <div class="container-fluid">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </main>
+
+        {% include "adminlte/partials/footer.html" %}
+    </div>
+
+    {% component_js_dependencies %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

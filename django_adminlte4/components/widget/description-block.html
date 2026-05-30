@@ -1,0 +1,12 @@
+<div class="description-block border-start border-warning ps-4 {{ extra_class }}"{{ attrs }}>
+    <h5 class="text-warning">{{ title }}</h5>
+    {% if text %}<p class="text-body-secondary small">{{ text }}</p>{% endif %}
+    {% if items %}
+        <dl>
+            {% for label, value in items %}
+                <dt>{{ label }}</dt>
+                <dd>{{ value }}</dd>
+            {% endfor %}
+        </dl>
+    {% endif %}
+</div>

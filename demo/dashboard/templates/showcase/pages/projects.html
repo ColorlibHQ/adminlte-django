@@ -1,0 +1,576 @@
+{% extends "adminlte/page.html" %}
+{% load static %}
+
+{% block page_title %}Projects{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Projects</li>
+{% endblock %}
+
+{% block content %}
+  <!-- Summary cards -->
+  <div class="row g-3 mb-3">
+    <div class="col-md-3 col-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="text-secondary small mb-1">Active projects</p>
+          <h3 class="mb-0 fw-bold">6</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="text-secondary small mb-1">On track</p>
+          <h3 class="mb-0 fw-bold text-success">3</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="text-secondary small mb-1">At risk / delayed</p>
+          <h3 class="mb-0 fw-bold text-warning">2</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="text-secondary small mb-1">Completed</p>
+          <h3 class="mb-0 fw-bold text-secondary">1</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="card">
+    <div class="card-header d-flex flex-wrap gap-2 align-items-center">
+      <h3 class="card-title mb-0 me-auto">All projects</h3>
+      <div class="input-group input-group-sm" style="width: 16rem">
+        <span class="input-group-text">
+          <i class="bi bi-search" aria-hidden="true"></i>
+        </span>
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Search projects…"
+          aria-label="Search projects"
+        />
+      </div>
+      <select
+        class="form-select form-select-sm"
+        style="width: 10rem"
+        aria-label="Filter by status"
+      >
+        <option value="">All statuses</option>
+        <option>On track</option>
+        <option>At risk</option>
+        <option>Delayed</option>
+        <option>Completed</option>
+      </select>
+      <button class="btn btn-primary btn-sm" type="button">
+        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>
+        New project
+      </button>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Status</th>
+              <th>Progress</th>
+              <th>Team</th>
+              <th>Budget</th>
+              <th>Due</th>
+              <th>Priority</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="#" class="fw-semibold text-decoration-none">
+                  AdminLTE 4 Release
+                </a>
+                <div class="small text-secondary">Internal</div>
+              </td>
+              <td>
+                <span class="badge text-bg-success"> On track </span>
+              </td>
+              <td style="min-width: 8rem">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      style="width: 78%"
+                      aria-valuenow="78"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                  <small class="text-secondary" style="min-width: 2.25rem"> 78% </small>
+                </div>
+              </td>
+              <td>
+                <div class="d-inline-flex">
+                  <span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: 0;
+                    "
+                    title="JD"
+                  >
+                    JD </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-info-subtle text-info fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="OB"
+                  >
+                    OB </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-success-subtle text-success fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="DM"
+                  >
+                    DM
+                  </span>
+                </div>
+              </td>
+              <td class="text-nowrap">$24,500</td>
+              <td class="text-nowrap">Jun 14, 2026</td>
+              <td>
+                <span class="badge text-bg-danger"> High </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" type="button" title="View">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="Edit">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="More">
+                    <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#" class="fw-semibold text-decoration-none">
+                  Marketing Site Redesign
+                </a>
+                <div class="small text-secondary">Acme Corp</div>
+              </td>
+              <td>
+                <span class="badge text-bg-warning"> At risk </span>
+              </td>
+              <td style="min-width: 8rem">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px">
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      style="width: 42%"
+                      aria-valuenow="42"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                  <small class="text-secondary" style="min-width: 2.25rem"> 42% </small>
+                </div>
+              </td>
+              <td>
+                <div class="d-inline-flex">
+                  <span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-info-subtle text-info fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: 0;
+                    "
+                    title="OB"
+                  >
+                    OB </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="MR"
+                  >
+                    MR
+                  </span>
+                </div>
+              </td>
+              <td class="text-nowrap">$48,000</td>
+              <td class="text-nowrap">Jul 02, 2026</td>
+              <td>
+                <span class="badge text-bg-danger"> High </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" type="button" title="View">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="Edit">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="More">
+                    <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#" class="fw-semibold text-decoration-none"> Mobile App v2 </a>
+                <div class="small text-secondary">Nimbus Labs</div>
+              </td>
+              <td>
+                <span class="badge text-bg-success"> On track </span>
+              </td>
+              <td style="min-width: 8rem">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px">
+                    <div
+                      class="progress-bar bg-primary"
+                      role="progressbar"
+                      style="width: 61%"
+                      aria-valuenow="61"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                  <small class="text-secondary" style="min-width: 2.25rem"> 61% </small>
+                </div>
+              </td>
+              <td>
+                <div class="d-inline-flex">
+                  <span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: 0;
+                    "
+                    title="LC"
+                  >
+                    LC </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="ED"
+                  >
+                    ED </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-secondary-subtle text-secondary fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="AF"
+                  >
+                    AF </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-info-subtle text-info fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="SK"
+                  >
+                    SK
+                  </span>
+                </div>
+              </td>
+              <td class="text-nowrap">$92,500</td>
+              <td class="text-nowrap">Aug 18, 2026</td>
+              <td>
+                <span class="badge text-bg-info"> Medium </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" type="button" title="View">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="Edit">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="More">
+                    <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#" class="fw-semibold text-decoration-none">
+                  Analytics Pipeline
+                </a>
+                <div class="small text-secondary">Internal</div>
+              </td>
+              <td>
+                <span class="badge text-bg-danger"> Delayed </span>
+              </td>
+              <td style="min-width: 8rem">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px">
+                    <div
+                      class="progress-bar bg-warning"
+                      role="progressbar"
+                      style="width: 22%"
+                      aria-valuenow="22"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                  <small class="text-secondary" style="min-width: 2.25rem"> 22% </small>
+                </div>
+              </td>
+              <td>
+                <div class="d-inline-flex">
+                  <span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-success-subtle text-success fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: 0;
+                    "
+                    title="DM"
+                  >
+                    DM
+                  </span>
+                </div>
+              </td>
+              <td class="text-nowrap">$12,000</td>
+              <td class="text-nowrap">May 30, 2026</td>
+              <td>
+                <span class="badge text-bg-info"> Medium </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" type="button" title="View">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="Edit">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="More">
+                    <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#" class="fw-semibold text-decoration-none">
+                  Brand Style Guide
+                </a>
+                <div class="small text-secondary">Riverhaus</div>
+              </td>
+              <td>
+                <span class="badge text-bg-secondary"> Completed </span>
+              </td>
+              <td style="min-width: 8rem">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px">
+                    <div
+                      class="progress-bar bg-success"
+                      role="progressbar"
+                      style="width: 100%"
+                      aria-valuenow="100"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                  <small class="text-secondary" style="min-width: 2.25rem"> 100% </small>
+                </div>
+              </td>
+              <td>
+                <div class="d-inline-flex">
+                  <span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-info-subtle text-info fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: 0;
+                    "
+                    title="OB"
+                  >
+                    OB </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="ED"
+                  >
+                    ED
+                  </span>
+                </div>
+              </td>
+              <td class="text-nowrap">$8,200</td>
+              <td class="text-nowrap">May 09, 2026</td>
+              <td>
+                <span class="badge text-bg-secondary"> Low </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" type="button" title="View">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="Edit">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="More">
+                    <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#" class="fw-semibold text-decoration-none">
+                  Onboarding Email Flow
+                </a>
+                <div class="small text-secondary">Acme Corp</div>
+              </td>
+              <td>
+                <span class="badge text-bg-success"> On track </span>
+              </td>
+              <td style="min-width: 8rem">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px">
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      style="width: 55%"
+                      aria-valuenow="55"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                  <small class="text-secondary" style="min-width: 2.25rem"> 55% </small>
+                </div>
+              </td>
+              <td>
+                <div class="d-inline-flex">
+                  <span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: 0;
+                    "
+                    title="MR"
+                  >
+                    MR </span
+                  ><span
+                    class="rounded-circle d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary fw-semibold"
+                    style="
+                      width: 1.75rem;
+                      height: 1.75rem;
+                      font-size: 0.7rem;
+                      border: 2px solid var(--bs-body-bg);
+                      margin-left: -0.5rem;
+                    "
+                    title="JD"
+                  >
+                    JD
+                  </span>
+                </div>
+              </td>
+              <td class="text-nowrap">$6,800</td>
+              <td class="text-nowrap">Jun 22, 2026</td>
+              <td>
+                <span class="badge text-bg-secondary"> Low </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" type="button" title="View">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="Edit">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" type="button" title="More">
+                    <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <small class="text-secondary"> Showing 6 of 6 </small>
+      <nav aria-label="Pagination">
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item disabled">
+            <a class="page-link" href="#">Previous</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+{% endblock %}

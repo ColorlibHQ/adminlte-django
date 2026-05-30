@@ -1,0 +1,23 @@
+{% extends "adminlte/auth/auth-master.html" %}
+{% load static i18n %}
+
+{% block body_class %}lockscreen{% endblock %}
+{% block box_class %}lockscreen-wrapper{% endblock %}
+
+{% block auth_body %}
+    <div class="lockscreen-item">
+        <div class="lockscreen-image">
+            <img src="{% static 'adminlte/img/user1-128x128.jpg' %}" alt="{% trans 'User Image' %}" class="rounded-circle">
+        </div>
+        <form action="" method="post" class="lockscreen-credentials">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="password" name="password" class="form-control" placeholder="{% trans 'Password' %}">
+                <button type="submit" class="btn"><i class="bi bi-arrow-right-circle"></i></button>
+            </div>
+        </form>
+    </div>
+    <div class="lockscreen-name text-center mt-3">
+        {% if user.is_authenticated %}{{ user.get_username }}{% else %}{% trans 'Locked' %}{% endif %}
+    </div>
+{% endblock %}

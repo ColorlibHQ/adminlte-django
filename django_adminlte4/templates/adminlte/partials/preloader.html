@@ -1,0 +1,6 @@
+{% load static %}
+<div class="preloader flex-column justify-content-center align-items-center">
+    {% if adminlte.logo_img %}
+        <img class="animation__shake" src="{% static adminlte.logo_img %}" alt="{{ adminlte.logo_img_alt }}" height="60" width="60">
+    {% endif %}
+</div>

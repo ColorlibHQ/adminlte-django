@@ -1,0 +1,41 @@
+{% load i18n %}{% if item.header %}
+    <li class="nav-header">{{ item.header }}</li>
+{% elif item.submenu %}
+    <li class="nav-item {% if item.active %}menu-open{% endif %}">
+        <a href="#" class="nav-link {% if item.active %}active{% endif %}">
+            {% if item.icon %}
+                <i class="nav-icon {{ item.icon }}{% if item.icon_color %} text-{{ item.icon_color }}{% endif %}"></i>
+            {% endif %}
+            <p>
+                {{ item.text }}
+                <i class="nav-arrow bi bi-chevron-right"></i>
+                {% if item.label %}
+                    <span class="nav-badge badge text-bg-{{ item.label_color|default:'primary' }} me-3">{{ item.label }}</span>
+                {% endif %}
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            {% for child in item.submenu %}
+                {% include "adminlte/partials/menu-item.html" with item=child %}
+            {% endfor %}
+        </ul>
+    </li>
+{% else %}
+    <li class="nav-item">
+        <a href="{{ item.href|default:'#' }}"
+           class="nav-link {% if item.active %}active{% endif %}"
+           {% if item.target %}target="{{ item.target }}" rel="noopener"{% endif %}>
+            {% if item.icon %}
+                <i class="nav-icon {{ item.icon }}{% if item.icon_color %} text-{{ item.icon_color }}{% endif %}"></i>
+            {% else %}
+                <i class="nav-icon bi bi-circle"></i>
+            {% endif %}
+            <p>
+                {{ item.text }}
+                {% if item.label %}
+                    <span class="nav-badge badge text-bg-{{ item.label_color|default:'primary' }} me-3">{{ item.label }}</span>
+                {% endif %}
+            </p>
+        </a>
+    </li>
+{% endif %}

@@ -1,0 +1,10 @@
+<nav aria-label="breadcrumb"{% if extra_class %} class="{{ extra_class }}"{% endif %}>
+    <ol class="breadcrumb mb-0">
+        {% for item in items %}
+            <li class="breadcrumb-item {% if item.active %}active{% endif %}">
+                {% if not item.active and item.url %}<a href="{{ item.url }}">{{ item.label }}</a>{% else %}{{ item.label }}{% endif %}
+            </li>
+        {% endfor %}
+        {% slot "default" default %}{% endslot %}
+    </ol>
+</nav>

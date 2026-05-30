@@ -1,0 +1,90 @@
+{% extends "adminlte/page.html" %}
+{% load static %}
+
+{% block body_class %}layout-fixed sidebar-expand-lg bg-body-tertiary{% endblock %}
+
+{% block page_title %}Layout + Custom Area{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Fixed Layout</li>
+{% endblock %}
+
+{% block content_header %}
+<!--begin::App Content Top Area-->
+<div class="app-content-top-area">
+  <!--begin::Container-->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div>App Content Top Area</div>
+      </div>
+
+      <div class="col-md-6 text-end">
+        <button type="submit" class="btn btn-primary" name="save" value="create">
+          Create Admin
+        </button>
+      </div>
+    </div>
+  </div>
+  <!--end::Container-->
+</div>
+<!--end::App Content Bottom Area-->
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<!--begin::Row-->
+<div class="row">
+  <div class="col-12">
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Title</h3>
+
+        <div class="card-tools">
+          <button
+            type="button"
+            class="btn btn-tool"
+            data-lte-toggle="card-collapse"
+            title="Collapse"
+          >
+            <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+            <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-tool"
+            data-lte-toggle="card-remove"
+            title="Remove"
+          >
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">Start creating your amazing application!</div>
+      <!-- /.card-body -->
+      <div class="card-footer">Footer</div>
+      <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+  </div>
+</div>
+<!--end::Row-->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Inject the bottom area into <main> after app-content
+  (function () {
+    var main = document.querySelector('main.app-main');
+    var appContent = main && main.querySelector('.app-content');
+    if (appContent) {
+      var bottomArea = document.createElement('div');
+      bottomArea.className = 'app-content-bottom-area';
+      bottomArea.innerHTML = '<div class="container-fluid"><div class="row"><div class="col-md-6"><div>App Content Bottom Area</div></div><div class="col-md-6 text-end"><button type="submit" class="btn btn-secondary" name="save" value="create">Refresh</button></div></div></div>';
+      appContent.insertAdjacentElement('afterend', bottomArea);
+    }
+  })();
+</script>
+{% endblock %}

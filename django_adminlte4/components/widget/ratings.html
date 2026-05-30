@@ -1,0 +1,3 @@
+<div class="rating {{ extra_class }}"{{ attrs }}>
+    {% for star in stars %}<i class="bi {% if star.full %}bi-star-fill{% else %}bi-star{% endif %} text-{{ color }}"></i>{% endfor %}
+</div>

@@ -1,0 +1,17 @@
+{% load static i18n django_vite component_tags %}<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}AdminLTE 4 · Django{% endblock %}</title>
+    {% vite_hmr_client %}
+    {% vite_asset 'assets/app.js' %}
+    {% component_css_dependencies %}
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    {% block body %}{% endblock %}
+    {% component_js_dependencies %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

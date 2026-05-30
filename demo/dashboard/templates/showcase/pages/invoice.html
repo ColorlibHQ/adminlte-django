@@ -1,0 +1,131 @@
+{% extends "adminlte/page.html" %}
+{% load static %}
+
+{% block page_title %}Invoice{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Invoice</li>
+{% endblock %}
+
+{% block content %}
+  <!-- Action bar (hidden on print) -->
+  <div class="d-flex justify-content-end gap-2 mb-3 d-print-none">
+    <button class="btn btn-outline-secondary" onclick="window.print()" type="button">
+      <i class="bi bi-printer me-1" aria-hidden="true"></i>Print
+    </button>
+    <a href="#" class="btn btn-outline-secondary">
+      <i class="bi bi-download me-1" aria-hidden="true"></i>PDF
+    </a>
+    <a href="#" class="btn btn-primary">
+      <i class="bi bi-send me-1" aria-hidden="true"></i>Send invoice
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body p-4 p-md-5">
+      <!-- Header -->
+      <div class="row mb-4">
+        <div class="col-sm-6">
+          <h2 class="h4 mb-0 text-primary fw-semibold">AdminLTE, Inc.</h2>
+          <p class="text-secondary mb-0 small">
+            795 Folsom Ave, Suite 600<br />
+            San Francisco, CA 94107<br />
+            billing@example.com
+          </p>
+        </div>
+        <div class="col-sm-6 text-sm-end">
+          <h1 class="h2 mb-1">Invoice</h1>
+          <p class="text-secondary mb-0">
+            <span class="fw-semibold">#</span>INV-2026-00428
+          </p>
+          <span class="badge text-bg-success mt-1">Paid</span>
+        </div>
+      </div>
+
+      <!-- Billing details -->
+      <div class="row mb-4">
+        <div class="col-sm-6">
+          <p class="text-secondary small mb-1">Billed to</p>
+          <p class="mb-0 fw-semibold">Acme Corporation</p>
+          <p class="text-secondary small mb-0">
+            Attn: Jane Doe<br />
+            1234 Market Street<br />
+            San Francisco, CA 94103
+          </p>
+        </div>
+        <div class="col-sm-6 text-sm-end">
+          <p class="text-secondary small mb-1">Issue date</p>
+          <p class="mb-2">May 18, 2026</p>
+          <p class="text-secondary small mb-1">Due date</p>
+          <p class="mb-0">June 1, 2026</p>
+        </div>
+      </div>
+
+      <!-- Items -->
+      <div class="table-responsive mb-3">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th class="border-top-0">Description</th>
+              <th class="border-top-0 text-end" style="width: 6rem">Qty</th>
+              <th class="border-top-0 text-end" style="width: 9rem">Unit price</th>
+              <th class="border-top-0 text-end" style="width: 9rem">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p class="mb-0 fw-semibold">Pro plan subscription</p>
+                <small class="text-secondary">May 18 - Jun 18, 2026</small>
+              </td>
+              <td class="text-end">1</td>
+              <td class="text-end">$29.00</td>
+              <td class="text-end">$29.00</td>
+            </tr>
+            <tr>
+              <td>
+                <p class="mb-0 fw-semibold">Additional seats</p>
+                <small class="text-secondary">Pro-rated for current period</small>
+              </td>
+              <td class="text-end">3</td>
+              <td class="text-end">$12.50</td>
+              <td class="text-end">$37.50</td>
+            </tr>
+            <tr>
+              <td>
+                <p class="mb-0 fw-semibold">SMS notifications add-on</p>
+                <small class="text-secondary">1,000 messages</small>
+              </td>
+              <td class="text-end">1</td>
+              <td class="text-end">$5.00</td>
+              <td class="text-end">$5.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Totals -->
+      <div class="row justify-content-end">
+        <div class="col-md-5 col-lg-4">
+          <dl class="row mb-0">
+            <dt class="col-7 text-secondary fw-normal">Subtotal</dt>
+            <dd class="col-5 text-end mb-2">$71.50</dd>
+            <dt class="col-7 text-secondary fw-normal">Tax (8.25%)</dt>
+            <dd class="col-5 text-end mb-2">$5.90</dd>
+            <dt class="col-7 fw-semibold border-top pt-2">Total due</dt>
+            <dd class="col-5 text-end fw-semibold border-top pt-2 mb-0">$77.40 USD</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Footer note -->
+      <hr class="my-4" />
+      <p class="text-secondary small mb-0">
+        Thanks for your business. Payment is due within 14 days. If you have any questions
+        about this invoice, please contact
+        <a href="mailto:billing@example.com">billing@example.com</a>.
+      </p>
+    </div>
+  </div>
+{% endblock %}

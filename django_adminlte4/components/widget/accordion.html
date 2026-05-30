@@ -1,0 +1,17 @@
+<div class="{{ accordion_class }}" id="{{ parent }}"{{ attrs }}>
+    {% for item in items %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-{{ item.id }}">
+                <button class="accordion-button{% if not item.expanded %} collapsed{% endif %}" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#{{ item.id }}"
+                        aria-expanded="{% if item.expanded %}true{% else %}false{% endif %}" aria-controls="{{ item.id }}">
+                    {{ item.title }}
+                </button>
+            </h2>
+            <div id="{{ item.id }}" class="accordion-collapse collapse{% if item.expanded %} show{% endif %}"
+                 aria-labelledby="heading-{{ item.id }}"{% if not always_open %} data-bs-parent="#{{ parent }}"{% endif %}>
+                <div class="accordion-body">{{ item.content|safe }}</div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

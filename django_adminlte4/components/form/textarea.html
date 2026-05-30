@@ -1,0 +1,5 @@
+<div class="mb-3 {{ fgroup_class }}">
+    {% if label %}<label for="{{ id }}" class="form-label">{{ label }}</label>{% endif %}
+    <textarea name="{{ name }}" id="{{ id }}" rows="{{ rows }}" class="{{ control_class }}"{{ attrs }}>{{ value }}</textarea>
+    {% if has_error %}<div class="invalid-feedback d-block">{{ error_message }}</div>{% endif %}
+</div>

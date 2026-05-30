@@ -1,0 +1,315 @@
+{% extends "adminlte/page.html" %}
+{% load static %}
+
+{% block page_title %}FAQ{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">FAQ</li>
+{% endblock %}
+
+{% block content %}
+  <!-- Headline + search -->
+  <div class="text-center mb-4">
+    <h2 class="mb-2">How can we help?</h2>
+    <p class="text-secondary mb-3">
+      Search our knowledge base, or browse the topics below.
+    </p>
+    <form
+      class="row g-2 justify-content-center"
+      role="search"
+      onsubmit="event.preventDefault()"
+    >
+      <div class="col-md-8 col-lg-6">
+        <div class="input-group input-group-lg">
+          <span class="input-group-text bg-body">
+            <i class="bi bi-search" aria-hidden="true"></i>
+          </span>
+          <input
+            type="search"
+            class="form-control"
+            placeholder="Search the FAQ…"
+            aria-label="Search the FAQ"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <i class="bi bi-rocket-takeoff fs-4 text-primary me-2" aria-hidden="true"></i>
+          <h3 class="card-title mb-0">Getting started</h3>
+        </div>
+        <div class="card-body">
+          <div class="accordion accordion-flush" id="faq-0">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-0-0"
+                  aria-expanded="false"
+                  aria-controls="faq-0-0"
+                >
+                  How do I create an account?
+                </button>
+              </h2>
+              <div
+                id="faq-0-0"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-0"
+              >
+                <div class="accordion-body text-secondary">
+                  Click <strong>Sign up</strong> in the top-right corner, enter your email
+                  and a strong password, then verify your email to activate your
+                  workspace.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-0-1"
+                  aria-expanded="false"
+                  aria-controls="faq-0-1"
+                >
+                  Can I try the product before paying?
+                </button>
+              </h2>
+              <div
+                id="faq-0-1"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-0"
+              >
+                <div class="accordion-body text-secondary">
+                  Yes. Every paid plan includes a 14-day free trial. No credit card is
+                  required to start.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-0-2"
+                  aria-expanded="false"
+                  aria-controls="faq-0-2"
+                >
+                  How do I invite teammates?
+                </button>
+              </h2>
+              <div
+                id="faq-0-2"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-0"
+              >
+                <div class="accordion-body text-secondary">
+                  From <strong>Settings &rarr; Team</strong>, click
+                  <strong>Invite member</strong> and enter their email. They&rsquo;ll
+                  receive an invitation link valid for seven days.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <i class="bi bi-credit-card fs-4 text-primary me-2" aria-hidden="true"></i>
+          <h3 class="card-title mb-0">Billing &amp; plans</h3>
+        </div>
+        <div class="card-body">
+          <div class="accordion accordion-flush" id="faq-1">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-1-0"
+                  aria-expanded="false"
+                  aria-controls="faq-1-0"
+                >
+                  Which payment methods do you accept?
+                </button>
+              </h2>
+              <div
+                id="faq-1-0"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-1"
+              >
+                <div class="accordion-body text-secondary">
+                  We accept all major credit and debit cards. Annual Enterprise plans can
+                  be paid by invoice.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-1-1"
+                  aria-expanded="false"
+                  aria-controls="faq-1-1"
+                >
+                  Can I change my plan later?
+                </button>
+              </h2>
+              <div
+                id="faq-1-1"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-1"
+              >
+                <div class="accordion-body text-secondary">
+                  Yes. Upgrades take effect immediately and are pro-rated. Downgrades take
+                  effect at the end of the current billing cycle.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-1-2"
+                  aria-expanded="false"
+                  aria-controls="faq-1-2"
+                >
+                  Do you offer refunds?
+                </button>
+              </h2>
+              <div
+                id="faq-1-2"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-1"
+              >
+                <div class="accordion-body text-secondary">
+                  We offer a full refund within 30 days of your first paid invoice, no
+                  questions asked.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <i class="bi bi-shield-lock fs-4 text-primary me-2" aria-hidden="true"></i>
+          <h3 class="card-title mb-0">Security &amp; privacy</h3>
+        </div>
+        <div class="card-body">
+          <div class="accordion accordion-flush" id="faq-2">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-2-0"
+                  aria-expanded="false"
+                  aria-controls="faq-2-0"
+                >
+                  Where is my data stored?
+                </button>
+              </h2>
+              <div
+                id="faq-2-0"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-2"
+              >
+                <div class="accordion-body text-secondary">
+                  Data is stored in encrypted form in SOC 2-certified data centers. You
+                  can choose your region (US or EU) when you set up your workspace.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-2-1"
+                  aria-expanded="false"
+                  aria-controls="faq-2-1"
+                >
+                  Do you support SSO?
+                </button>
+              </h2>
+              <div
+                id="faq-2-1"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-2"
+              >
+                <div class="accordion-body text-secondary">
+                  Yes, on the Enterprise plan. We support SAML 2.0 and OIDC with providers
+                  including Okta, Azure AD, and Google Workspace.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-2-2"
+                  aria-expanded="false"
+                  aria-controls="faq-2-2"
+                >
+                  How can I export or delete my data?
+                </button>
+              </h2>
+              <div
+                id="faq-2-2"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faq-2"
+              >
+                <div class="accordion-body text-secondary">
+                  You can export your data at any time from
+                  <strong>Settings &rarr; Data</strong>. Deletion requests are honored
+                  within 30 days per our DPA.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Still need help? -->
+  <div class="card mt-4">
+    <div class="card-body text-center py-4">
+      <i
+        class="bi bi-chat-dots text-primary"
+        style="font-size: 2.5rem"
+        aria-hidden="true"
+      ></i>
+      <h3 class="h5 mt-3 mb-2">Still need help?</h3>
+      <p class="text-secondary mb-3">
+        Can&rsquo;t find what you&rsquo;re looking for? Our support team is happy to help.
+      </p>
+      <a href="mailto:support@example.com" class="btn btn-primary">
+        <i class="bi bi-envelope me-1" aria-hidden="true"></i>
+        Contact support
+      </a>
+    </div>
+  </div>
+{% endblock %}

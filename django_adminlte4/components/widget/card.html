@@ -1,0 +1,40 @@
+<div class="{{ card_class }}"{{ attrs }}>
+    {% if title or has_tools or has_tools_slot %}
+        <div class="card-header {{ header_class }}">
+            {% if title %}
+                <div class="card-title">
+                    {% if icon %}<i class="{{ icon }} me-1"></i>{% endif %}{{ title }}
+                </div>
+            {% endif %}
+            <div class="card-tools ms-auto">
+                {% slot "tools" %}{% endslot %}
+                {% if collapsible %}
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" aria-label="Collapse">
+                        <i data-lte-icon="expand" class="bi {% if collapsed %}bi-plus-lg{% else %}bi-dash-lg{% endif %}"></i>
+                        <i data-lte-icon="collapse" class="bi {% if collapsed %}bi-dash-lg{% else %}bi-plus-lg{% endif %}"></i>
+                    </button>
+                {% endif %}
+                {% if maximizable %}
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-maximize" aria-label="Maximize">
+                        <i class="bi bi-arrows-fullscreen"></i>
+                    </button>
+                {% endif %}
+                {% if removable %}
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-remove" aria-label="Remove">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="card-body {{ body_class }}">
+        {% slot "default" default %}{% endslot %}
+    </div>
+
+    {% if has_footer_slot %}
+        <div class="card-footer {{ footer_class }}">
+            {% slot "footer" %}{% endslot %}
+        </div>
+    {% endif %}
+</div>

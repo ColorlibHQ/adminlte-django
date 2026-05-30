@@ -1,0 +1,43 @@
+// Demo styles. Default to the prebuilt AdminLTE CSS (works out of the box).
+// To customize via SCSS, see django_adminlte4/frontend/app.scss.stub.
+@import "admin-lte/dist/css/adminlte.css";
+
+// Keep plugin widgets inside their cards: allow shrinking in flex/grid
+// contexts and never let the rendered canvas exceed the container width.
+[data-apexchart],
+[data-jsvectormap] {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.card-body { min-width: 0; }
+.apexcharts-canvas { max-width: 100% !important; }
+
+// Keep the sidebar "View documentation" CTA usable when the sidebar collapses
+// to its icon-only mini rail (~4.6rem). The labelled, full-width button can't
+// fit, so mirror AdminLTE's nav items: show only the centered book icon when
+// collapsed, then restore the label when the sidebar expands again on hover.
+// Selectors match AdminLTE's own collapse hooks for this build.
+.sidebar-docs-cta .btn {
+  width: 100%; // replaces the removed `w-100` utility (expanded state)
+}
+.sidebar-docs-cta__text {
+  white-space: nowrap;
+}
+.sidebar-mini.sidebar-collapse {
+  .sidebar-docs-cta .btn {
+    width: fit-content;
+    margin-inline: auto;
+  }
+  .sidebar-docs-cta__text {
+    display: none;
+  }
+}
+.sidebar-mini.sidebar-collapse:not(.sidebar-without-hover) .app-sidebar:hover {
+  .sidebar-docs-cta .btn {
+    width: 100%;
+  }
+  .sidebar-docs-cta__text {
+    display: inline;
+  }
+}

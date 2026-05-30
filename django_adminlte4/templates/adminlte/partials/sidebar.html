@@ -1,0 +1,41 @@
+{% load static i18n adminlte %}
+<aside class="app-sidebar {{ adminlte.classes_sidebar }}"{% if adminlte.sidebar_theme == 'dark' %} data-bs-theme="dark"{% endif %}>
+    {# Brand #}
+    <div class="sidebar-brand {{ adminlte.classes_brand }}">
+        <a href="/" class="brand-link">
+            {% if adminlte.logo_img %}
+                <img src="{% static adminlte.logo_img %}"
+                     alt="{{ adminlte.logo_img_alt }}"
+                     class="{{ adminlte.logo_img_class }}">
+            {% endif %}
+            <span class="brand-text {{ adminlte.classes_brand_text }}">{{ adminlte.logo_alt_text|default:"AdminLTE 4" }}</span>
+        </a>
+    </div>
+
+    {# Menu #}
+    <div class="sidebar-wrapper">
+        <nav class="mt-2" aria-label="{% trans 'Main navigation' %}">
+            <ul class="nav sidebar-menu flex-column {{ adminlte.classes_sidebar_nav }}"
+                data-lte-toggle="treeview"
+                data-accordion="false"
+                role="menu"
+                id="navigation">
+                {% for item in adminlte_menu_sidebar %}
+                    {% include "adminlte/partials/menu-item.html" with item=item %}
+                {% endfor %}
+            </ul>
+
+            {% if adminlte.sidebar_docs_url %}
+                <div class="sidebar-docs-cta mt-3 border-top border-secondary border-opacity-25 p-3">
+                    <a href="{{ adminlte.sidebar_docs_url }}"
+                       class="btn btn-sm btn-outline-light d-flex align-items-center justify-content-center gap-2"
+                       target="_blank" rel="noopener"
+                       title="{% trans 'View documentation' %}">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                        <span class="sidebar-docs-cta__text">{% trans 'View documentation' %}</span>
+                    </a>
+                </div>
+            {% endif %}
+        </nav>
+    </div>
+</aside>

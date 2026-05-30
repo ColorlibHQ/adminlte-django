@@ -1,0 +1,15 @@
+<div class="mb-3 {{ fgroup_class }}">
+    {% if label %}<label for="{{ id }}" class="form-label">{{ label }}</label>{% endif %}
+
+    {% if has_prepend or has_append %}
+        <div class="input-group {% if igroup_size %}input-group-{{ igroup_size }}{% endif %}">
+            {% if has_prepend %}<span class="input-group-text">{% slot "prepend" %}{% endslot %}</span>{% endif %}
+    {% endif %}
+
+    <input type="{{ type }}" name="{{ name }}" id="{{ id }}" value="{{ value }}" class="{{ control_class }}"{{ attrs }}>
+
+    {% if has_append %}<span class="input-group-text">{% slot "append" %}{% endslot %}</span>{% endif %}
+    {% if has_prepend or has_append %}</div>{% endif %}
+
+    {% if has_error %}<div class="invalid-feedback d-block">{{ error_message }}</div>{% endif %}
+</div>

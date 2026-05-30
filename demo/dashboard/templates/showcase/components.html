@@ -1,0 +1,118 @@
+{% extends "adminlte/page.html" %}
+{% load static %}
+
+{% block page_title %}Components{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active">Components</li>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+    <div class="col-lg-6">
+        {% component "adminlte_card" title="Chart (ApexCharts)" icon="bi bi-graph-up" theme="primary" outline=True %}
+            {% fill "default" %}
+                {% component "adminlte_chart" type="area" series=chart_series categories=chart_categories height="260px" %}{% endcomponent %}
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+    <div class="col-lg-6">
+        {% component "adminlte_card" title="Vector Map (jsVectorMap)" icon="bi bi-globe" theme="success" outline=True %}
+            {% fill "default" %}
+                {% component "adminlte_vector_map" map="world" height="260px" %}{% endcomponent %}
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+    <div class="col-lg-7">
+        {% component "adminlte_card" title="Data Table (Tabulator)" icon="bi bi-table" theme="info" outline=True %}
+            {% fill "default" %}
+                {% component "adminlte_datatable" columns=dt_columns data=dt_data options=dt_options %}{% endcomponent %}
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+    <div class="col-lg-5">
+        {% component "adminlte_card" title="Tabs" icon="bi bi-segmented-nav" theme="warning" outline=True %}
+            {% fill "default" %}
+                {% component "adminlte_tabs" items=tabs variant="tabs" %}{% endcomponent %}
+            {% endfill %}
+        {% endcomponent %}
+
+        {% component "adminlte_card" title="Accordion" icon="bi bi-list-nested" theme="secondary" outline=True %}
+            {% fill "default" %}
+                {% component "adminlte_accordion" items=accordion %}{% endcomponent %}
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+    <div class="col-lg-7">
+        {% component "adminlte_card" title="Rich Text Editor (Quill)" icon="bi bi-pencil" theme="primary" outline=True %}
+            {% fill "default" %}
+                <form>
+                    {% component "adminlte_editor" name="body" label="Article body" value="<p>Edit me — synced to a hidden input.</p>" %}{% endcomponent %}
+                </form>
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+    <div class="col-lg-5">
+        {% component "adminlte_direct_chat" title="Direct Chat" items=chat theme="primary" %}
+            {% fill "default" %}
+                <h4 class="direct-chat-contacts-list-header">Contacts</h4>
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+    <div class="col-lg-6">
+        {% component "adminlte_card" title="Sortable (SortableJS)" icon="bi bi-arrows-move" theme="success" outline=True %}
+            {% fill "default" %}
+                <p class="text-body-secondary small">Drag to reorder:</p>
+                {% component "adminlte_sortable" tag="ul" class="list-group" %}
+                    {% fill "default" %}
+                        <li class="list-group-item">Item one</li>
+                        <li class="list-group-item">Item two</li>
+                        <li class="list-group-item">Item three</li>
+                        <li class="list-group-item">Item four</li>
+                    {% endfill %}
+                {% endcomponent %}
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+    <div class="col-lg-6">
+        {% component "adminlte_card" title="Modal & Toast" icon="bi bi-window-stack" theme="danger" outline=True %}
+            {% fill "default" %}
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#demoModal">Launch modal</button>
+                <button type="button" class="btn btn-success" id="toastBtn">Show toast</button>
+
+                {% component "adminlte_modal" id="demoModal" title="Hello from AdminLTE" size="lg" centered=True %}
+                    {% fill "default" %}<p>This modal is the <code>adminlte_modal</code> component.</p>{% endfill %}
+                    {% fill "footer" %}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    {% endfill %}
+                {% endcomponent %}
+
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    {% component "adminlte_toast" id="demoToast" title="Saved" theme="success" icon="bi bi-check-circle" %}
+                        {% fill "default" %}Your changes have been saved.{% endfill %}
+                    {% endcomponent %}
+                </div>
+            {% endfill %}
+        {% endcomponent %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.getElementById("toastBtn")?.addEventListener("click", () => {
+    const el = document.getElementById("demoToast");
+    if (el && window.bootstrap) bootstrap.Toast.getOrCreateInstance(el).show();
+  });
+</script>
+{% endblock %}

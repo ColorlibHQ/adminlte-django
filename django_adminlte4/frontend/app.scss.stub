@@ -1,0 +1,12 @@
+// AdminLTE 4 styles.
+//
+// --- Option A (default): use the prebuilt CSS. Works out of the box. ---
+@import "admin-lte/dist/css/adminlte.css";
+
+// --- Option B: compile AdminLTE from SCSS to customize variables. ---
+// Comment out Option A above and uncomment below. Override Bootstrap/AdminLTE
+// variables *before* the @use. Requires `sass` (already a dev dependency) and
+// resolving `admin-lte`/`bootstrap` from node_modules (Vite handles this).
+//
+// $primary: #6610f2;
+// @use "admin-lte/src/scss/adminlte" with ($primary: $primary);
