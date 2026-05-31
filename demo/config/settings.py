@@ -8,6 +8,9 @@ SECRET_KEY = "django-insecure-demo-key-change-me"
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
+# Demo: print password-reset emails to the console instead of sending them.
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 INSTALLED_APPS = [
     "django_components",
     # django_adminlte4 must precede django.contrib.admin so its admin/* template

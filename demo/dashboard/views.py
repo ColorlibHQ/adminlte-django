@@ -1,4 +1,25 @@
+from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import render
+
+
+def native_demo(request):
+    """Phase 2 showcase: Django messages -> AdminLTE alerts + the pagination partial."""
+    rows = [
+        {"id": i, "name": f"Record {i:03d}", "status": ["Active", "Pending", "Disabled"][i % 3]}
+        for i in range(1, 48)
+    ]
+    page_obj = Paginator(rows, 10).get_page(request.GET.get("page"))
+    level = request.GET.get("notify")
+    if level == "success":
+        messages.success(request, "Saved! This alert is rendered by the AdminLTE messages partial.")
+    elif level == "warning":
+        messages.warning(request, "Heads up — this is a warning message.")
+    elif level == "error":
+        messages.error(request, "Something went wrong (error → Bootstrap 'danger').")
+    elif level == "info":
+        messages.info(request, "Just so you know — an informational message.")
+    return render(request, "showcase/native/messages-pagination.html", {"page_obj": page_obj})
 
 
 def make_page_view(template_name):

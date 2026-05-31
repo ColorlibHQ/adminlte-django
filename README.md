@@ -236,6 +236,28 @@ ADMINLTE = {"assets_mode": "static"}   # default "vite"
 Bootstrap Icons + OverlayScrollbars + color-mode/init). With `"static"`,
 `django-vite` is not imported at all.
 
+## Messages, pagination & auth
+
+**Messages** — Django's messages framework is rendered as dismissible AdminLTE
+alerts automatically (included in the base layout). Levels map to Bootstrap
+classes with an icon, and `error` → `danger`, so no `MESSAGE_TAGS` config is
+required. Override the `{% block messages %}` to customise.
+
+**Pagination** — a reusable partial for any Django `Paginator` page that
+preserves the current query string (filters/sort):
+
+```django
+{% include "adminlte/partials/pagination.html" with page_obj=page_obj %}
+```
+
+**Auth** — themed `registration/` templates ship for Django's built-in auth
+views, so the full login / logout / **password change + reset** flow works on
+the AdminLTE auth card out of the box — just wire the URLs:
+
+```python
+path("", include("django.contrib.auth.urls")),
+```
+
 ## Management commands
 
 | Command | Purpose |

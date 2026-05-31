@@ -67,10 +67,11 @@ Vite stubs (`adminlte_install`) for customisers.
   - [x] Ship pre-built package assets (CSS/JS in `static/adminlte/dist/`), Node optional via `ADMINLTE["assets_mode"]="static"`
   - [x] Theme `django.contrib.admin` reusing the menu builder (base.html chrome + base_site + login; sidebar auto-built from the admin app list)
   - [ ] _Follow-up:_ Bootstrap-native admin `change_list` / `change_form` content (native admin content currently renders inside the AdminLTE shell)
-- **Phase 2 — native forms & flows**
-  - [ ] `adminlte` crispy template pack
-  - [ ] full `registration/` auth templates (incl. password reset)
-  - [ ] messages partial + `MESSAGE_TAGS`; pagination partial
+- **Phase 2 — native forms & flows** _(in progress)_
+  - [x] messages partial (Django messages → AdminLTE alerts, level→class+icon) wired into the layout
+  - [x] reusable pagination partial from `page_obj` (preserves query string)
+  - [x] full `registration/` auth templates (login, logout, password change + reset flow) on the auth shell
+  - [ ] `adminlte` crispy template pack (needs optional `crispy-bootstrap5` dep)
 - **Phase 3 — native data UI**
   - [ ] django-tables2 `adminlte.html` + django-filter styling
   - [ ] real CRUD demo app proving the whole stack
