@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     "django_vite",
     "django_tables2",
     "django_filters",
+    "crispy_forms",
+    "crispy_bootstrap5",
     "dashboard",
     "accounts",
     "crud",
@@ -126,6 +128,10 @@ LOGOUT_REDIRECT_URL = "login"
 
 # Theme every django-tables2 table with the AdminLTE card wrapper.
 DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html"
+
+# crispy-forms: AdminLTE 4 is Bootstrap 5, so render with the bootstrap5 pack.
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

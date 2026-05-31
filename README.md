@@ -258,6 +258,27 @@ the AdminLTE auth card out of the box — just wire the URLs:
 path("", include("django.contrib.auth.urls")),
 ```
 
+## Forms (crispy-forms)
+
+For one-line whole-form rendering of any Django form/`ModelForm`, install the
+`[crispy]` extra and use the Bootstrap 5 pack (AdminLTE 4 *is* Bootstrap 5, so
+it renders natively — no custom pack needed):
+
+```python
+INSTALLED_APPS += ["crispy_forms", "crispy_bootstrap5"]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+```
+
+```django
+{% load crispy_forms_tags %}
+{% crispy form %}      {# renders the <form>, fields, csrf and buttons #}
+```
+
+Drive the layout/buttons from a `FormHelper` on the form (see the demo's
+`crud/forms.py`). Prefer the bespoke `adminlte_input`/`adminlte_select`
+components when you want to hand-author a designed form instead.
+
 ## Tables & filters (CRUD)
 
 For server-rendered data tables, install the `[tables]` extra
