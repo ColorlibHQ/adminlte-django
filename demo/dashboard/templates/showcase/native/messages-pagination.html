@@ -1,0 +1,53 @@
+{% extends "adminlte/page.html" %}
+{% load i18n %}
+
+{% block page_title %}Messages + Pagination{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Messages + Pagination</li>
+{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-12">
+    <div class="card card-primary card-outline">
+      <div class="card-header"><div class="card-title">Django messages → AdminLTE alerts</div></div>
+      <div class="card-body">
+        <p class="text-secondary">Flash a Django message — rendered by <code>adminlte/partials/messages.html</code> at the top of the content area (level → Bootstrap class, with an icon):</p>
+        <div class="btn-group">
+          <a href="?notify=success" class="btn btn-success"><i class="bi bi-check-circle-fill me-1"></i>Success</a>
+          <a href="?notify=info" class="btn btn-info"><i class="bi bi-info-circle-fill me-1"></i>Info</a>
+          <a href="?notify=warning" class="btn btn-warning"><i class="bi bi-exclamation-triangle-fill me-1"></i>Warning</a>
+          <a href="?notify=error" class="btn btn-danger"><i class="bi bi-x-octagon-fill me-1"></i>Error</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Paginated table — Django <code>Paginator</code></div></div>
+      <div class="card-body p-0">
+        <table class="table table-striped table-hover mb-0 align-middle">
+          <thead><tr><th style="width:6rem">#</th><th>Name</th><th style="width:9rem">Status</th></tr></thead>
+          <tbody>
+            {% for row in page_obj %}
+              <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.name }}</td>
+                <td><span class="badge text-bg-{% if row.status == 'Active' %}success{% elif row.status == 'Pending' %}warning{% else %}secondary{% endif %}">{{ row.status }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <small class="text-secondary">
+          {% blocktranslate with start=page_obj.start_index end=page_obj.end_index total=page_obj.paginator.count %}{{ start }}–{{ end }} of {{ total }}{% endblocktranslate %}
+        </small>
+        {% include "adminlte/partials/pagination.html" with page_obj=page_obj align="end" %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

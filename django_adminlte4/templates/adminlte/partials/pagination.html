@@ -1,0 +1,31 @@
+{% load i18n %}
+{# Reusable pagination from a Django Paginator `page_obj`. Preserves the current
+   query string (filters/sort) via the built-in {% querystring %} tag, so it
+   needs `request` in context. Usage:
+     {% include "adminlte/partials/pagination.html" with page_obj=page_obj %}
+   Optional: `align` ("center" default | "start" | "end"). Shows a ±2 window. #}
+{% if page_obj.paginator.num_pages > 1 %}
+<nav aria-label="{% translate 'Pagination' %}">
+  <ul class="pagination justify-content-{{ align|default:'center' }} mb-0">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="{% querystring request.GET page=page_obj.previous_page_number %}" aria-label="{% translate 'Previous' %}">&laquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link" aria-hidden="true">&laquo;</span></li>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+      {% elif num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+        <li class="page-item"><a class="page-link" href="{% querystring request.GET page=num %}">{{ num }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="{% querystring request.GET page=page_obj.next_page_number %}" aria-label="{% translate 'Next' %}">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link" aria-hidden="true">&raquo;</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

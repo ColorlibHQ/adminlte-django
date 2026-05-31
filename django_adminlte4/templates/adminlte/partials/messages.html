@@ -1,0 +1,15 @@
+{% load i18n adminlte %}
+{# Django messages framework -> dismissible AdminLTE/Bootstrap alerts.
+   Level→class mapping is done in the filter, so it works regardless of the
+   project's MESSAGE_TAGS (error is mapped to Bootstrap's "danger"). #}
+{% if messages %}
+<div class="adminlte-messages">
+  {% for message in messages %}
+    <div class="alert alert-{{ message|adminlte_alert_class }} alert-dismissible fade show d-flex align-items-center" role="alert">
+      <i class="{{ message|adminlte_alert_icon }} flex-shrink-0 me-2" aria-hidden="true"></i>
+      <div>{{ message }}</div>
+      <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="{% trans 'Close' %}"></button>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
