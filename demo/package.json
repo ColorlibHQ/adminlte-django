@@ -11,15 +11,20 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/list": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
+    "@popperjs/core": "^2.11.8",
     "admin-lte": "^4.0.0",
+    "apexcharts": "^3.54.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
-    "overlayscrollbars": "^2.11.0",
-    "@popperjs/core": "^2.11.8",
-    "apexcharts": "^3.54.0",
     "jsvectormap": "^1.6.0",
-    "tabulator-tables": "^6.3.0",
+    "overlayscrollbars": "^2.11.0",
     "quill": "^2.0.0",
-    "sortablejs": "^1.15.0"
+    "sortablejs": "^1.15.0",
+    "tabulator-tables": "^6.3.0"
   }
 }

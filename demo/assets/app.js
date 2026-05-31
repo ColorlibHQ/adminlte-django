@@ -27,6 +27,21 @@ import "quill/dist/quill.snow.css";
 window.Quill = Quill;
 import Sortable from "sortablejs";
 window.Sortable = Sortable;
+// FullCalendar 6 (self-hosted; CSS is injected by the JS). Expose a global that
+// mirrors the CDN bundle's API — a Calendar with the standard plugins baked in —
+// so pages can `new FullCalendar.Calendar(el, {...})` / `new FullCalendar.Draggable(...)`.
+import { Calendar as FullCalendarBase } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
+import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
+const FC_PLUGINS = [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin];
+class Calendar extends FullCalendarBase {
+  constructor(el, options = {}) {
+    super(el, { plugins: [...FC_PLUGINS, ...(options.plugins || [])], ...options });
+  }
+}
+window.FullCalendar = { Calendar, Draggable, dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin };
 
 // --- AdminLTE Tool component initializer (data-attr -> widget) ---
 const parseCfg = (j) => { try { return JSON.parse(j || "{}"); } catch { return {}; } };

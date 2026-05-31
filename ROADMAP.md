@@ -76,6 +76,7 @@ Vite stubs (`adminlte_install`) for customisers.
   - [x] django-tables2 `adminlte.html` theme (card wrapper + footer pagination) + `[tables]` extra
   - [x] django-filter styled inline filter form (Bootstrap widgets)
   - [x] real CRUD demo app (`crud`): Contact model, tables2 list + filter, ModelForm create/update, delete confirm, `LoginRequiredMixin` + success messages; registered in the themed admin too
-- **Phase 4 — fidelity & polish**
-  - [ ] FullCalendar + Kanban drag-drop
+- **Phase 4 — fidelity & polish** _(in progress)_
+  - [x] FullCalendar bundled via Vite (self-hosted); Kanban drag-drop confirmed working
+  - [x] Demo fully self-hosted — removed all CDN `<script>` tags (charts/maps/tables/calendar/kanban now load from the bundle); dashboards' inline init wrapped in `DOMContentLoaded` so it runs after the module bundle sets the globals
   - [ ] allauth theme; `.po` files; auto-breadcrumbs
