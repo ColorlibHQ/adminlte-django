@@ -37,6 +37,12 @@ test = [
     "pytest>=8.0",
     "pytest-django>=4.8",
 ]
+# Native data UI: server-side sortable/paginated tables + filter forms,
+# themed for AdminLTE (DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html").
+tables = [
+    "django-tables2>=2.7",
+    "django-filter>=24.0",
+]
 
 [project.urls]
 Homepage = "https://adminlte.io"

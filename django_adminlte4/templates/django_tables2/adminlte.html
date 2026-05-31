@@ -1,0 +1,17 @@
+{% extends "django_tables2/bootstrap5.html" %}
+{# AdminLTE 4 theme for django-tables2: wrap the table in a card and put the
+   pagination in the card footer. Set DJANGO_TABLES2_TEMPLATE to use it, or per
+   table via Meta.template_name = "django_tables2/adminlte.html". Give the table
+   nice classes with Meta.attrs = {"class": "table table-striped table-hover ..."}. #}
+{% block table-wrapper %}
+<div class="card">
+  <div class="card-body p-0 table-responsive">
+    {% block table %}{{ block.super }}{% endblock %}
+  </div>
+  {% if table.page and table.paginator.num_pages > 1 %}
+  <div class="card-footer">
+    {% block pagination %}{{ block.super }}{% endblock %}
+  </div>
+  {% endif %}
+</div>
+{% endblock table-wrapper %}

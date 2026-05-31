@@ -9,6 +9,7 @@ from accounts import urls as accounts_urls
 urlpatterns = [
     # AdminLTE-themed django.contrib.admin (Phase 1 — Django-native).
     path("admin/", admin.site.urls),
+    path("contacts/", include("crud.urls")),
     path("", include(accounts_urls)),
     path("", include(dashboard_urls)),
 ]
