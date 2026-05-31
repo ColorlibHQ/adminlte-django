@@ -258,6 +258,22 @@ the AdminLTE auth card out of the box — just wire the URLs:
 path("", include("django.contrib.auth.urls")),
 ```
 
+## Tables & filters (CRUD)
+
+For server-rendered data tables, install the `[tables]` extra
+(`django-tables2` + `django-filter`) and point tables2 at the AdminLTE theme:
+
+```python
+# settings.py
+DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html"
+```
+
+The theme wraps any `tables.Table` in an AdminLTE card with the pagination in
+the card footer — sortable headers, query-string-preserving paging, all native.
+A `SingleTableMixin + FilterView` list view then gets a themed table plus a
+filter form for free. The demo's **Contacts (CRUD)** page shows the full stack
+(list + filter + create/update/delete + success messages) end to end.
+
 ## Management commands
 
 | Command | Purpose |
@@ -271,7 +287,7 @@ path("", include("django.contrib.auth.urls")),
 
 ```bash
 cd demo
-pip install -e ..
+pip install -e "..[tables]"      # the package + django-tables2/django-filter (CRUD demo)
 npm install && npm run dev      # terminal 1
 python manage.py migrate
 python manage.py runserver      # terminal 2

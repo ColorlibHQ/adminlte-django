@@ -1,0 +1,5 @@
+{% load i18n %}
+<div class="btn-group btn-group-sm" role="group">
+  <a href="{% url 'crud:contact_update' record.pk %}" class="btn btn-outline-primary" title="{% trans 'Edit' %}" aria-label="{% trans 'Edit' %}"><i class="bi bi-pencil"></i></a>
+  <a href="{% url 'crud:contact_delete' record.pk %}" class="btn btn-outline-danger" title="{% trans 'Delete' %}" aria-label="{% trans 'Delete' %}"><i class="bi bi-trash"></i></a>
+</div>

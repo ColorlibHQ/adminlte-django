@@ -23,8 +23,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_vite",
+    "django_tables2",
+    "django_filters",
     "dashboard",
     "accounts",
+    "crud",
 ]
 
 MIDDLEWARE = [
@@ -120,6 +123,9 @@ DJANGO_VITE = {
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"
+
+# Theme every django-tables2 table with the AdminLTE card wrapper.
+DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

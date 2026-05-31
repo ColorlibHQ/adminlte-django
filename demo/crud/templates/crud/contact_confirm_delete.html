@@ -1,0 +1,25 @@
+{% extends "adminlte/page.html" %}
+{% load i18n %}
+
+{% block page_title %}{% trans 'Delete contact' %}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'crud:contact_list' %}">{% trans 'Contacts' %}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{% trans 'Delete' %}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card card-danger card-outline">
+      <div class="card-body">
+        <p>{% blocktranslate with name=object.name %}Are you sure you want to delete <strong>{{ name }}</strong>? This cannot be undone.{% endblocktranslate %}</p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>{% trans 'Delete' %}</button>
+          <a href="{% url 'crud:contact_list' %}" class="btn btn-outline-secondary">{% trans 'Cancel' %}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

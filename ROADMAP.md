@@ -72,9 +72,10 @@ Vite stubs (`adminlte_install`) for customisers.
   - [x] reusable pagination partial from `page_obj` (preserves query string)
   - [x] full `registration/` auth templates (login, logout, password change + reset flow) on the auth shell
   - [ ] `adminlte` crispy template pack (needs optional `crispy-bootstrap5` dep)
-- **Phase 3 — native data UI**
-  - [ ] django-tables2 `adminlte.html` + django-filter styling
-  - [ ] real CRUD demo app proving the whole stack
+- **Phase 3 — native data UI** ✅
+  - [x] django-tables2 `adminlte.html` theme (card wrapper + footer pagination) + `[tables]` extra
+  - [x] django-filter styled inline filter form (Bootstrap widgets)
+  - [x] real CRUD demo app (`crud`): Contact model, tables2 list + filter, ModelForm create/update, delete confirm, `LoginRequiredMixin` + success messages; registered in the themed admin too
 - **Phase 4 — fidelity & polish**
   - [ ] FullCalendar + Kanban drag-drop
   - [ ] allauth theme; `.po` files; auto-breadcrumbs
