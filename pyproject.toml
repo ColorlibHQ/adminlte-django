@@ -43,6 +43,12 @@ tables = [
     "django-tables2>=2.7",
     "django-filter>=24.0",
 ]
+# One-line whole-form rendering ({% crispy form %}). AdminLTE 4 is Bootstrap 5,
+# so the crispy-bootstrap5 pack renders natively — no custom pack needed.
+crispy = [
+    "django-crispy-forms>=2.1",
+    "crispy-bootstrap5>=2024.2",
+]
 
 [project.urls]
 Homepage = "https://adminlte.io"

@@ -71,7 +71,7 @@ Vite stubs (`adminlte_install`) for customisers.
   - [x] messages partial (Django messages → AdminLTE alerts, level→class+icon) wired into the layout
   - [x] reusable pagination partial from `page_obj` (preserves query string)
   - [x] full `registration/` auth templates (login, logout, password change + reset flow) on the auth shell
-  - [ ] `adminlte` crispy template pack (needs optional `crispy-bootstrap5` dep)
+  - [x] crispy-forms support via the `[crispy]` extra — `{% crispy form %}` whole-form rendering, demoed on the CRUD form (AdminLTE 4 = Bootstrap 5, so the crispy-bootstrap5 pack renders natively; no redundant custom pack)
 - **Phase 3 — native data UI** ✅
   - [x] django-tables2 `adminlte.html` theme (card wrapper + footer pagination) + `[tables]` extra
   - [x] django-filter styled inline filter form (Bootstrap widgets)

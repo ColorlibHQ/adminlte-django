@@ -40,6 +40,13 @@ class CrudFlowTests(TestCase):
         self.assertIn("alert-success", html)             # messages -> AdminLTE alert
         self.assertIn("created", html)
 
+    def test_form_page_renders_crispy(self):
+        html = self.client.get(reverse("crud:contact_create")).content.decode()
+        self.assertIn('id="id_name"', html)         # field rendered
+        self.assertIn("form-control", html)         # Bootstrap-5 widget classes (crispy)
+        self.assertIn('name="save"', html)          # crispy Submit button
+        self.assertIn("csrfmiddlewaretoken", html)  # crispy emits the <form> + csrf
+
     def test_filter_by_status(self):
         Contact.objects.create(name="Alpha", email="a@e.com", status="active")
         Contact.objects.create(name="Bravo", email="b@e.com", status="disabled")
