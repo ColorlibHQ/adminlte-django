@@ -71,7 +71,7 @@ DEFAULTS: dict[str, Any] = {
     "preloader": False,
     "control_sidebar": False,
     "control_sidebar_theme": "dark",
-    "sidebar_docs_url": "https://adminlte.io/themes/v4/docs/introduction.html",
+    "sidebar_docs_url": "https://django.adminlte.io/docs/",
     # --- Sidebar ---
     "sidebar_breakpoint": "lg",     # sidebar-expand-{breakpoint}
     "sidebar_mini": True,           # .sidebar-mini
