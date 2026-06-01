@@ -8,54 +8,52 @@ version = "0.1.0"
 description = "Official AdminLTE 4 integration for Django — Bootstrap 5.3, vanilla JS, Vite-ready."
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 authors = [{ name = "ColorlibHQ" }]
 keywords = ["django", "adminlte", "bootstrap", "admin", "dashboard", "template"]
 classifiers = [
     "Environment :: Web Environment",
     "Framework :: Django",
-    "Framework :: Django :: 5.0",
-    "Framework :: Django :: 5.1",
-    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
 dependencies = [
-    "Django>=5.0",
-    "django-components>=0.140,<0.151",
-    "django-vite>=3.0,<4.0",
+    "Django>=6.0",
+    "django-components>=0.150,<0.151",
+    "django-vite>=3.1,<4.0",
 ]
 
 [project.optional-dependencies]
 test = [
-    "pytest>=8.0",
-    "pytest-django>=4.8",
+    "pytest>=9.0",
+    "pytest-django>=4.12",
 ]
 # Native data UI: server-side sortable/paginated tables + filter forms,
 # themed for AdminLTE (DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html").
 tables = [
-    "django-tables2>=2.7",
-    "django-filter>=24.0",
+    "django-tables2>=3.0",
+    "django-filter>=25.2",
 ]
 # One-line whole-form rendering ({% crispy form %}). AdminLTE 4 is Bootstrap 5,
 # so the crispy-bootstrap5 pack renders natively — no custom pack needed.
 crispy = [
-    "django-crispy-forms>=2.1",
-    "crispy-bootstrap5>=2024.2",
+    "django-crispy-forms>=2.6",
+    "crispy-bootstrap5>=2026.3",
 ]
 # AdminLTE-themed django-allauth (overrides allauth's layouts + elements).
 allauth = [
-    "django-allauth>=65.0",
+    "django-allauth>=65.18",
 ]
 # Build the documentation site:  pip install -e .[docs]  &&  mkdocs serve
 docs = [
-    "mkdocs-material>=9.5",
+    "mkdocs-material>=9.7",
 ]
 
 [project.urls]

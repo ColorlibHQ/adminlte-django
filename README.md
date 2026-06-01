@@ -1,8 +1,8 @@
 # Django AdminLTE 4
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
-[![Django 5.0+](https://img.shields.io/badge/Django-5.0+-092E20.svg?logo=django&logoColor=white)](https://www.djangoproject.com/)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776ab.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![Django 6.0+](https://img.shields.io/badge/Django-6.0+-092E20.svg?logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12+-3776ab.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Bootstrap 5.3](https://img.shields.io/badge/Bootstrap-5.3-7952b3.svg?logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/5.3/)
 [![Docs](https://img.shields.io/badge/docs-django.adminlte.io-blue.svg)](https://django.adminlte.io/docs/)
 
@@ -64,9 +64,9 @@ mkdocs serve        # http://127.0.0.1:8000  (or: mkdocs build)
 
 ## Requirements
 
-- Python 3.10+
-- Django 5.0+
-- `django-components` 0.140–0.150, `django-vite` 3.x
+- Python 3.12+
+- Django 6.0+
+- `django-components` 0.150, `django-vite` 3.1+
 - Node 18+ (Vite build for the front-end assets)
 
 ## Installation
