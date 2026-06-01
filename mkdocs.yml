@@ -1,4 +1,4 @@
-site_name: django-adminlte4
+site_name: Django AdminLTE 4
 site_description: >-
   Official AdminLTE 4 integration for Django — Bootstrap 5.3, vanilla JS,
   Vite-ready, with a themed admin, components, tables, auth and i18n.
