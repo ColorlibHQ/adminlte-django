@@ -1,15 +1,34 @@
-"""Demo project settings showcasing django-adminlte4."""
+"""Settings for the django-adminlte4 demo / starter project.
+
+Twelve-factor style: secrets and environment-specific values are read from the
+environment. In development, copy ``.env.example`` to ``.env`` (the local file
+is loaded automatically and git-ignored). Defaults are production-safe — set
+``SECRET_KEY``, ``DEBUG``, ``ALLOWED_HOSTS``, ``DATABASE_URL`` and ``EMAIL_URL``
+in the real environment to deploy.
+"""
 
 from pathlib import Path
 
+import environ
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-demo-key-change-me"
-DEBUG = True
-ALLOWED_HOSTS = ["*"]
+env = environ.Env(
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
+    CSRF_TRUSTED_ORIGINS=(list, []),
+)
+# Load a local .env in development; real environment variables take precedence.
+environ.Env.read_env(BASE_DIR / ".env")
 
-# Demo: print password-reset emails to the console instead of sending them.
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+SECRET_KEY = env("SECRET_KEY", default="django-insecure-dev-only-change-me")
+DEBUG = env("DEBUG")
+ALLOWED_HOSTS = ["*"] if DEBUG else env("ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+
+# Email: console backend by default; set EMAIL_URL (e.g.
+# smtp://user:pass@smtp.example.com:587) in the environment for real delivery.
+vars().update(env.email_url("EMAIL_URL", default="consolemail://"))
 
 INSTALLED_APPS = [
     "django_components",
@@ -36,6 +55,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # WhiteNoise serves compressed, hashed static files in production.
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -94,11 +115,10 @@ COMPONENTS = {
     "autodiscover": True,
 }
 
+# SQLite by default; set DATABASE_URL (e.g. postgres://user:pass@host:5432/db)
+# to switch — Postgres-ready (install the `psycopg[binary]` from requirements).
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": env.db_url("DATABASE_URL", default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
 }
 
 AUTH_PASSWORD_VALIDATORS = []
@@ -117,6 +137,30 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "django_components.finders.ComponentsFileSystemFinder",
 ]
+
+# Plain storage in dev (no collectstatic needed); WhiteNoise compressed +
+# manifest storage in production (run `npm run build` then `collectstatic`).
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": (
+            "django.contrib.staticfiles.storage.StaticFilesStorage"
+            if DEBUG
+            else "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        ),
+    },
+}
+
+# --- Production security (applied only when DEBUG is off) ---
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = env.int("SECURE_HSTS_SECONDS", default=31536000)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
 
 DJANGO_VITE = {
     "default": {

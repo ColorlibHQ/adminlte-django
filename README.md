@@ -339,11 +339,30 @@ Pages set `{% block breadcrumb %}` explicitly, or fall back to
 
 ```bash
 cd demo
-pip install -e "..[tables,crispy,allauth]"   # package + extras the demo showcases
-npm install && npm run dev      # terminal 1
+pip install -r requirements.txt   # package + extras + prod deps (env, whitenoise, gunicorn)
+cp .env.example .env              # local dev config (DEBUG=True)
+npm install && npm run dev        # terminal 1 — Vite dev server / HMR
 python manage.py migrate
-python manage.py runserver      # terminal 2
+python manage.py runserver        # terminal 2
 ```
+
+## Deployment
+
+The demo is a twelve-factor **starter**: everything environment-specific is read
+from the environment (a git-ignored `.env` in development — see `.env.example`).
+Defaults are production-safe. To deploy:
+
+```bash
+# Set in the environment: SECRET_KEY, DEBUG=False, ALLOWED_HOSTS,
+# DATABASE_URL=postgres://…  (and optionally EMAIL_URL, CSRF_TRUSTED_ORIGINS)
+npm run build                                  # compile front-end assets (Vite)
+python manage.py collectstatic --noinput       # WhiteNoise: compressed + hashed
+gunicorn config.wsgi                            # WSGI server
+```
+
+`DATABASE_URL` swaps SQLite → PostgreSQL (`psycopg[binary]`), `EMAIL_URL` swaps
+the console backend → SMTP. With `DEBUG=False` the project automatically enables
+HSTS, SSL redirect, secure cookies, and WhiteNoise's manifest static storage.
 
 ## License
 

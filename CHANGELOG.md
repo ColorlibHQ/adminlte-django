@@ -78,6 +78,21 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 - **Self-hosted demo**: every front-end plugin (ApexCharts, jsVectorMap,
   Tabulator, SortableJS, FullCalendar) loads from the Vite bundle — no CDN.
 
+### Added — production starter (demo)
+
+- Twelve-factor settings via `django-environ`: `SECRET_KEY`, `DEBUG`,
+  `ALLOWED_HOSTS`, `DATABASE_URL`, `EMAIL_URL`, `CSRF_TRUSTED_ORIGINS` from the
+  environment, with a git-ignored `.env` (see `.env.example`).
+- SQLite by default, **PostgreSQL-ready** via `DATABASE_URL`; console email by
+  default, SMTP via `EMAIL_URL`.
+- **WhiteNoise** compressed + manifest static storage in production (plain
+  storage in dev); production security hardening (HSTS, SSL redirect, secure
+  cookies, nosniff) auto-enabled when `DEBUG=False`.
+- `demo/requirements.txt` (package + extras + `django-environ`/`whitenoise`/
+  `gunicorn`) and a deployment section in the README.
+- Stripped `sourceMappingURL` comments from the shipped `static/adminlte/dist`
+  bundle so `collectstatic` with manifest storage succeeds without `.map` files.
+
 ### Still deferred
 
 - Additional locales beyond English + Spanish (the extraction structure ships;
