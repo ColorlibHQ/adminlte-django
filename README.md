@@ -1,11 +1,48 @@
 # Django AdminLTE 4
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
+[![Django 5.0+](https://img.shields.io/badge/Django-5.0+-092E20.svg?logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776ab.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![Bootstrap 5.3](https://img.shields.io/badge/Bootstrap-5.3-7952b3.svg?logo=bootstrap&logoColor=white)](https://getbootstrap.com/docs/5.3/)
+[![Docs](https://img.shields.io/badge/docs-django.adminlte.io-blue.svg)](https://django.adminlte.io/docs/)
+
 Official **AdminLTE 4** integration for **Django** — Bootstrap 5.3, vanilla JS,
-Vite-ready. The Django sibling of
-[`adminlte-laravel`](https://github.com/ColorlibHQ/adminlte-laravel) and the
-React/Next.js port: a config-driven sidebar menu with a filter pipeline, an
-AdminLTE 4 base layout, and a set of [django-components](https://github.com/django-components/django-components)
-for the Form and Widget families.
+Vite-ready. A config-driven sidebar menu with a per-request filter pipeline, an
+AdminLTE 4 base layout, a library of [django-components](https://github.com/django-components/django-components),
+a themed `django.contrib.admin`, and first-class hooks into Django's own forms,
+tables, auth, messages, pagination and i18n. By [Colorlib](https://colorlib.com).
+
+**Live demo:** [django.adminlte.io](https://django.adminlte.io/) · **Docs:** [django.adminlte.io/docs](https://django.adminlte.io/docs/)
+
+<p align="center">
+  <a href="https://django.adminlte.io/">
+    <img alt="Django AdminLTE 4 dashboard — light theme" src="docs/screenshots/dashboard-light.png" width="49%">
+  </a>
+  <a href="https://django.adminlte.io/">
+    <img alt="Django AdminLTE 4 dashboard — dark theme" src="docs/screenshots/dashboard-dark.png" width="49%">
+  </a>
+</p>
+
+**Available for your stack** — the same AdminLTE 4 dashboard, in the framework you know best:
+
+<p align="center">
+  <a href="https://github.com/ColorlibHQ/adminlte-react"><img height="36" alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-react"><img height="36" alt="Next.js" src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-vue"><img height="36" alt="Vue" src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-vue"><img height="36" alt="Nuxt" src="https://img.shields.io/badge/Nuxt-00DC82?style=for-the-badge&logo=nuxt&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-laravel"><img height="36" alt="Laravel" src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-django"><img height="36" alt="Django" src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white"></a>
+</p>
+
+<p align="center"><sub>
+  Frameworks:
+  <a href="https://github.com/ColorlibHQ/adminlte-react">React</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-react">Next.js</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-vue">Vue</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-vue">Nuxt</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-laravel">Laravel</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-django">Django</a>
+</sub></p>
 
 > **v1 scope:** layout, menu + filter pipeline, auth pages, and the Form +
 > Widget component families. Tool/plugin components (datatable, charts,
@@ -384,6 +421,91 @@ gunicorn config.wsgi                            # WSGI server
 the console backend → SMTP. With `DEBUG=False` the project automatically enables
 HSTS, SSL redirect, secure cookies, and WhiteNoise's manifest static storage.
 
+## Upgrade to a Premium Dashboard
+
+Need advanced features, more pages, and dedicated support? Explore Colorlib's collection of professional admin templates on [DashboardPack](https://dashboardpack.com/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django).
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
+        <img src="docs/screenshots/dashboardpack/apex.png" alt="Apex Dashboard — Next.js admin template with shadcn/ui" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Apex Dashboard</strong></a>
+      <br>
+      <sub>Next.js 16 + React 19 + Tailwind CSS v4 + shadcn/ui. 5 dashboard variants, 20+ app pages, 125+ routes, full CRUD.</sub>
+    </td>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
+        <img src="docs/screenshots/dashboardpack/zenith.png" alt="Zenith — minimal Next.js admin dashboard with shadcn/ui" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Zenith Dashboard</strong></a>
+      <br>
+      <sub>Next.js 16 + React 19 + Tailwind CSS v4 + shadcn/ui. Achromatic design, 50+ pages, 6 dashboards, live theme customizer.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
+        <img src="docs/screenshots/dashboardpack/haze.png" alt="Haze — Nuxt 4 admin dashboard with 92+ pages" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Haze</strong></a>
+      <br>
+      <sub>Nuxt 4 + Nuxt UI v4 + Tailwind CSS v4. 92+ pages, 7 layouts, 5 dashboards, RTL, i18n, mock API layer.</sub>
+    </td>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
+        <img src="docs/screenshots/dashboardpack/tailpanel.png" alt="TailPanel — React and Tailwind CSS admin panel" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>TailPanel</strong></a>
+      <br>
+      <sub>React + TypeScript + Tailwind CSS + Vite. 9 dashboard designs, dark and light themes.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
+        <img src="docs/screenshots/dashboardpack/admindek.png" alt="Admindek — feature-rich Bootstrap 5 dashboard" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Admindek</strong></a>
+      <br>
+      <sub>Bootstrap 5 + vanilla JS. 100+ components, dark/light modes, RTL support, 10 color presets.</sub>
+    </td>
+    <td align="center" width="50%">
+      <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
+        <img src="docs/screenshots/dashboardpack/svelteforge.png" alt="SvelteForge Premium — SvelteKit admin dashboard" width="100%">
+      </a>
+      <br>
+      <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>SvelteForge Premium</strong></a>
+      <br>
+      <sub>SvelteKit + Tailwind CSS v4. 30+ wired-up modules, multi-tenant from row zero, dark/light/system mode.</sub>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <a href="https://dashboardpack.com/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>View All Premium Templates →</strong></a>
+</p>
+
 ## License
 
-MIT
+MIT © [Colorlib](https://colorlib.com)
+
+## Resources
+
+- [Django AdminLTE 4 documentation](https://django.adminlte.io/docs/)
+- [AdminLTE](https://adminlte.io)
+- [Django documentation](https://docs.djangoproject.com/)
+- [Bootstrap 5 documentation](https://getbootstrap.com/docs/5.3/)
+- [Bootstrap Icons](https://icons.getbootstrap.com/)
+
+## Support
+
+For issues, feature requests, or questions:
+- [GitHub Issues](https://github.com/ColorlibHQ/adminlte-django/issues)
+- [GitHub Discussions](https://github.com/ColorlibHQ/adminlte-django/discussions)
