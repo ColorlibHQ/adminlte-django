@@ -177,6 +177,9 @@ DJANGO_VITE = {
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"
+# Public demo: every visitor starts logged out — the session ends when the
+# browser closes, so a shared/bookmarked demo never resumes another visit.
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Theme every django-tables2 table with the AdminLTE card wrapper.
 DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html"

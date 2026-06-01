@@ -1,8 +1,9 @@
 {% load static i18n %}
 {% url 'logout' as logout_url %}
 {% url 'login' as login_url %}
-{% if adminlte.usermenu %}
-    {# Rich user card (mirrors the HTML demo topbar). #}
+{% if adminlte.usermenu and user.is_authenticated %}
+    {# Rich user card (mirrors the HTML demo topbar) — shown only to a signed-in
+       user, so logged-out visitors never see a populated account card. #}
     <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
             <img src="{% static adminlte.usermenu.image %}" class="user-image rounded-circle shadow" alt="{% trans 'User Image' %}">

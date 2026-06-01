@@ -44,7 +44,7 @@ See [Sidebar menu → Topbar dropdowns](menu.md#topbar-dropdowns) for the item s
 
 | Key | Default | Description |
 |---|---|---|
-| `usermenu` | `None` | Rich user card: `{"image","name","description","since","stats"}`. Omit to fall back to a Django-user menu. |
+| `usermenu` | `None` | Rich user card: `{"image","name","description","since","stats"}`. Shown only to **authenticated** users; logged-out visitors get the simple Guest menu with a Sign in link. Omit to fall back to the Django-user menu for everyone. |
 | `usermenu_enabled` | `True` | Show the user menu at all. |
 | `usermenu_header` | `False` | Show the colored header in the simple menu. |
 | `usermenu_header_class` | `"bg-primary"` | Header background class. |

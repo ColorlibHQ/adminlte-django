@@ -403,6 +403,11 @@ The demo ships a small relational schema (`Company → Contact`, `Project ↔ Ta
 a **Contacts** CRUD page and a **Projects** list + detail. Re-run `seed_demo`
 any time to reset the sample data.
 
+Visitors start **logged out** (sessions end at browser close), and the login
+page comes pre-filled with the demo credentials (`admin` / `adminpass`) plus a
+short tour of what each area shows — so a single click signs you in and the
+sign-in-only pages (Contacts, Projects, the Django admin) become explorable.
+
 ## Deployment
 
 The demo is a twelve-factor **starter**: everything environment-specific is read

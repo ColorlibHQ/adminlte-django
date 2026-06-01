@@ -6,7 +6,13 @@ from . import views
 urlpatterns = [
     path(
         "login/",
-        auth_views.LoginView.as_view(template_name="adminlte/auth/login.html"),
+        auth_views.LoginView.as_view(
+            # Demo login page: extends the package auth card, pre-fills the seeded
+            # credentials and explains the demo layout.
+            template_name="accounts/login.html",
+            # Already signed in? Skip the login page and go to the dashboard.
+            redirect_authenticated_user=True,
+        ),
         name="login",
     ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
