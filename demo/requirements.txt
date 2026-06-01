@@ -1,0 +1,14 @@
+# Demo / starter runtime dependencies. Install from the demo/ directory:
+#   pip install -r requirements.txt
+#
+# The AdminLTE 4 theme package (editable) plus the optional integrations the
+# demo showcases (tables2/filter, crispy-forms, allauth):
+-e ..[tables,crispy,allauth]
+
+# Twelve-factor config, production static serving, and a WSGI server:
+django-environ>=0.11
+whitenoise>=6.6
+gunicorn>=22.0
+
+# Uncomment to use PostgreSQL (set DATABASE_URL=postgres://…):
+# psycopg[binary]>=3.1

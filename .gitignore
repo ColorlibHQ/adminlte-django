@@ -14,6 +14,9 @@ venv/
 staticfiles/
 db.sqlite3
 
+# Secrets / local env (.env.example is committed)
+.env
+
 # Node / Vite
 node_modules/
 assets/dist/
