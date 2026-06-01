@@ -200,7 +200,7 @@ ADMINLTE = {
     "title": "AdminLTE 4 · Django",
     "logo": "<b>Admin</b>LTE",
     "logo_alt_text": "AdminLTE 4",
-    "sidebar_docs_url": "https://adminlte.io/themes/v4/docs/introduction.html",
+    "sidebar_docs_url": "https://django.adminlte.io/docs/",
     "menu": ADMINLTE_MENU,
     "navbar_messages": NAVBAR_MESSAGES,
     "navbar_notifications": NAVBAR_NOTIFICATIONS,

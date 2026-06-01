@@ -74,7 +74,7 @@ See [Sidebar menu → Topbar dropdowns](menu.md#topbar-dropdowns) for the item s
 | `preloader` | `False` | Show the page preloader. |
 | `control_sidebar` | `False` | Enable the right control sidebar. |
 | `control_sidebar_theme` | `"dark"` | Control-sidebar theme. |
-| `sidebar_docs_url` | AdminLTE docs URL | "View documentation" CTA link in the sidebar. |
+| `sidebar_docs_url` | `https://django.adminlte.io/docs/` | Docs link used by the sidebar "View documentation" CTA **and** the topbar Documentation link. |
 
 ## Sidebar
 
