@@ -295,6 +295,37 @@ A `SingleTableMixin + FilterView` list view then gets a themed table plus a
 filter form for free. The demo's **Contacts (CRUD)** page shows the full stack
 (list + filter + create/update/delete + success messages) end to end.
 
+## django-allauth
+
+Install the `[allauth]` extra to get AdminLTE-themed [django-allauth](https://allauth.org)
+pages. The package overrides allauth's **layouts** (`base` / `entrance` /
+`manage`) and **elements** (fields, field, form, button, alert, headings, panel)
+— so every allauth page (login, signup, password reset, account management)
+renders on the AdminLTE auth card with Bootstrap 5 fields, no per-page work:
+
+```python
+INSTALLED_APPS = [
+    "django_adminlte4",          # before allauth so its template overrides win
+    # ...
+    "allauth", "allauth.account",
+]
+# urls.py:  path("accounts/", include("allauth.urls"))
+```
+
+## Internationalization
+
+Templates use `{% translate %}` / `{% blocktranslate %}` throughout, and the
+package ships a message catalog with a fully-translated **Spanish (`es`)**
+locale (compiled and included in the wheel). Set `USE_I18N = True` and a
+`LANGUAGE_CODE`, or add `LocaleMiddleware`, to translate the UI; run
+`makemessages` to add more locales.
+
+## Breadcrumbs
+
+Pages set `{% block breadcrumb %}` explicitly, or fall back to
+`{% adminlte_breadcrumb %}` — which derives a *Home → …* trail from
+`request.path` automatically (it's the default content of that block).
+
 ## Management commands
 
 | Command | Purpose |
@@ -308,7 +339,7 @@ filter form for free. The demo's **Contacts (CRUD)** page shows the full stack
 
 ```bash
 cd demo
-pip install -e "..[tables]"      # the package + django-tables2/django-filter (CRUD demo)
+pip install -e "..[tables,crispy,allauth]"   # package + extras the demo showcases
 npm install && npm run dev      # terminal 1
 python manage.py migrate
 python manage.py runserver      # terminal 2

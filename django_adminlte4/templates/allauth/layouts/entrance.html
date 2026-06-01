@@ -1,0 +1,16 @@
+{% extends "allauth/layouts/base.html" %}
+{% load i18n adminlte %}
+{# Anonymous auth pages (login / signup / password reset) on the AdminLTE card. #}
+{% block body_class %}login-page bg-body-secondary{% endblock %}
+{% block body %}
+<div class="login-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="/" class="h1 text-decoration-none">{{ adminlte.logo|default:"AdminLTE"|adminlte_safe }}</a>
+        </div>
+        <div class="card-body">
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
+</div>
+{% endblock body %}

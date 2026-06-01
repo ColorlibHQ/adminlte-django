@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     "django_filters",
     "crispy_forms",
     "crispy_bootstrap5",
+    "allauth",
+    "allauth.account",
     "dashboard",
     "accounts",
     "crud",
@@ -41,6 +43,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 # NOTE: django-components 0.150 injects component JS/CSS automatically via the
 # {% component_js_dependencies %} / {% component_css_dependencies %} tags in the
@@ -132,6 +140,12 @@ DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html"
 # crispy-forms: AdminLTE 4 is Bootstrap 5, so render with the bootstrap5 pack.
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# django-allauth (AdminLTE-themed layouts/elements ship in the package). Mounted
+# at /accounts/ alongside the demo's own auth pages, to showcase the theming.
+ACCOUNT_LOGIN_METHODS = {"username"}
+ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*", "password2*"]
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

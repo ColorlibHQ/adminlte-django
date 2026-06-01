@@ -48,8 +48,38 @@ based on [Keep a Changelog](https://keepachangelog.com/).
   matching element is present. Wired into `app.js.stub` and the demo bundle.
 - Demo "Components (v2)" showcase page exercising all of the above.
 
+### Added — Django-native integration
+
+- **Themed Django admin**: `django.contrib.admin` skinned with the AdminLTE
+  shell; the sidebar is auto-built from the registered apps/models through the
+  same menu builder + filter pipeline (honours per-user view permissions +
+  active state). Configurable via `ADMINLTE["admin_brand"]` / `["admin_menu"]`.
+- **Node-optional assets**: a pre-built bundle ships in `static/adminlte/dist/`;
+  `ADMINLTE["assets_mode"]="static"` serves it with no Vite/npm (django-vite is
+  only imported in `"vite"` mode).
+- **Messages → alerts**: `partials/messages.html` renders the messages framework
+  as dismissible AdminLTE alerts (level → class + icon, error → danger).
+- **Pagination**: reusable `partials/pagination.html` from a `Paginator`
+  `page_obj`, preserving the current query string.
+- **Built-in auth**: AdminLTE-themed `registration/` templates (login, logout,
+  password change + the full password-reset flow) on the auth shell.
+- **django-tables2 / django-filter** (`[tables]` extra): a
+  `django_tables2/adminlte.html` theme (card wrapper + footer pagination) plus a
+  demo `crud` app proving list/filter/create/update/delete end to end.
+- **crispy-forms** (`[crispy]` extra): one-line `{% crispy form %}` whole-form
+  rendering via the crispy-bootstrap5 pack.
+- **django-allauth** (`[allauth]` extra): AdminLTE-themed allauth layouts
+  (`base` / `entrance` / `manage`) and elements (fields, field, form, button,
+  alert, h1/h2, p, hr, panel).
+- **Auto-breadcrumbs**: `{% adminlte_breadcrumb %}` derives crumbs from
+  `request.path`; the default content of `page.html`'s breadcrumb block.
+- **i18n**: a package message catalog with a fully-translated Spanish (`es`)
+  locale (compiled `.mo`), shipped via `MANIFEST.in`.
+- **Self-hosted demo**: every front-end plugin (ApexCharts, jsVectorMap,
+  Tabulator, SortableJS, FullCalendar) loads from the Vite bundle — no CDN.
+
 ### Still deferred
 
-- Calendar (FullCalendar), Kanban, and the form Wizard as dedicated components
-  (the 1:1 demo pages already cover these via their own init scripts).
-- Additional locales (Laravel ships 9; English + extraction structure shipped).
+- Additional locales beyond English + Spanish (the extraction structure ships;
+  run `makemessages` to add more).
+- The form Wizard as a dedicated component (the 1:1 demo page covers it).
