@@ -1,0 +1,74 @@
+{% extends "adminlte/page.html" %}
+{% load i18n %}
+
+{% block page_title %}{{ object.name }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'crud:project_list' %}">{% trans 'Projects' %}</a></li>
+  <li class="breadcrumb-item active" aria-current="page">{{ object.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card card-primary card-outline">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-title mb-0">{{ object.name }}</div>
+        <span class="badge text-bg-{{ object.status_color }}">{{ object.get_status_display }}</span>
+      </div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-3">{% trans 'Company' %}</dt>
+          <dd class="col-sm-9">{{ object.company }}</dd>
+          <dt class="col-sm-3">{% trans 'Budget' %}</dt>
+          <dd class="col-sm-9">${{ object.budget|floatformat:0 }}</dd>
+          <dt class="col-sm-3">{% trans 'Timeline' %}</dt>
+          <dd class="col-sm-9">{{ object.start_date }} &rarr; {{ object.due_date|default:"—" }}</dd>
+          <dt class="col-sm-3">{% trans 'Lead' %}</dt>
+          <dd class="col-sm-9">{{ object.lead.name|default:"—" }}</dd>
+          <dt class="col-sm-3">{% trans 'Tags' %}</dt>
+          <dd class="col-sm-9">
+            {% for tag in object.tags.all %}<span class="badge text-bg-{{ tag.color }} me-1">{{ tag.name }}</span>{% empty %}—{% endfor %}
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">{% trans 'Tasks' %} ({{ object.tasks.count }})</div></div>
+      <div class="card-body p-0">
+        <table class="table table-striped align-middle mb-0">
+          <thead><tr><th>{% trans 'Task' %}</th><th>{% trans 'Assignee' %}</th><th>{% trans 'Status' %}</th><th>{% trans 'Due' %}</th></tr></thead>
+          <tbody>
+            {% for task in object.tasks.all %}
+              <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.assignee.name|default:"—" }}</td>
+                <td><span class="badge text-bg-{{ task.status_color }}">{{ task.get_status_display }}</span></td>
+                <td>{{ task.due_date|default:"—" }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="4" class="text-secondary">{% trans 'No tasks.' %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header"><div class="card-title">{% trans 'Team' %} ({{ object.team.count }})</div></div>
+      <ul class="list-group list-group-flush">
+        {% for member in object.team.all %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-person-circle me-2 text-secondary"></i>{{ member.name }}</span>
+            <span class="badge text-bg-light text-dark">{{ member.get_role_display }}</span>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-secondary">{% trans 'No team members.' %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

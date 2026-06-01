@@ -93,6 +93,20 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 - Stripped `sourceMappingURL` comments from the shipped `static/adminlte/dist`
   bundle so `collectstatic` with manifest storage succeeds without `.map` files.
 
+### Added — relational demo data
+
+- A small relational schema in the demo `crud` app: `Company`, `Contact` (now
+  linked to a Company), `Tag`, `Project` (FK company + lead, M2M team + tags)
+  and `Task` (FK project + assignee) — exercising FK, reverse-FK and M2M.
+- Themed admin registrations with an inline (Tasks on Project), autocomplete
+  fields and list filters, so the relational model is fully manageable in the
+  AdminLTE-skinned admin.
+- `seed_demo` management command — deterministic, idempotent sample data (6
+  companies, 24 contacts, 6 tags, 10 projects, 40 tasks) plus an optional demo
+  superuser (`admin` / `adminpass`).
+- Front-end **Projects** list (django-tables2 + filter) and a detail page
+  rendering the related company, lead, team, tags and tasks.
+
 ### Still deferred
 
 - Additional locales beyond English + Spanish (the extraction structure ships;
