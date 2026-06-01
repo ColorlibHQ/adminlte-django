@@ -53,6 +53,10 @@ crispy = [
 allauth = [
     "django-allauth>=65.0",
 ]
+# Build the documentation site:  pip install -e .[docs]  &&  mkdocs serve
+docs = [
+    "mkdocs-material>=9.5",
+]
 
 [project.urls]
 Homepage = "https://adminlte.io"

@@ -1,0 +1,78 @@
+site_name: django-adminlte4
+site_description: >-
+  Official AdminLTE 4 integration for Django — Bootstrap 5.3, vanilla JS,
+  Vite-ready, with a themed admin, components, tables, auth and i18n.
+site_url: https://colorlibhq.github.io/adminlte-django/
+repo_url: https://github.com/ColorlibHQ/adminlte-django
+repo_name: ColorlibHQ/adminlte-django
+copyright: Copyright &copy; ColorlibHQ — MIT licensed
+docs_dir: docs
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Getting started: installation.md
+  - Configuration: configuration.md
+  - Layout & templates: layout.md
+  - Sidebar menu: menu.md
+  - Components: components.md
+  - Django admin: admin.md
+  - Forms: forms.md
+  - Tables & filters: tables.md
+  - Authentication: auth.md
+  - Messages, pagination & breadcrumbs: extras.md
+  - Internationalization: i18n.md
+  - Assets & build: assets.md
+  - Management commands: commands.md
+  - Demo project: demo.md
+  - Deployment: deployment.md
+  - Changelog: changelog.md
