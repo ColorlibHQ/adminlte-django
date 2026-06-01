@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Contact
+from .models import Company, Contact, Project, Tag, Task
 
 
 class CrudFlowTests(TestCase):
@@ -64,3 +65,51 @@ class CrudFlowTests(TestCase):
         self.assertEqual(c.name, "Renamed")
         self.client.post(reverse("crud:contact_delete", args=[c.pk]))
         self.assertFalse(Contact.objects.filter(pk=c.pk).exists())
+
+
+class SeedAndRelationsTests(TestCase):
+    def test_seed_demo_populates_relations_idempotently(self):
+        call_command("seed_demo", "--no-superuser", verbosity=0)
+        self.assertEqual(Company.objects.count(), 6)
+        self.assertEqual(Contact.objects.count(), 24)
+        self.assertEqual(Tag.objects.count(), 6)
+        self.assertEqual(Project.objects.count(), 10)
+        self.assertEqual(Task.objects.count(), 40)
+
+        project = Project.objects.first()
+        self.assertIsNotNone(project.company)          # FK
+        self.assertEqual(project.team.count(), 4)      # M2M (team)
+        self.assertTrue(project.tags.exists())         # M2M (tags)
+        self.assertTrue(project.tasks.exists())        # reverse FK (tasks)
+        self.assertTrue(Contact.objects.filter(company__isnull=False).exists())  # Contact -> Company
+
+        call_command("seed_demo", "--no-superuser", verbosity=0)  # idempotent
+        self.assertEqual(Project.objects.count(), 10)
+
+
+class ProjectViewTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user("pv", password="pw")
+        call_command("seed_demo", "--no-superuser", verbosity=0)
+
+    def setUp(self):
+        self.client.force_login(self.user)
+
+    def test_project_list_requires_login(self):
+        self.client.logout()
+        self.assertEqual(self.client.get(reverse("crud:project_list")).status_code, 302)
+
+    def test_project_list_renders_themed_table(self):
+        html = self.client.get(reverse("crud:project_list")).content.decode()
+        self.assertIn('class="card"', html)        # AdminLTE tables2 theme
+        self.assertIn("members", html)             # team-count column
+        self.assertIn("All companies", html)       # django-filter select
+
+    def test_project_detail_shows_relations(self):
+        project = Project.objects.first()
+        html = self.client.get(reverse("crud:project_detail", args=[project.pk])).content.decode()
+        self.assertIn(project.name, html)
+        self.assertIn(project.company.name, html)  # FK rendered
+        self.assertIn("Team", html)                # M2M team panel
+        self.assertIn("Tasks", html)               # reverse-FK tasks

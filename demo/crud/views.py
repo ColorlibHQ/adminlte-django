@@ -1,25 +1,27 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
-from .filters import ContactFilter
+from .filters import ContactFilter, ProjectFilter
 from .forms import ContactForm
-from .models import Contact
-from .tables import ContactTable
+from .models import Contact, Project
+from .tables import ContactTable, ProjectTable
 
 
+# --- Contacts: full CRUD (tables2 + django-filter + crispy form + messages) ---
 class ContactListView(LoginRequiredMixin, SingleTableMixin, FilterView):
-    """List page: django-tables2 (AdminLTE-themed) + django-filter, paginated."""
-
     model = Contact
     table_class = ContactTable
     filterset_class = ContactFilter
     template_name = "crud/contact_list.html"
     table_pagination = {"per_page": 10}
+
+    def get_queryset(self):
+        return super().get_queryset().select_related("company")
 
 
 class ContactCreateView(LoginRequiredMixin, CreateView):
@@ -52,3 +54,31 @@ class ContactDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, f"Contact “{self.object.name}” deleted.")
         return super().form_valid(form)
+
+
+# --- Projects: relational list + detail (showcases FK / M2M data) ---
+class ProjectListView(LoginRequiredMixin, SingleTableMixin, FilterView):
+    model = Project
+    table_class = ProjectTable
+    filterset_class = ProjectFilter
+    template_name = "crud/project_list.html"
+    table_pagination = {"per_page": 10}
+
+    def get_queryset(self):
+        return (
+            super().get_queryset()
+            .select_related("company", "lead")
+            .prefetch_related("team", "tags")
+        )
+
+
+class ProjectDetailView(LoginRequiredMixin, DetailView):
+    model = Project
+    template_name = "crud/project_detail.html"
+
+    def get_queryset(self):
+        return (
+            super().get_queryset()
+            .select_related("company", "lead")
+            .prefetch_related("team", "tags", "tasks__assignee")
+        )

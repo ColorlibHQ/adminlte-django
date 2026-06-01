@@ -343,8 +343,14 @@ pip install -r requirements.txt   # package + extras + prod deps (env, whitenois
 cp .env.example .env              # local dev config (DEBUG=True)
 npm install && npm run dev        # terminal 1 — Vite dev server / HMR
 python manage.py migrate
+python manage.py seed_demo         # sample relational data + demo superuser (admin/adminpass)
 python manage.py runserver        # terminal 2
 ```
+
+The demo ships a small relational schema (`Company → Contact`, `Project ↔ Tag`,
+`Project ↔ Contact` team, `Project → Task`) showcased through the themed admin,
+a **Contacts** CRUD page and a **Projects** list + detail. Re-run `seed_demo`
+any time to reset the sample data.
 
 ## Deployment
 

@@ -1,0 +1,23 @@
+{% extends "adminlte/page.html" %}
+{% load i18n django_tables2 %}
+
+{% block page_title %}Projects{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="/">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Projects</li>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-end mb-3">
+  <form method="get" class="d-flex flex-wrap gap-2 align-items-center">
+    {{ filter.form.name }}
+    {{ filter.form.company }}
+    {{ filter.form.status }}
+    <button type="submit" class="btn btn-primary"><i class="bi bi-funnel me-1"></i>{% trans 'Filter' %}</button>
+    {% if request.GET %}<a href="{% url 'crud:project_list' %}" class="btn btn-outline-secondary">{% trans 'Reset' %}</a>{% endif %}
+  </form>
+  <a href="{% url 'crud:contact_list' %}" class="btn btn-outline-secondary"><i class="bi bi-people me-1"></i>{% trans 'Contacts' %}</a>
+</div>
+
+{% render_table table %}
+{% endblock %}
