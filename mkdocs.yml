@@ -8,6 +8,10 @@ repo_name: ColorlibHQ/adminlte-django
 copyright: Copyright &copy; ColorlibHQ — MIT licensed
 docs_dir: docs
 
+# Hide the "Made with Material for MkDocs" footer line.
+extra:
+  generator: false
+
 theme:
   name: material
   palette:
