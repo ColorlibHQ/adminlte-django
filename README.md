@@ -11,6 +11,20 @@ for the Form and Widget families.
 > Widget component families. Tool/plugin components (datatable, charts,
 > calendar, editor, kanban, vector-map) land in v2.
 
+## Documentation
+
+Full documentation lives in [`docs/`](docs/) as a **MkDocs Material** site —
+Getting started, a complete [configuration reference](docs/configuration.md),
+[components](docs/components.md), [admin](docs/admin.md), [forms](docs/forms.md),
+[tables](docs/tables.md), [auth](docs/auth.md), [i18n](docs/i18n.md),
+[assets](docs/assets.md), [deployment](docs/deployment.md) and more. Build/serve
+it locally:
+
+```bash
+pip install -e .[docs]
+mkdocs serve        # http://127.0.0.1:8000  (or: mkdocs build)
+```
+
 ## Requirements
 
 - Python 3.10+
