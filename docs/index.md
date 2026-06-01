@@ -62,8 +62,8 @@ Continue with **[Getting started](installation.md)**.
 
 ## Requirements
 
-- Python 3.10+ · Django 5.0+
-- `django-components` 0.140–0.150, `django-vite` 3.x
+- Python 3.12+ · Django 6.0+
+- `django-components` 0.150, `django-vite` 3.1+
 - Node 18+ only if you use the Vite pipeline (optional — see [Assets](assets.md))
 
 ## License
