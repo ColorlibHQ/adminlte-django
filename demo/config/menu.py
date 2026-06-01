@@ -16,8 +16,8 @@ ADMINLTE_MENU = [
     {"text": "Theme Generate", "url": "generate/theme", "icon": "bi bi-palette"},
     {"text": "Components", "url": "components", "icon": "bi bi-puzzle", "label": "NEW", "label_color": "success"},
     {"text": "Messages + Pagination", "url": "native/messages-pagination", "icon": "bi bi-bell"},
-    {"text": "Contacts (CRUD)", "url": "contacts/", "icon": "bi bi-person-rolodex", "label": "tables2", "label_color": "info"},
-    {"text": "Projects", "url": "projects/", "icon": "bi bi-kanban", "label": "relations", "label_color": "primary"},
+    {"text": "Contacts (CRUD)", "url": "contacts/", "icon": "bi bi-person-rolodex"},
+    {"text": "Projects", "url": "projects/", "icon": "bi bi-kanban"},
     {
         "text": "Widgets",
         "icon": "bi bi-box-seam-fill",
