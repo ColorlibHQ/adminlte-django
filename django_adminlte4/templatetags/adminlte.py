@@ -46,21 +46,33 @@ def adminlte_safe(value: str) -> str:
     return mark_safe(value or "")
 
 
-@register.simple_tag(takes_context=True)
-def adminlte_admin_menu(context):
-    """Sidebar menu for the themed Django admin.
+@register.inclusion_tag("adminlte/partials/_breadcrumb_items.html", takes_context=True)
+def adminlte_breadcrumb(context):
+    """Auto-derive breadcrumb ``<li>`` items from ``request.path``.
 
-    Uses ``ADMINLTE["admin_menu"]`` if set, else auto-builds from the registered
-    admin apps/models, then runs it through the standard filter pipeline so the
-    current page is marked active and hrefs are resolved.
+    Yields *Home* plus one crumb per path segment (title-cased, hyphens/
+    underscores → spaces), the last marked active. Used as the default content
+    of the ``breadcrumb`` block in ``page.html`` — pages that override the block
+    keep their hand-authored crumbs.
     """
-    from ..admin_menu import build_admin_menu
-    from ..menu.builder import MenuBuilder
+    from django.utils.translation import gettext as _
 
     request = context.get("request")
-    cfg = get_config()
-    raw = cfg.get("admin_menu") or build_admin_menu(request)
-    return MenuBuilder(raw, cfg.get("filters", []), request).menu("sidebar")
+    crumbs = [{"label": _("Home"), "url": "/", "active": False}]
+    parts = [p for p in request.path.strip("/").split("/") if p] if request else []
+    cumulative = ""
+    for i, part in enumerate(parts):
+        cumulative += "/" + part
+        crumbs.append(
+            {
+                "label": part.replace("-", " ").replace("_", " ").title(),
+                "url": cumulative + "/",
+                "active": i == len(parts) - 1,
+            }
+        )
+    if len(crumbs) == 1:  # home page itself
+        crumbs[0]["active"] = True
+    return {"crumbs": crumbs}
 
 
 @register.simple_tag(takes_context=True)

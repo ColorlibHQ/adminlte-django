@@ -49,6 +49,10 @@ crispy = [
     "django-crispy-forms>=2.1",
     "crispy-bootstrap5>=2024.2",
 ]
+# AdminLTE-themed django-allauth (overrides allauth's layouts + elements).
+allauth = [
+    "django-allauth>=65.0",
+]
 
 [project.urls]
 Homepage = "https://adminlte.io"

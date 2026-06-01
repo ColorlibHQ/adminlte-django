@@ -1,0 +1,17 @@
+{% load i18n static adminlte %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}"{% if adminlte.dark_mode %} data-bs-theme="dark"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block head_title %}{% endblock head_title %}</title>
+    {# Self-contained AdminLTE bundle (no Node needed for auth pages). #}
+    {% include "adminlte/partials/_assets_prebuilt.html" %}
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body class="{% block body_class %}bg-body-secondary{% endblock %}">
+    {% block body %}
+        <div class="container py-5">{% block content %}{% endblock content %}</div>
+    {% endblock body %}
+    {% block extra_body %}{% endblock extra_body %}
+</body>
+</html>
