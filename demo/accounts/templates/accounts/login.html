@@ -1,0 +1,74 @@
+{% extends "adminlte/auth/auth-master.html" %}
+{% load i18n %}
+
+{# Demo-only login page: pre-fills the seeded credentials and explains how the
+   demo is structured. The reusable, generic login template ships in the package
+   at adminlte/auth/login.html — this one is specific to the public demo. #}
+
+{% block auth_body %}
+    <p class="login-box-msg">{% trans 'Sign in to start your session' %}</p>
+
+    <div class="alert alert-info py-2 px-3 mb-3" role="alert">
+        <p class="mb-1"><i class="bi bi-info-circle-fill me-1"></i><strong>Demo account</strong> — pre-filled below, just press <strong>Sign In</strong>.</p>
+        <p class="mb-0 small">Username <code>admin</code> &middot; Password <code>adminpass</code></p>
+    </div>
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+        </div>
+    {% endif %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+
+        <div class="input-group mb-3">
+            <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}"
+                   value="{{ form.username.value|default:'admin' }}"
+                   class="form-control{% if form.username.errors %} is-invalid{% endif %}"
+                   placeholder="{{ form.username.label|default:_('Username') }}" required autofocus>
+            <div class="input-group-text"><span class="bi bi-person-fill"></span></div>
+            {% for error in form.username.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}"
+                   value="adminpass"
+                   class="form-control{% if form.password.errors %} is-invalid{% endif %}"
+                   placeholder="{% trans 'Password' %}" required>
+            <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+            {% for error in form.password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <div class="form-check">
+                    <input type="checkbox" name="remember" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">{% trans 'Remember Me' %}</label>
+                </div>
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary w-100">{% trans 'Sign In' %}</button>
+            </div>
+        </div>
+    </form>
+
+    <hr class="my-3">
+    <p class="mb-2 small text-muted">After signing in, here's how the demo is laid out:</p>
+    <ul class="list-unstyled small mb-0">
+        <li class="mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i><strong>Dashboard</strong> &mdash; AdminLTE layout, pages &amp; components (open to everyone).</li>
+        <li class="mb-1"><i class="bi bi-person-rolodex text-primary me-2"></i><strong>Contacts &amp; Projects</strong> &mdash; relational CRUD over seeded data (sign-in required).</li>
+        <li class="mb-1"><i class="bi bi-shield-lock text-primary me-2"></i><strong><a href="/admin/">Django admin</a></strong> &mdash; same credentials, AdminLTE-themed.</li>
+        <li class="mb-0"><i class="bi bi-box-arrow-in-right text-primary me-2"></i><strong><a href="/accounts/login/">Accounts</a></strong> &mdash; django-allauth login/signup pages.</li>
+    </ul>
+
+    {% url 'password_reset' as password_reset_url %}
+    {% if password_reset_url %}
+        <p class="mb-1 mt-3"><a href="{{ password_reset_url }}">{% trans 'I forgot my password' %}</a></p>
+    {% endif %}
+    {% url 'register' as register_url %}
+    {% if register_url %}
+        <p class="mb-0"><a href="{{ register_url }}">{% trans 'Register a new membership' %}</a></p>
+    {% endif %}
+{% endblock %}
