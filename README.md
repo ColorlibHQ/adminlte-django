@@ -1,4 +1,4 @@
-# django-adminlte4
+# Django AdminLTE 4
 
 Official **AdminLTE 4** integration for **Django** — Bootstrap 5.3, vanilla JS,
 Vite-ready. The Django sibling of
