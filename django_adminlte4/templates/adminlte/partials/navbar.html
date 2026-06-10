@@ -45,6 +45,10 @@
                 </a>
             </li>
 
+            {% if adminlte.language_switcher %}
+                {% include "adminlte/partials/language-menu.html" %}
+            {% endif %}
+
             {% if adminlte.color_mode_toggle %}
                 {% include "adminlte/partials/color-mode.html" %}
             {% endif %}

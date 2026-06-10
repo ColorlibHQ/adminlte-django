@@ -98,6 +98,9 @@ DEFAULTS: dict[str, Any] = {
     "classes_topnav_container": "container-fluid",
     # --- Color mode toggle ---
     "color_mode_toggle": True,
+    # --- Language switcher (topbar dropdown posting to set_language) ---
+    # Requires LANGUAGES plus path("i18n/", include("django.conf.urls.i18n")).
+    "language_switcher": False,
     # --- Front-end asset delivery ---
     # "vite": load assets via django-vite (the demo/dev default).
     # "static": load the pre-built bundle shipped in the package (no Node).

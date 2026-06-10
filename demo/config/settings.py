@@ -124,6 +124,12 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = "en-us"
+# Languages offered by the topbar language switcher (the package ships Spanish
+# translations for its own chrome; demo content remains English).
+LANGUAGES = [
+    ("en", "English"),
+    ("es", "Español"),
+]
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -213,4 +219,5 @@ ADMINLTE = {
     "navbar_messages": NAVBAR_MESSAGES,
     "navbar_notifications": NAVBAR_NOTIFICATIONS,
     "usermenu": USERMENU,
+    "language_switcher": True,  # topbar dropdown -> django.views.i18n.set_language
 }

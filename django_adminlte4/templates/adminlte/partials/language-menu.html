@@ -1,0 +1,30 @@
+{% load i18n %}
+{# Topbar language switcher (ADMINLTE["language_switcher"] = True). Posts to
+   Django's built-in set_language view — the project must include
+   path("i18n/", include("django.conf.urls.i18n")) and define LANGUAGES. #}
+{% get_current_language as CURRENT_LANGUAGE %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+<li class="nav-item dropdown">
+    <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button"
+       aria-label="{% trans 'Change language' %}" aria-expanded="false">
+        <i class="bi bi-translate"></i>
+        <span class="d-none d-md-inline ms-1 text-uppercase">{{ CURRENT_LANGUAGE }}</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        {% for language in languages %}
+            <li>
+                <form action="{% url 'set_language' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="language" value="{{ language.code }}">
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit"
+                            class="dropdown-item d-flex align-items-center justify-content-between{% if language.code == CURRENT_LANGUAGE %} active{% endif %}">
+                        {{ language.name_local|capfirst }}
+                        {% if language.code == CURRENT_LANGUAGE %}<i class="bi bi-check-lg ms-2"></i>{% endif %}
+                    </button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</li>
