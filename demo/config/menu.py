@@ -25,6 +25,7 @@ ADMINLTE_MENU = [
     {"text": "Theme Generate", "route": "generate_theme", "icon": "bi bi-palette"},
     {"text": "Components", "route": "components_v2", "icon": "bi bi-puzzle", "label": "NEW", "label_color": "success"},
     {"text": "Messages + Pagination", "route": "native_demo", "icon": "bi bi-bell"},
+    {"text": "Native Form", "route": "native_form", "icon": "bi bi-input-cursor-text", "label": "NEW", "label_color": "success"},
     {"text": "Contacts (CRUD)", "route": "crud:contact_list", "icon": "bi bi-person-rolodex"},
     {"text": "Projects", "route": "crud:project_list", "icon": "bi bi-kanban"},
     {

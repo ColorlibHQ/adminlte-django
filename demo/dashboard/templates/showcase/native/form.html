@@ -1,0 +1,46 @@
+{% extends "adminlte/page.html" %}
+
+{% block page_title %}Native form{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Native form</li>
+{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card card-primary card-outline">
+      <div class="card-header"><div class="card-title">A plain Django form — no widget attrs, no crispy</div></div>
+      <div class="card-body">
+        <p class="text-secondary">
+          This page renders <code>&#123;&#123; form &#125;&#125;</code> — nothing else. The Bootstrap 5 markup
+          (labels, selects, checkbox, validation states, help text) comes entirely from
+          <code>FORM_RENDERER = "django_adminlte4.forms.AdminLTEFormRenderer"</code> in settings.
+          Submit it empty to see the <code>is-invalid</code> / <code>invalid-feedback</code> states.
+        </p>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form }}
+          <button type="submit" class="btn btn-primary">Validate</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header"><div class="card-title">How it works</div></div>
+      <div class="card-body">
+        <p>The renderer swaps Django's form/field templates for AdminLTE-themed ones, project-wide:</p>
+        <pre class="mb-2"><code># settings.py
+FORM_RENDERER = "django_adminlte4.forms.AdminLTEFormRenderer"</code></pre>
+        <p class="mb-0">
+          Every <code>&#123;&#123; form &#125;&#125;</code> in the project — function-based views, generic CBVs,
+          <code>UserCreationForm</code> — renders themed automatically. Prefer fine-grained layout
+          control? The <a href="{% url 'crud:contact_create' %}">Contacts CRUD</a> shows the
+          crispy-forms integration instead; both ship with the package.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

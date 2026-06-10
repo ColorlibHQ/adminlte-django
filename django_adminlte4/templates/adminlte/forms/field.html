@@ -1,0 +1,23 @@
+{# Field template for AdminLTEFormRenderer (rendered by as_field_group). #}
+{% load adminlte %}
+{% if field|adminlte_is_check %}
+  <div class="form-check">
+    {{ field|adminlte_widget }}
+    {% if field.label %}
+      <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% endif %}
+    {% include "adminlte/forms/_help_and_errors.html" %}
+  </div>
+{% elif field.use_fieldset %}
+  <fieldset{% if field.aria_describedby %} aria-describedby="{{ field.aria_describedby }}"{% endif %}>
+    {% if field.label %}<legend class="form-label fs-6">{{ field.label }}</legend>{% endif %}
+    {{ field|adminlte_widget }}
+    {% include "adminlte/forms/_help_and_errors.html" %}
+  </fieldset>
+{% else %}
+  {% if field.label %}
+    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {% endif %}
+  {{ field|adminlte_widget }}
+  {% include "adminlte/forms/_help_and_errors.html" %}
+{% endif %}

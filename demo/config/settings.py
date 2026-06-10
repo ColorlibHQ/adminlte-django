@@ -184,6 +184,11 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Theme every django-tables2 table with the AdminLTE card wrapper.
 DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html"
 
+# Native form rendering: plain {{ form }} renders AdminLTE/Bootstrap 5 markup
+# everywhere (see /native/form). crispy-forms below is the alternative for
+# fine-grained layout control.
+FORM_RENDERER = "django_adminlte4.forms.AdminLTEFormRenderer"
+
 # crispy-forms: AdminLTE 4 is Bootstrap 5, so render with the bootstrap5 pack.
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"

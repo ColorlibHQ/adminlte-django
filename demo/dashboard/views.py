@@ -1,13 +1,37 @@
 import datetime
 
+from django import forms
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from crud.models import Company, Contact, Project, Task
+
+
+class NativeContactForm(forms.ModelForm):
+    """A deliberately plain ModelForm — no widget attrs, no crispy helper.
+
+    The Bootstrap markup on /native/form comes entirely from the package's
+    AdminLTEFormRenderer (FORM_RENDERER in settings) rendering {{ form }}.
+    """
+
+    subscribed = forms.BooleanField(required=False, help_text="Get product updates by email.")
+
+    class Meta:
+        model = Contact
+        fields = ["name", "email", "role", "status", "company"]
+
+
+def native_form(request):
+    """Renderer showcase: plain {{ form }} (validates only; nothing is saved)."""
+    form = NativeContactForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        messages.success(request, "Valid! (Demo only — nothing was saved.)")
+        return redirect("native_form")
+    return render(request, "showcase/native/form.html", {"form": form})
 
 
 def index(request):
