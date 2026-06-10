@@ -137,7 +137,13 @@ USE_TZ = True
 # --- Static files + Vite ---
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "assets" / "dist"]
+STATICFILES_DIRS = [
+    BASE_DIR / "assets" / "dist",
+    # Demo-only images (avatars, product shots, …) used by the showcase pages.
+    # They live here — not in the package — so `pip install django-adminlte4`
+    # doesn't ship megabytes of sample photos.
+    BASE_DIR / "static",
+]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
