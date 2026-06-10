@@ -51,11 +51,14 @@ def index(request):
 def dashboard_activity(request):
     """JSON for the Dashboard v1 area chart: six months of projects started and
     tasks completed (by due month), aggregated in the database."""
-    first_of_month = datetime.date.today().replace(day=1)
-    months = sorted(
-        (first_of_month - datetime.timedelta(days=31 * offset)).replace(day=1)
-        for offset in range(6)
-    )
+    today = datetime.date.today()
+    # Calendar month arithmetic — stepping by timedelta(days=31) skips or
+    # duplicates months depending on the current date.
+    total = today.year * 12 + today.month - 1
+    months = [
+        datetime.date((total - offset) // 12, (total - offset) % 12 + 1, 1)
+        for offset in range(5, -1, -1)
+    ]
 
     def per_month(queryset, date_field):
         rows = (
