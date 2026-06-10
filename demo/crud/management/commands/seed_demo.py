@@ -95,7 +95,8 @@ class Command(BaseCommand):
 
         task_total = 0
         for i, (pname, status) in enumerate(PROJECTS):
-            start = today - datetime.timedelta(days=60 - i * 5)
+            # Spread starts across ~5 months so the dashboard chart has a curve.
+            start = today - datetime.timedelta(days=150 - i * 15)
             project = Project.objects.create(
                 name=pname,
                 company=companies[i % len(companies)],

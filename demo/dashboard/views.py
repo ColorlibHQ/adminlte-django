@@ -1,6 +1,57 @@
+import datetime
+
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
+from django.http import JsonResponse
 from django.shortcuts import render
+
+from crud.models import Company, Contact, Project, Task
+
+
+def index(request):
+    """Dashboard v1 — the small boxes and the activity chart are fed by the
+    demo's own relational dataset (``manage.py seed_demo``), not static markup."""
+    tasks_total = Task.objects.count()
+    tasks_done = Task.objects.filter(status="done").count()
+    stats = {
+        "projects_active": Project.objects.filter(status="active").count(),
+        "tasks_done_pct": round(tasks_done * 100 / tasks_total) if tasks_total else 0,
+        "contacts": Contact.objects.count(),
+        "companies": Company.objects.count(),
+    }
+    return render(request, "showcase/index.html", {"stats": stats})
+
+
+def dashboard_activity(request):
+    """JSON for the Dashboard v1 area chart: six months of projects started and
+    tasks completed (by due month), aggregated in the database."""
+    first_of_month = datetime.date.today().replace(day=1)
+    months = sorted(
+        (first_of_month - datetime.timedelta(days=31 * offset)).replace(day=1)
+        for offset in range(6)
+    )
+
+    def per_month(queryset, date_field):
+        rows = (
+            queryset.filter(**{f"{date_field}__gte": months[0]})
+            .annotate(month=TruncMonth(date_field))
+            .values("month")
+            .annotate(count=Count("id"))
+        )
+        counts = {row["month"]: row["count"] for row in rows}
+        return [counts.get(month, 0) for month in months]
+
+    return JsonResponse(
+        {
+            "categories": [month.isoformat() for month in months],
+            "series": [
+                {"name": "Projects started", "data": per_month(Project.objects, "start_date")},
+                {"name": "Tasks completed", "data": per_month(Task.objects.filter(status="done"), "due_date")},
+            ],
+        }
+    )
 
 
 def native_demo(request):
