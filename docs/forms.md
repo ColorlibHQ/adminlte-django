@@ -1,6 +1,25 @@
 # Forms
 
-Two complementary ways to render forms.
+Three complementary ways to render forms.
+
+## Native renderer (plain `{{ form }}`)
+
+The zero-configuration option. Point Django's `FORM_RENDERER` at the package:
+
+```python
+FORM_RENDERER = "django_adminlte4.forms.AdminLTEFormRenderer"
+```
+
+Every form in the project — function-based views, generic CBVs,
+`UserCreationForm` — now renders AdminLTE/Bootstrap 5 markup from a plain
+`{{ form }}`: `form-label` labels, `form-control` / `form-select` /
+`form-check-input` / `form-range` widgets chosen per widget type, `is-invalid`
++ `invalid-feedback` validation states, `form-text` help text, and non-field
+errors as an alert. No per-form widget attrs, no template changes, no extra
+packages (you do **not** need `django.forms` in `INSTALLED_APPS` — widget
+templates fall back to Django's built-in form engine).
+
+See it live on the demo's `/native/form` page.
 
 ## Field components
 

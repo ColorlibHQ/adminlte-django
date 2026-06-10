@@ -5,6 +5,61 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added — performance & Django-native rendering
+
+- `AdminLTEFormRenderer` — set
+  `FORM_RENDERER = "django_adminlte4.forms.AdminLTEFormRenderer"` and plain
+  `{{ form }}` renders AdminLTE/Bootstrap 5 markup project-wide: per-widget-type
+  classes (`form-control` / `form-select` / `form-check-input` / `form-range`),
+  `is-invalid` + `invalid-feedback` validation states, `form-text` help text and
+  non-field errors as an alert. Widget templates fall back to Django's built-in
+  form engine, so `django.forms` is **not** required in `INSTALLED_APPS`.
+- Django **system checks** replacing the startup warning: `adminlte.W001`
+  (unknown config key), `adminlte.E002` (django-components loader missing — the
+  `APP_DIRS=True` footgun, now with an actionable hint), `adminlte.W003`
+  (malformed or misspelled menu items), `adminlte.W004` (context processor not
+  configured).
+- `ADMINLTE["language_switcher"]` — topbar dropdown posting to Django's
+  `set_language` view.
+- `py.typed` marker — the package's type annotations are now visible to
+  mypy/pyright.
+- `GateFilter` recurses into submenus: unauthorized children are pruned, and a
+  parent left with no children (and no link of its own) is dropped.
+- `ActiveFilter` derives auto-active patterns from the resolved `href`, so
+  `route:`-based items get active detection too.
+
+### Changed — performance
+
+- The merged `ADMINLTE` config is computed once per process (invalidated via
+  `setting_changed`); the default footer copyright year is evaluated lazily at
+  render time instead of import time.
+- Menus are built lazily (`SimpleLazyObject`) — pages that never render a
+  sidebar/navbar skip the build entirely — and the filter pipeline is split:
+  request-independent filters (`HrefFilter`, `SearchFilter`) run once per
+  process (per active language), so `reverse()` no longer re-runs per request.
+  Custom filters keep per-request semantics via `per_request = True` (default).
+- Wildcard active-state patterns are compiled once (`lru_cache`) instead of per
+  item per request.
+- The demo front-end is code-split: ApexCharts, jsVectorMap, Tabulator, Quill,
+  SortableJS and FullCalendar load on demand via `adminlteUse()` dynamic
+  imports; the always-loaded core drops to ~46 kB gzipped. The chart-refit
+  `setTimeout` hack was replaced by a width-guarded `ResizeObserver`.
+- Demo-only sample images (~2.9 MB) moved out of the pip package into
+  `demo/static/`.
+
+### Changed — demo
+
+- Dashboard v1 is data-driven: ORM-fed small boxes linking to the CRUD views
+  and themed admin, plus an activity chart fetching six months of aggregates
+  from `/api/dashboard/activity.json`.
+- The sidebar menu uses named routes (`route:`) for all internal items, and a
+  **STAFF ONLY** section showcases `GateFilter` (callable + permission-string
+  gating) — log in with the pre-filled credentials to see it appear.
+- New `/native/form` page demonstrating the form renderer; the language
+  switcher is enabled with an English/Español `LANGUAGES` list.
+- `seed_demo` spreads project start dates across ~5 months so the dashboard
+  chart has a curve.
+
 ### Added — v1 (core)
 
 - AdminLTE 4 base layout (`adminlte/master.html`, `adminlte/page.html`) with
