@@ -85,3 +85,59 @@ def test_builder_does_not_mutate_source(rf):
     snapshot = copy.deepcopy(menu)
     MenuBuilder(menu, FILTERS, rf.get("/admin/users/")).menu()
     assert menu == snapshot  # no 'href'/'active' leaked into the source
+
+
+def test_split_filters_default_pipeline():
+    from django_adminlte4.menu.builder import split_filters
+    from django_adminlte4.menu.filters import ActiveFilter, HrefFilter, SearchFilter
+
+    static, dynamic = split_filters(FILTERS)
+    assert static == [HrefFilter, SearchFilter]
+    assert dynamic == [GateFilter, ActiveFilter]
+
+
+def test_split_filters_custom_filter_defaults_to_per_request():
+    from django_adminlte4.menu.builder import split_filters
+
+    class Custom:
+        def __init__(self, request=None): ...
+        def transform(self, item): return item
+
+    static, dynamic = split_filters([Custom])
+    assert static == [] and dynamic == [Custom]
+
+
+def test_active_filter_falls_back_to_resolved_href(rf):
+    # A `route:` item has no `url`; active patterns derive from the href.
+    on = ActiveFilter(rf.get("/login/")).transform({"text": "Login", "href": "/login/"})
+    off = ActiveFilter(rf.get("/other/")).transform({"text": "Login", "href": "/login/"})
+    assert on["active"] is True
+    assert off["active"] is False
+
+
+@pytest.mark.django_db
+def test_gate_filter_prunes_submenu_children(rf, django_user_model):
+    user = django_user_model.objects.create_user("eve", password="pw")
+    req = rf.get("/")
+    req.user = user
+    menu = {
+        "text": "Admin",
+        "submenu": [
+            {"text": "Public", "url": "a"},
+            {"text": "Secret", "url": "b", "can": "app.secret"},
+        ],
+    }
+    out = GateFilter(req).transform(menu)
+    assert [c["text"] for c in out["submenu"]] == ["Public"]
+
+
+@pytest.mark.django_db
+def test_gate_filter_drops_parent_when_all_children_gone(rf, django_user_model):
+    user = django_user_model.objects.create_user("mallory", password="pw")
+    req = rf.get("/")
+    req.user = user
+    menu = {"text": "Admin", "submenu": [{"text": "Secret", "url": "b", "can": "app.secret"}]}
+    assert GateFilter(req).transform(menu) is None
+    # ...but a parent that links somewhere itself survives.
+    linked = {"text": "Admin", "url": "admin", "submenu": [{"text": "S", "can": "app.secret"}]}
+    assert GateFilter(req).transform(linked) is not None

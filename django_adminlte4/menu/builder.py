@@ -2,7 +2,9 @@
 
 Port of ``ColorlibHQ\\AdminLte\\AdminLte``. Unlike the Laravel singleton, this
 is constructed **per request** (in the context processor) because the filter
-pipeline depends on the current request (active state, gate checks).
+pipeline depends on the current request (active state, gate checks). The
+request-*independent* half of the pipeline (see :func:`split_filters`) is run
+once per process by the context processor and its output reused.
 """
 
 from __future__ import annotations
@@ -15,6 +17,21 @@ from django.utils.module_loading import import_string
 from . import helpers
 
 Item = dict[str, Any]
+
+
+def split_filters(filter_paths: list[Any]) -> tuple[list[type], list[type]]:
+    """Split the configured pipeline into (static, per-request) filter classes.
+
+    Relative order is preserved within each half. A filter is static when its
+    class sets ``per_request = False`` (Href, Search); anything else — notably
+    custom filters — is treated as per-request, which is always safe.
+    """
+    static: list[type] = []
+    dynamic: list[type] = []
+    for spec in filter_paths or []:
+        klass = import_string(spec) if isinstance(spec, str) else spec
+        (dynamic if getattr(klass, "per_request", True) else static).append(klass)
+    return static, dynamic
 
 
 class MenuBuilder:

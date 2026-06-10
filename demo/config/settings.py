@@ -124,6 +124,12 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = "en-us"
+# Languages offered by the topbar language switcher (the package ships Spanish
+# translations for its own chrome; demo content remains English).
+LANGUAGES = [
+    ("en", "English"),
+    ("es", "Español"),
+]
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -131,7 +137,13 @@ USE_TZ = True
 # --- Static files + Vite ---
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "assets" / "dist"]
+STATICFILES_DIRS = [
+    BASE_DIR / "assets" / "dist",
+    # Demo-only images (avatars, product shots, …) used by the showcase pages.
+    # They live here — not in the package — so `pip install django-adminlte4`
+    # doesn't ship megabytes of sample photos.
+    BASE_DIR / "static",
+]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
@@ -184,6 +196,11 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Theme every django-tables2 table with the AdminLTE card wrapper.
 DJANGO_TABLES2_TEMPLATE = "django_tables2/adminlte.html"
 
+# Native form rendering: plain {{ form }} renders AdminLTE/Bootstrap 5 markup
+# everywhere (see /native/form). crispy-forms below is the alternative for
+# fine-grained layout control.
+FORM_RENDERER = "django_adminlte4.forms.AdminLTEFormRenderer"
+
 # crispy-forms: AdminLTE 4 is Bootstrap 5, so render with the bootstrap5 pack.
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -208,4 +225,5 @@ ADMINLTE = {
     "navbar_messages": NAVBAR_MESSAGES,
     "navbar_notifications": NAVBAR_NOTIFICATIONS,
     "usermenu": USERMENU,
+    "language_switcher": True,  # topbar dropdown -> django.views.i18n.set_language
 }

@@ -1,0 +1,20 @@
+{# Form template for AdminLTEFormRenderer: Django's div.html, Bootstrap-ified. #}
+{% if errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in errors %}<div>{{ error }}</div>{% endfor %}
+  </div>
+{% endif %}
+{% if errors and not fields %}
+  <div>{% for field in hidden_fields %}{{ field }}{% endfor %}</div>
+{% endif %}
+{% for field, errors in fields %}
+  <div class="mb-3{% with classes=field.css_classes %}{% if classes %} {{ classes }}{% endif %}{% endwith %}">
+    {{ field.as_field_group }}
+    {% if forloop.last %}
+      {% for field in hidden_fields %}{{ field }}{% endfor %}
+    {% endif %}
+  </div>
+{% endfor %}
+{% if not fields and not errors %}
+  {% for field in hidden_fields %}{{ field }}{% endfor %}
+{% endif %}

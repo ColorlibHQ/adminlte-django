@@ -4,15 +4,19 @@ Ports of ``ColorlibHQ\\AdminLte\\Menu\\Filters\\*``. Each filter is constructed
 with the current ``request`` and exposes ``transform(item) -> item | None``;
 returning ``None`` drops the item from the menu entirely.
 
-Because Django app instances are process-global (unlike PHP's per-request
-lifecycle), the menu must be rebuilt per request — these filters read
-``request.user`` (Gate) and ``request.path`` (Active), so they cannot be cached
-across requests. See :class:`django_adminlte4.menu.builder.MenuBuilder`.
+Filters declare whether they depend on the request via the ``per_request``
+class attribute. Request-independent filters (Href, Search) run **once per
+process** over the raw config menu; only the request-dependent ones (Gate
+reads ``request.user``, Active reads ``request.path``) re-run per request.
+See :func:`django_adminlte4.menu.builder.split_filters` and the context
+processor. Custom filters default to ``per_request = True``, which is always
+safe.
 """
 
 from __future__ import annotations
 
 import re
+from functools import lru_cache
 from typing import Any
 
 from django.urls import NoReverseMatch, reverse
@@ -22,8 +26,19 @@ Item = dict[str, Any]
 _EXTERNAL_RE = re.compile(r"^(https?:)?//")
 
 
+@lru_cache(maxsize=1024)
+def _pattern_regex(pattern: str) -> re.Pattern[str]:
+    """Compile a Laravel-style ``*`` wildcard pattern (slash-normalized)."""
+    return re.compile("^" + re.escape(pattern.strip("/")).replace(r"\*", ".*") + "$")
+
+
 class BaseFilter:
     """Common base: every filter is instantiated with the current request."""
+
+    #: Whether the filter's output depends on the current request. Filters that
+    #: only normalize config data should set this to ``False`` so their work is
+    #: done once per process instead of per request.
+    per_request: bool = True
 
     def __init__(self, request: Any = None) -> None:
         self.request = request
@@ -37,18 +52,33 @@ class GateFilter(BaseFilter):
 
     Honors the ``can`` key (a permission string, a list of strings, or a
     callable receiving the request) and an optional ``can_params`` object passed
-    to :meth:`~django.contrib.auth.models.User.has_perm`.
+    to :meth:`~django.contrib.auth.models.User.has_perm`. Recurses into
+    submenus: unauthorized children are removed, and a parent whose children
+    are all removed is dropped too unless it links somewhere itself.
     """
 
     def transform(self, item: Item) -> Item | None:
+        if not self._allowed(item):
+            return None
+
+        if isinstance(item.get("submenu"), list):
+            item["submenu"] = [
+                child for child in map(self.transform, item["submenu"]) if child is not None
+            ]
+            if not item["submenu"] and not any(k in item for k in ("url", "route", "href")):
+                return None
+
+        return item
+
+    def _allowed(self, item: Item) -> bool:
         if "can" not in item:
-            return item
+            return True
 
         user = getattr(self.request, "user", None)
         if user is None:
             # No auth context available — leave the item as-is (mirrors the
             # Laravel "no gate available" branch).
-            return item
+            return True
 
         abilities = item["can"]
         if not isinstance(abilities, (list, tuple)):
@@ -58,11 +88,11 @@ class GateFilter(BaseFilter):
         for ability in abilities:
             if callable(ability):
                 if ability(self.request):
-                    return item
+                    return True
             elif user.has_perm(ability, obj):
-                return item
+                return True
 
-        return None
+        return False
 
 
 class HrefFilter(BaseFilter):
@@ -71,7 +101,13 @@ class HrefFilter(BaseFilter):
     Recurses into submenus. An item with neither resolves to ``"#"``. The
     original ``url`` key is preserved so :class:`ActiveFilter` can derive
     patterns from it.
+
+    Request-independent: with ``i18n_patterns`` the result depends on the
+    active language, which the prefilter cache keys on (see the context
+    processor) — so it still runs once per process *per language*.
     """
+
+    per_request = False
 
     def transform(self, item: Item) -> Item | None:
         if isinstance(item.get("submenu"), list):
@@ -141,7 +177,13 @@ class ActiveFilter(BaseFilter):
         if isinstance(patterns, str):
             patterns = [patterns]
 
+        # Derive patterns from the raw `url`, falling back to the resolved
+        # `href` so `route:` items get automatic active detection too.
         url = item.get("url")
+        if url is None:
+            href = item.get("href")
+            if href and href != "#" and not _EXTERNAL_RE.match(href):
+                url = href
         if not patterns and url and url not in ("#", "/"):
             stripped = url.strip("/")
             patterns = [stripped, stripped + "/*"]
@@ -160,14 +202,15 @@ class ActiveFilter(BaseFilter):
                 if path == "":
                     return True
                 continue
-            regex = "^" + re.escape(pattern.strip("/")).replace(r"\*", ".*") + "$"
-            if re.fullmatch(regex, path):
+            if _pattern_regex(pattern).fullmatch(path):
                 return True
         return False
 
 
 class SearchFilter(BaseFilter):
     """Normalize navbar-search items, ensuring method/placeholder/url defaults."""
+
+    per_request = False
 
     def transform(self, item: Item) -> Item | None:
         if item.get("type") != "navbar-search":

@@ -14,6 +14,9 @@ import warnings
 from typing import Any
 
 from django.conf import settings
+from django.core.signals import setting_changed
+from django.dispatch import receiver
+from django.utils.functional import lazy
 
 #: The default filter pipeline (dotted paths), applied in order. Mirrors the
 #: Laravel ``filters`` array (Gate -> Href -> Active -> Search).
@@ -27,6 +30,16 @@ DEFAULT_FILTERS = [
 #: Optional JS plugins (lazy-loaded in v2). Present here so config validation
 #: doesn't warn when a project pre-declares them; the plugin manager is v2.
 DEFAULT_PLUGINS: dict[str, Any] = {}
+
+
+def _default_footer_left() -> str:
+    # Evaluated lazily (per render, via ``lazy``) so a long-running worker
+    # never shows a stale copyright year.
+    return (
+        'Copyright &copy; 2014-{year} '
+        '<a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>. '
+        "All rights reserved."
+    ).format(year=datetime.date.today().year)
 
 DEFAULTS: dict[str, Any] = {
     # --- Title ---
@@ -62,11 +75,7 @@ DEFAULTS: dict[str, Any] = {
     "layout_dark_mode": None,       # None = respect system / user toggle
     "layout_rtl": False,            # right-to-left layout
     # --- Footer & Preloader ---
-    "footer_left": (
-        'Copyright &copy; 2014-{year} '
-        '<a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>. '
-        "All rights reserved."
-    ).format(year=datetime.date.today().year),
+    "footer_left": lazy(_default_footer_left, str)(),
     "footer_right": "Anything you want",
     "preloader": False,
     "control_sidebar": False,
@@ -89,6 +98,9 @@ DEFAULTS: dict[str, Any] = {
     "classes_topnav_container": "container-fluid",
     # --- Color mode toggle ---
     "color_mode_toggle": True,
+    # --- Language switcher (topbar dropdown posting to set_language) ---
+    # Requires LANGUAGES plus path("i18n/", include("django.conf.urls.i18n")).
+    "language_switcher": False,
     # --- Front-end asset delivery ---
     # "vite": load assets via django-vite (the demo/dev default).
     # "static": load the pre-built bundle shipped in the package (no Node).
@@ -106,12 +118,32 @@ DEFAULTS: dict[str, Any] = {
 }
 
 
+#: Process-wide cache of the merged config. ``settings.ADMINLTE`` cannot change
+#: at runtime outside of tests, and tests fire ``setting_changed`` (which the
+#: receiver below listens to), so caching the merge is always safe.
+_config_cache: dict[str, Any] | None = None
+
+
 def get_config() -> dict[str, Any]:
-    """Return the merged AdminLTE config (``settings.ADMINLTE`` over defaults)."""
-    user = getattr(settings, "ADMINLTE", {}) or {}
-    if not isinstance(user, dict):
-        raise TypeError("settings.ADMINLTE must be a dict.")
-    return {**DEFAULTS, **user}
+    """Return the merged AdminLTE config (``settings.ADMINLTE`` over defaults).
+
+    The merge is computed once per process and cached. Treat the returned dict
+    as read-only — it is shared between requests.
+    """
+    global _config_cache
+    if _config_cache is None:
+        user = getattr(settings, "ADMINLTE", {}) or {}
+        if not isinstance(user, dict):
+            raise TypeError("settings.ADMINLTE must be a dict.")
+        _config_cache = {**DEFAULTS, **user}
+    return _config_cache
+
+
+@receiver(setting_changed)
+def _clear_config_cache(*, setting: str | None = None, **kwargs: Any) -> None:
+    if setting == "ADMINLTE":
+        global _config_cache
+        _config_cache = None
 
 
 def validate_config() -> list[str]:

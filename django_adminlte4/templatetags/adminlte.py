@@ -106,6 +106,46 @@ def add_class(field, css: str):
     return field.as_widget(attrs=attrs)
 
 
+def _widget_css(field) -> str:
+    """Pick the Bootstrap 5 class for a bound field's widget type."""
+    from django import forms
+
+    widget = field.field.widget
+    if isinstance(widget, (forms.CheckboxInput, forms.RadioSelect, forms.CheckboxSelectMultiple)):
+        return "form-check-input"
+    if isinstance(widget, forms.Select):
+        return "form-select"
+    input_type = getattr(widget, "input_type", None)
+    if input_type == "range":
+        return "form-range"
+    if input_type == "color":
+        return "form-control form-control-color"
+    return "form-control"
+
+
+@register.filter
+def adminlte_widget(field):
+    """Render a bound field's widget with the right Bootstrap 5 classes.
+
+    Used by the :class:`~django_adminlte4.forms.AdminLTEFormRenderer` field
+    template: ``form-control`` / ``form-select`` / ``form-check-input`` /
+    ``form-range`` by widget type, plus ``is-invalid`` when the field has
+    errors.
+    """
+    css = _widget_css(field)
+    if field.errors:
+        css += " is-invalid"
+    return add_class(field, css)
+
+
+@register.filter
+def adminlte_is_check(field) -> bool:
+    """True when the field is a single checkbox (rendered in a .form-check)."""
+    from django import forms
+
+    return isinstance(field.field.widget, forms.CheckboxInput)
+
+
 # Map Django message levels -> Bootstrap contextual class + Bootstrap Icon.
 _ALERT_CLASS = {"debug": "secondary", "info": "info", "success": "success", "warning": "warning", "error": "danger"}
 _ALERT_ICON = {

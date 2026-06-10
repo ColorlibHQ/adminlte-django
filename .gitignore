@@ -19,7 +19,7 @@ db.sqlite3
 
 # Node / Vite
 node_modules/
-assets/dist/
+**/assets/dist/
 .vite/
 
 # OS / editors

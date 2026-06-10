@@ -63,3 +63,16 @@ def test_navbar_hides_dropdowns_when_unset(rf, settings):
     assert "bi bi-chat-text" not in html       # no messages dropdown
     assert "bi bi-bell-fill" not in html       # no notifications dropdown
     assert "user-header" not in html           # falls back to the simple user menu
+
+
+def test_language_switcher_hidden_by_default(rf, settings):
+    html = _navbar(rf, settings, {"menu": []})
+    assert "bi-translate" not in html
+
+
+def test_language_switcher_renders_languages(rf, settings):
+    settings.LANGUAGES = [("en", "English"), ("es", "Español")]
+    html = _navbar(rf, settings, {"menu": [], "language_switcher": True})
+    assert "bi-translate" in html
+    assert "/i18n/setlang/" in html
+    assert 'value="es"' in html

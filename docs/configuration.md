@@ -107,6 +107,12 @@ Append your own classes to layout elements:
 |---|---|---|
 | `color_mode_toggle` | `True` | Show the Light / Dark / Auto switcher in the topbar. |
 
+## Language switcher
+
+| Key | Default | Description |
+|---|---|---|
+| `language_switcher` | `False` | Topbar dropdown posting to Django's `set_language`. Requires `LANGUAGES` and `path("i18n/", include("django.conf.urls.i18n"))`. See [i18n](i18n.md). |
+
 ## Assets
 
 | Key | Default | Description |
@@ -128,5 +134,16 @@ See [Django admin](admin.md).
 | Key | Default | Description |
 |---|---|---|
 | `menu` | `[]` | The sidebar/topnav menu definition. See [Sidebar menu](menu.md). |
-| `filters` | `GateFilter, HrefFilter, ActiveFilter, SearchFilter` | Ordered dotted-path filter pipeline applied per request. |
+| `filters` | `GateFilter, HrefFilter, ActiveFilter, SearchFilter` | Ordered dotted-path filter pipeline. Request-independent filters run once per process; see [Sidebar menu](menu.md#filter-pipeline). |
 | `plugins` | `{}` | Reserved for plugin configuration. |
+
+!!! note "The merged config is cached"
+    `get_config()` merges `settings.ADMINLTE` over the defaults **once per
+    process** (invalidated automatically under `override_settings`). Treat the
+    returned dict as read-only, and configure everything in settings rather
+    than mutating it at runtime.
+
+Misconfigurations (unknown keys, misspelled menu items, a missing
+django-components loader or context processor) are reported by Django's system
+checks — look for `adminlte.W001/E002/W003/W004` in `manage.py check` and
+`runserver` output.

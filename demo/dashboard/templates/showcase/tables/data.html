@@ -63,6 +63,7 @@
       };
 
       document.addEventListener('DOMContentLoaded', () => {
+        adminlteUse("tabulator").then(function () {
         const data = [
           {
             id: 1,
@@ -240,6 +241,7 @@
         document
           .getElementById('print-table')
           .addEventListener('click', () => table.print(false, true));
+        });
       });
     </script>
 {% endblock %}

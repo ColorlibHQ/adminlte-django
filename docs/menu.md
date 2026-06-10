@@ -42,14 +42,26 @@ ADMINLTE = {
 `transform(item) -> item | None` method (returning `None` drops the item). The
 defaults:
 
-| Filter | Does |
-|---|---|
-| `GateFilter` | Drops items the current user may not see (`can`). |
-| `HrefFilter` | Resolves `route` / `url` to a final `href`. |
-| `ActiveFilter` | Marks the item (and parents) active for the current URL. |
-| `SearchFilter` | Normalises navbar-search items. |
+| Filter | Does | Runs |
+|---|---|---|
+| `GateFilter` | Drops items the current user may not see (`can`); recurses into submenus, and drops a parent whose children were all removed unless it links somewhere itself. | per request |
+| `HrefFilter` | Resolves `route` / `url` to a final `href`. | once per process |
+| `ActiveFilter` | Marks the item (and parents) active for the current URL. `route:` items work too — patterns are derived from the resolved `href` when no raw `url` exists. | per request |
+| `SearchFilter` | Normalises navbar-search items. | once per process |
 
-Add your own by appending its dotted path to `filters`.
+Filters declare whether they depend on the request via a `per_request` class
+attribute. Request-independent filters (`per_request = False`) run **once per
+process** over the config menu — so `reverse()` is not re-run on every request —
+while the gate and active-state filters run per request. The cached half is
+keyed by active language (correct under `i18n_patterns`) and invalidated on
+`setting_changed`.
+
+Add your own by appending its dotted path to `filters`. Custom filters default
+to `per_request = True`, which is always safe; set `per_request = False` only
+if the filter's output is identical for every request.
+
+The menus exposed to templates are lazy: a template that never renders the
+sidebar or navbar never builds the menu at all.
 
 ## Topbar dropdowns
 
