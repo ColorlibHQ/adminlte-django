@@ -7,6 +7,11 @@ works automatically (ActiveFilter derives patterns from the resolved href)."""
 
 _circle = "bi bi-circle"
 
+
+def _is_staff(request) -> bool:
+    """`can` callables receive the current request (GateFilter)."""
+    return request.user.is_staff
+
 ADMINLTE_MENU = [
     {
         "text": "Dashboard",
@@ -111,6 +116,24 @@ ADMINLTE_MENU = [
                 ],
             },
         ],
+    },
+    # --- GateFilter showcase -------------------------------------------------
+    # These items run through the menu's per-request Gate filter. Anonymous
+    # visitors don't see them; log in (admin / adminpass) and they appear.
+    # `can` accepts a callable receiving the request, a permission string
+    # (checked via user.has_perm), or a list of either.
+    {"header": "STAFF ONLY", "can": _is_staff},
+    {
+        "text": "Django Admin",
+        "route": "admin:index",
+        "icon": "bi bi-shield-lock",
+        "can": _is_staff,
+    },
+    {
+        "text": "Manage Companies",
+        "route": "admin:crud_company_changelist",
+        "icon": "bi bi-buildings",
+        "can": "crud.change_company",  # permission-string flavor
     },
     {"header": "EXAMPLES"},
     {
