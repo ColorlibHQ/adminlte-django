@@ -327,6 +327,7 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    adminlteUse("sortable").then(function () {
     document.querySelectorAll('.kanban-cards').forEach((el) => {
       new Sortable(el, {
         group: 'kanban',
@@ -360,6 +361,7 @@
         lane.append(card);
         updateLaneCount(lane);
       });
+    });
     });
   });
 </script>

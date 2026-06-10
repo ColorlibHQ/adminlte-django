@@ -1,8 +1,9 @@
-// Demo front-end entry — AdminLTE 4 + Bootstrap + the optional plugin set used
-// by the showcase pages (charts, maps, tables, pickers, calendar, sortable).
+// Demo front-end entry — AdminLTE 4 + Bootstrap in the core bundle; every
+// page-specific plugin (charts, maps, tables, editor, calendar, sortable) is
+// code-split and loaded on demand, so e.g. the login page ships none of them.
 import "./app.scss";
 
-// Third-party CSS.
+// Third-party CSS used on every page.
 import "overlayscrollbars/overlayscrollbars.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -13,71 +14,134 @@ import { OverlayScrollbars } from "overlayscrollbars";
 window.OverlayScrollbars = OverlayScrollbars;
 import "admin-lte";
 
-// Optional plugins used by specific demo pages (exposed on window for inline init).
-import ApexCharts from "apexcharts";
-window.ApexCharts = ApexCharts;
-import jsVectorMap from "jsvectormap";
-import "jsvectormap/dist/maps/world.js";
-window.jsVectorMap = jsVectorMap;
-import { TabulatorFull as Tabulator } from "tabulator-tables";
-import "tabulator-tables/dist/css/tabulator_bootstrap5.min.css";
-window.Tabulator = Tabulator;
-import Quill from "quill";
-import "quill/dist/quill.snow.css";
-window.Quill = Quill;
-import Sortable from "sortablejs";
-window.Sortable = Sortable;
-// FullCalendar 6 (self-hosted; CSS is injected by the JS). Expose a global that
-// mirrors the CDN bundle's API — a Calendar with the standard plugins baked in —
-// so pages can `new FullCalendar.Calendar(el, {...})` / `new FullCalendar.Draggable(...)`.
-import { Calendar as FullCalendarBase } from "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
-import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
-const FC_PLUGINS = [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin];
-class Calendar extends FullCalendarBase {
-  constructor(el, options = {}) {
-    super(el, { plugins: [...FC_PLUGINS, ...(options.plugins || [])], ...options });
-  }
+// --- Lazy plugin registry -------------------------------------------------
+// Each loader dynamically imports its chunk (Vite code-splits automatically),
+// exposes the library on `window` for the page scripts, and resolves with it.
+const loaders = {
+  apexcharts: async () => {
+    const { default: ApexCharts } = await import("apexcharts");
+    window.ApexCharts = ApexCharts;
+    return ApexCharts;
+  },
+  jsvectormap: async () => {
+    const { default: jsVectorMap } = await import("jsvectormap");
+    window.jsVectorMap = jsVectorMap; // map files register against the global
+    await import("jsvectormap/dist/maps/world.js");
+    return jsVectorMap;
+  },
+  tabulator: async () => {
+    const [{ TabulatorFull }] = await Promise.all([
+      import("tabulator-tables"),
+      import("tabulator-tables/dist/css/tabulator_bootstrap5.min.css"),
+    ]);
+    window.Tabulator = TabulatorFull;
+    return TabulatorFull;
+  },
+  quill: async () => {
+    const [{ default: Quill }] = await Promise.all([
+      import("quill"),
+      import("quill/dist/quill.snow.css"),
+    ]);
+    window.Quill = Quill;
+    return Quill;
+  },
+  sortable: async () => {
+    const { default: Sortable } = await import("sortablejs");
+    window.Sortable = Sortable;
+    return Sortable;
+  },
+  // FullCalendar 6 (self-hosted; CSS is injected by the JS). Expose a global
+  // that mirrors the CDN bundle's API — a Calendar with the standard plugins
+  // baked in — so pages can `new FullCalendar.Calendar(el, {...})`.
+  fullcalendar: async () => {
+    const [core, daygrid, timegrid, list, interaction] = await Promise.all([
+      import("@fullcalendar/core"),
+      import("@fullcalendar/daygrid"),
+      import("@fullcalendar/timegrid"),
+      import("@fullcalendar/list"),
+      import("@fullcalendar/interaction"),
+    ]);
+    const plugins = [daygrid.default, timegrid.default, list.default, interaction.default];
+    class Calendar extends core.Calendar {
+      constructor(el, options = {}) {
+        super(el, { plugins: [...plugins, ...(options.plugins || [])], ...options });
+      }
+    }
+    const FullCalendar = { Calendar, Draggable: interaction.Draggable, plugins };
+    window.FullCalendar = FullCalendar;
+    return FullCalendar;
+  },
+};
+
+const loadedPlugins = {};
+/**
+ * Load the named plugins (deduplicated) and resolve with them in order:
+ *
+ *   adminlteUse("apexcharts", "jsvectormap").then(([ApexCharts]) => { ... });
+ *
+ * Page scripts call this inside DOMContentLoaded, which is guaranteed to fire
+ * after this module has executed (module scripts delay DOMContentLoaded).
+ */
+function adminlteUse(...names) {
+  return Promise.all(names.map((name) => (loadedPlugins[name] ??= loaders[name]())));
 }
-window.FullCalendar = { Calendar, Draggable, dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin };
+window.adminlteUse = adminlteUse;
 
 // --- AdminLTE Tool component initializer (data-attr -> widget) ---
+// Fetches only the plugins actually present in the DOM.
 const parseCfg = (j) => { try { return JSON.parse(j || "{}"); } catch { return {}; } };
-function initAdminltePlugins(root = document) {
-  root.querySelectorAll("[data-apexchart]").forEach((el) => {
-    if (el.dataset.lteInit) return; el.dataset.lteInit = "1";
-    new ApexCharts(el, parseCfg(el.dataset.apexchartConfig)).render();
-  });
-  root.querySelectorAll("[data-jsvectormap]").forEach((el) => {
-    if (el.dataset.lteInit) return; el.dataset.lteInit = "1";
-    new jsVectorMap({ selector: el, ...parseCfg(el.dataset.jsvectormapConfig) });
-  });
-  root.querySelectorAll("[data-tabulator]").forEach((el) => {
-    if (el.dataset.lteInit) return; el.dataset.lteInit = "1";
-    new Tabulator(el, parseCfg(el.dataset.tabulatorConfig));
-  });
-  root.querySelectorAll("[data-quill]").forEach((el) => {
-    if (el.dataset.lteInit) return; el.dataset.lteInit = "1";
+
+const componentInits = [
+  ["[data-apexchart]", "apexcharts", (el, ApexCharts) =>
+    new ApexCharts(el, parseCfg(el.dataset.apexchartConfig)).render()],
+  ["[data-jsvectormap]", "jsvectormap", (el, jsVectorMap) =>
+    new jsVectorMap({ selector: el, ...parseCfg(el.dataset.jsvectormapConfig) })],
+  ["[data-tabulator]", "tabulator", (el, Tabulator) =>
+    new Tabulator(el, parseCfg(el.dataset.tabulatorConfig))],
+  ["[data-quill]", "quill", (el, Quill) => {
     const quill = new Quill(el, parseCfg(el.dataset.quillConfig));
     const target = el.dataset.quillTarget && document.querySelector(el.dataset.quillTarget);
     if (target && target.value) quill.root.innerHTML = target.value;
     if (target) quill.on("text-change", () => { target.value = quill.root.innerHTML; });
-  });
-  root.querySelectorAll("[data-sortable]").forEach((el) => {
-    if (el.dataset.lteInit) return; el.dataset.lteInit = "1";
-    new Sortable(el, parseCfg(el.dataset.sortableConfig));
-  });
+  }],
+  ["[data-sortable]", "sortable", (el, Sortable) =>
+    new Sortable(el, parseCfg(el.dataset.sortableConfig))],
+];
+
+function initAdminltePlugins(root = document) {
+  for (const [selector, plugin, init] of componentInits) {
+    const els = [...root.querySelectorAll(selector)].filter((el) => !el.dataset.lteInit);
+    if (!els.length) continue;
+    els.forEach((el) => { el.dataset.lteInit = "1"; });
+    adminlteUse(plugin).then(([lib]) => els.forEach((el) => init(el, lib)));
+  }
 }
+
 document.addEventListener("DOMContentLoaded", () => {
   initAdminltePlugins();
-  // ApexCharts/jsVectorMap read their parent width at render time and can
-  // overflow the card before the grid settles. Nudge a resize so every chart
-  // on the page — including the ported dashboards' own inline charts — refits
-  // to its container.
-  setTimeout(() => window.dispatchEvent(new Event("resize")), 250);
+
+  // ApexCharts/jsVectorMap size against their parent at render time, and the
+  // grid (or a sidebar collapse) can change that width afterwards. Observe the
+  // content area and re-fit charts whenever its width actually changes. The
+  // width guard prevents observer feedback loops: a chart redraw can change
+  // heights, never the container's width.
+  const main = document.querySelector(".app-main");
+  if (main && "ResizeObserver" in window) {
+    let lastWidth = main.getBoundingClientRect().width;
+    let scheduled = false;
+    new ResizeObserver((entries) => {
+      const width = entries[entries.length - 1].contentRect.width;
+      if (width === lastWidth || scheduled) return;
+      lastWidth = width;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        scheduled = false;
+        window.dispatchEvent(new Event("resize"));
+      });
+    }).observe(main);
+  }
 });
+// One refit after everything (fonts, images) has loaded and the layout is final.
 window.addEventListener("load", () => window.dispatchEvent(new Event("resize")));
 
 // --- Sidebar custom scrollbar (mirrors the HTML demo's inline init) ---

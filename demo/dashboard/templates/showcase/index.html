@@ -452,6 +452,7 @@
     <!-- sortablejs -->
     <script>
 document.addEventListener("DOMContentLoaded", function () {
+  adminlteUse("sortable").then(function () {
       new Sortable(document.querySelector('.connectedSortable'), {
         group: 'shared',
         handle: '.card-header',
@@ -462,6 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cardHeader.style.cursor = 'move';
       });
     
+  });
 });
 </script>
 
@@ -470,6 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <!-- ChartJS -->
     <script>
 document.addEventListener("DOMContentLoaded", function () {
+  adminlteUse("apexcharts").then(function () {
       // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
       // IT'S ALL JUST JUNK FOR DEMO
       // ++++++++++++++++++++++++++++++++++++++++++
@@ -527,6 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       sales_chart.render();
     
+  });
 });
 </script>
 
@@ -535,6 +539,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <!-- jsvectormap -->
     <script>
 document.addEventListener("DOMContentLoaded", function () {
+  adminlteUse("jsvectormap", "apexcharts").then(function () {
       // World map by jsVectorMap
       new jsVectorMap({
         selector: '#world-map',
@@ -626,6 +631,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
       sparkline3.render();
     
+  });
 });
 </script>
 {% endblock %}
