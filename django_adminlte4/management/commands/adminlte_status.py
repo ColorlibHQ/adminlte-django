@@ -15,13 +15,13 @@ from django_adminlte4.conf import get_config, validate_config
 
 
 class Command(BaseCommand):
-    help = "Show the django-adminlte4 version, resolved config and asset status."
+    help = "Show the adminlte-django version, resolved config and asset status."
 
     def handle(self, *args, **options):
         cfg = get_config()
         unknown = validate_config()
 
-        self.stdout.write(self.style.MIGRATE_HEADING("django-adminlte4"))
+        self.stdout.write(self.style.MIGRATE_HEADING("adminlte-django"))
         self.stdout.write(f"  package version : {django_adminlte4.__version__}")
         self.stdout.write(f"  AdminLTE target : {django_adminlte4.ADMINLTE_VERSION}")
         self.stdout.write("")
