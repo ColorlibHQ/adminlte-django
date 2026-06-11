@@ -3,7 +3,18 @@
 All notable changes to `django-adminlte4` are documented here. The format is
 based on [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## [0.1.1] — 2026-06-11
+
+### Fixed
+
+- README images and documentation links are now absolute URLs, so they render
+  on the PyPI project page (relative paths only resolve on GitHub).
+- `adminlte_status` prints the new distribution name `adminlte-django`.
+
+## [0.1.0] — 2026-06-11
+
+First PyPI release, published as **`adminlte-django`** (the import name remains
+`django_adminlte4`).
 
 ### Added — performance & Django-native rendering
 
