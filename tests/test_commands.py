@@ -25,7 +25,7 @@ def test_status_prints_version(tmp_path):
     out = io.StringIO()
     call_command("adminlte_status", stdout=out)
     text = out.getvalue()
-    assert "django-adminlte4" in text
+    assert "adminlte-django" in text
     assert "registered" in text
 
 

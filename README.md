@@ -72,7 +72,7 @@ mkdocs serve        # http://127.0.0.1:8000  (or: mkdocs build)
 ## Installation
 
 ```bash
-pip install django-adminlte4
+pip install adminlte-django
 ```
 
 ### 1. Settings

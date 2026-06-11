@@ -33,7 +33,7 @@ tables, auth, messages, pagination and i18n.
 ## Quickstart
 
 ```bash
-pip install django-adminlte4
+pip install adminlte-django
 ```
 
 ```python

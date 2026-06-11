@@ -1,4 +1,4 @@
-"""Settings for the django-adminlte4 demo / starter project.
+"""Settings for the adminlte-django demo / starter project.
 
 Twelve-factor style: secrets and environment-specific values are read from the
 environment. In development, copy ``.env.example`` to ``.env`` (the local file
@@ -140,7 +140,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     BASE_DIR / "assets" / "dist",
     # Demo-only images (avatars, product shots, …) used by the showcase pages.
-    # They live here — not in the package — so `pip install django-adminlte4`
+    # They live here — not in the package — so `pip install adminlte-django`
     # doesn't ship megabytes of sample photos.
     BASE_DIR / "static",
 ]

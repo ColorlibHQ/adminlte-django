@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "django-adminlte4"
+name = "adminlte-django"
 version = "0.1.0"
 description = "Official AdminLTE 4 integration for Django — Bootstrap 5.3, vanilla JS, Vite-ready."
 readme = "README.md"
@@ -58,7 +58,7 @@ docs = [
 
 [project.urls]
 Homepage = "https://adminlte.io"
-Repository = "https://github.com/ColorlibHQ/django-adminlte4"
+Repository = "https://github.com/ColorlibHQ/adminlte-django"
 
 [tool.hatch.build.targets.wheel]
 packages = ["django_adminlte4"]

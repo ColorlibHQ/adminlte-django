@@ -3,16 +3,16 @@
 ## Install
 
 ```bash
-pip install django-adminlte4
+pip install adminlte-django
 ```
 
 Optional integrations are extras — install only what you use:
 
 | Extra | Adds |
 |---|---|
-| `django-adminlte4[crispy]` | crispy-forms whole-form rendering ([Forms](forms.md)) |
-| `django-adminlte4[tables]` | django-tables2 + django-filter ([Tables](tables.md)) |
-| `django-adminlte4[allauth]` | django-allauth theming ([Auth](auth.md)) |
+| `adminlte-django[crispy]` | crispy-forms whole-form rendering ([Forms](forms.md)) |
+| `adminlte-django[tables]` | django-tables2 + django-filter ([Tables](tables.md)) |
+| `adminlte-django[allauth]` | django-allauth theming ([Auth](auth.md)) |
 
 ## Settings
 
