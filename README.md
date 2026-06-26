@@ -32,6 +32,9 @@ tables, auth, messages, pagination and i18n. By [Colorlib](https://colorlib.com)
   <a href="https://github.com/ColorlibHQ/adminlte-vue"><img height="36" alt="Nuxt" src="https://img.shields.io/badge/Nuxt-00DC82?style=for-the-badge&logo=nuxt&logoColor=white"></a>
   <a href="https://github.com/ColorlibHQ/adminlte-laravel"><img height="36" alt="Laravel" src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"></a>
   <a href="https://github.com/ColorlibHQ/adminlte-django"><img height="36" alt="Django" src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-symfony"><img height="36" alt="Symfony" src="https://img.shields.io/badge/Symfony-000000?style=for-the-badge&logo=symfony&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-angular"><img height="36" alt="Angular" src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white"></a>
+  <a href="https://github.com/ColorlibHQ/adminlte-aspnet"><img height="36" alt="ASP.NET" src="https://img.shields.io/badge/ASP.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white"></a>
 </p>
 
 <p align="center"><sub>
@@ -41,7 +44,10 @@ tables, auth, messages, pagination and i18n. By [Colorlib](https://colorlib.com)
   <a href="https://github.com/ColorlibHQ/adminlte-vue">Vue</a> ·
   <a href="https://github.com/ColorlibHQ/adminlte-vue">Nuxt</a> ·
   <a href="https://github.com/ColorlibHQ/adminlte-laravel">Laravel</a> ·
-  <a href="https://github.com/ColorlibHQ/adminlte-django">Django</a>
+  <a href="https://github.com/ColorlibHQ/adminlte-django">Django</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-symfony">Symfony</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-angular">Angular</a> ·
+  <a href="https://github.com/ColorlibHQ/adminlte-aspnet">ASP.NET</a>
 </sub></p>
 
 > **v1 scope:** layout, menu + filter pipeline, auth pages, and the Form +
