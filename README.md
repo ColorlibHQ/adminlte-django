@@ -42,6 +42,11 @@ tables, auth, messages, pagination and i18n. By [Colorlib](https://colorlib.com)
 </div>
 <!-- ADMINLTE-ECOSYSTEM:END -->
 
+<p align="center">
+  <a href="https://django.adminlte.io"><img src=".github/preview.png" alt="AdminLTE 4 for Django — dashboard preview" width="100%"></a>
+</p>
+
+
 > **v1 scope:** layout, menu + filter pipeline, auth pages, and the Form +
 > Widget component families. Tool/plugin components (datatable, charts,
 > calendar, editor, kanban, vector-map) land in v2.
