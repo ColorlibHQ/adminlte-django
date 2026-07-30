@@ -16,10 +16,10 @@ tables, auth, messages, pagination and i18n. By [Colorlib](https://colorlib.com)
 
 <p align="center">
   <a href="https://django.adminlte.io/">
-    <img alt="Django AdminLTE 4 dashboard — light theme" src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboard-light.png" width="49%">
+    <img alt="Django AdminLTE 4 dashboard — light theme" src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboard-light.webp" width="49%">
   </a>
   <a href="https://django.adminlte.io/">
-    <img alt="Django AdminLTE 4 dashboard — dark theme" src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboard-dark.png" width="49%">
+    <img alt="Django AdminLTE 4 dashboard — dark theme" src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboard-dark.webp" width="49%">
   </a>
 </p>
 
@@ -43,7 +43,7 @@ tables, auth, messages, pagination and i18n. By [Colorlib](https://colorlib.com)
 <!-- ADMINLTE-ECOSYSTEM:END -->
 
 <p align="center">
-  <a href="https://django.adminlte.io"><img src=".github/preview.png" alt="AdminLTE 4 for Django — dashboard preview" width="100%"></a>
+  <a href="https://django.adminlte.io"><img src=".github/preview.webp" alt="AdminLTE 4 for Django — dashboard preview" width="100%"></a>
 </p>
 
 
@@ -439,7 +439,7 @@ Need advanced features, more pages, and dedicated support? Explore Colorlib's co
   <tr>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
-        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/apex.png" alt="Apex Dashboard — Next.js admin template with shadcn/ui" width="100%">
+        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/apex.webp" alt="Apex Dashboard — Next.js admin template with shadcn/ui" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/apex-dashboard-nextjs/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Apex Dashboard</strong></a>
@@ -448,7 +448,7 @@ Need advanced features, more pages, and dedicated support? Explore Colorlib's co
     </td>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
-        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/zenith.png" alt="Zenith — minimal Next.js admin dashboard with shadcn/ui" width="100%">
+        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/zenith.webp" alt="Zenith — minimal Next.js admin dashboard with shadcn/ui" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/zenith-shadcn/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Zenith Dashboard</strong></a>
@@ -459,7 +459,7 @@ Need advanced features, more pages, and dedicated support? Explore Colorlib's co
   <tr>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
-        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/haze.png" alt="Haze — Nuxt 4 admin dashboard with 92+ pages" width="100%">
+        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/haze.webp" alt="Haze — Nuxt 4 admin dashboard with 92+ pages" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/haze-dashboard-nuxt/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Haze</strong></a>
@@ -468,7 +468,7 @@ Need advanced features, more pages, and dedicated support? Explore Colorlib's co
     </td>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
-        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/tailpanel.png" alt="TailPanel — React and Tailwind CSS admin panel" width="100%">
+        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/tailpanel.webp" alt="TailPanel — React and Tailwind CSS admin panel" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/tailpanel/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>TailPanel</strong></a>
@@ -479,7 +479,7 @@ Need advanced features, more pages, and dedicated support? Explore Colorlib's co
   <tr>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
-        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/admindek.png" alt="Admindek — feature-rich Bootstrap 5 dashboard" width="100%">
+        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/admindek.webp" alt="Admindek — feature-rich Bootstrap 5 dashboard" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/admindek-html/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>Admindek</strong></a>
@@ -488,7 +488,7 @@ Need advanced features, more pages, and dedicated support? Explore Colorlib's co
     </td>
     <td align="center" width="50%">
       <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django">
-        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/svelteforge.png" alt="SvelteForge Premium — SvelteKit admin dashboard" width="100%">
+        <img src="https://raw.githubusercontent.com/ColorlibHQ/adminlte-django/main/docs/screenshots/dashboardpack/svelteforge.webp" alt="SvelteForge Premium — SvelteKit admin dashboard" width="100%">
       </a>
       <br>
       <a href="https://dashboardpack.com/theme-details/svelteforge-premium/?utm_source=github&utm_medium=readme&utm_campaign=adminlte-django"><strong>SvelteForge Premium</strong></a>
