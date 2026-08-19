@@ -154,48 +154,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// --- Color mode toggle (Light / Dark / Auto) — inline in the HTML demo's _scripts ---
-(() => {
-  "use strict";
-  const KEY = "lte-theme";
-  const stored = () => localStorage.getItem(KEY);
-  const prefersDark = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const preferred = () => stored() || (prefersDark() ? "dark" : "light");
-  const apply = (t) =>
-    document.documentElement.setAttribute("data-bs-theme", t === "auto" ? (prefersDark() ? "dark" : "light") : t);
-
-  apply(preferred());
-
-  const showActive = (theme) => {
-    document.querySelectorAll("[data-bs-theme-value]").forEach((el) => {
-      el.classList.remove("active");
-      el.setAttribute("aria-pressed", "false");
-      el.querySelector(".bi-check-lg")?.classList.add("d-none");
-    });
-    const active = document.querySelector(`[data-bs-theme-value="${theme}"]`);
-    if (active) {
-      active.classList.add("active");
-      active.setAttribute("aria-pressed", "true");
-      active.querySelector(".bi-check-lg")?.classList.remove("d-none");
-    }
-    document.querySelectorAll("[data-lte-theme-icon]").forEach((icon) => {
-      icon.classList.toggle("d-none", icon.dataset.lteThemeIcon !== theme);
-    });
-  };
-
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    if (!stored() || stored() === "auto") apply(preferred());
-  });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    showActive(preferred());
-    document.querySelectorAll("[data-bs-theme-value]").forEach((toggle) => {
-      toggle.addEventListener("click", () => {
-        const theme = toggle.getAttribute("data-bs-theme-value");
-        localStorage.setItem(KEY, theme);
-        apply(theme);
-        showActive(theme);
-      });
-    });
-  });
-})();
+// --- Color mode (Light / Dark / Auto) ---
+// Handled by AdminLTE's bundled ColorMode module (since 4.1) — it owns the
+// [data-bs-theme-value] toggles, the [data-lte-theme-icon] icons and the
+// `lte-theme` storage key, and honours the theme declared in the markup by
+// ADMINLTE["dark_mode"]. Do not re-implement it here.

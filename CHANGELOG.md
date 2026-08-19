@@ -3,6 +3,35 @@
 All notable changes to `django-adminlte4` are documented here. The format is
 based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Changed
+
+- Target **AdminLTE 4.8.1** (was 4.0.0). Bumped in all three places the version
+  is pinned — the demo's `package.json`, the `package.json` stub written by
+  `adminlte_install`, and the `ADMINLTE_VERSION` marker reported by
+  `adminlte_status`. The pre-built assets shipped for the Node-optional path
+  (`adminlte.min.css`, `adminlte.rtl.min.css` and `adminlte.min.js` under
+  `django_adminlte4/static/adminlte/dist/`) were refreshed from the 4.8.1 dist.
+  Upstream additions projects can now opt into: the extended palette and the
+  AdminLTE 3 palette sheets, `data-lte-primary="…"` to promote a palette colour
+  to Bootstrap's `primary`, `data-lte-print="plain"` for document printing,
+  `data-lte-contrast="aa"` for WCAG AA text on the v3 palette, plus sidebar
+  search and ribbons.
+
+### Fixed
+
+- The Light/Dark/Auto switcher no longer runs two implementations at once.
+  AdminLTE has bundled its own `ColorMode` module since 4.1; the copies in
+  `demo/assets/app.js` and `static/adminlte/dist/js/adminlte.init.js` — written
+  when 4.0 shipped none — bound a second set of handlers to the same
+  `[data-bs-theme-value]` toggles. They also resolved the theme as *stored → OS*,
+  ignoring the theme declared in the markup, so with
+  `ADMINLTE["dark_mode"] = True` and nothing stored they overrode the dark
+  default and left the dropdown highlighting the wrong entry. Both copies are
+  removed: the bundled module owns the toggles, the `lte-theme` storage key and
+  the `[data-lte-theme-icon]` icons, and it honours the markup theme.
+
 ## [0.1.1] — 2026-06-11
 
 ### Fixed
