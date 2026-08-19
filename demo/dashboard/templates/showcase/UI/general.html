@@ -1209,7 +1209,13 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => new bootstrap.Tooltip(el));
+{# `type="module"` matters: the app bundle is a module in <head>, so it is
+   deferred. A classic inline script here runs BEFORE it and `bootstrap` is
+   still undefined — which threw and left every tooltip uninitialised. Module
+   scripts execute in document order, so this one runs after the bundle. #}
+<script type="module">
+  for (const el of document.querySelectorAll('[data-bs-toggle="tooltip"]')) {
+    new bootstrap.Tooltip(el)
+  }
 </script>
 {% endblock %}

@@ -5,6 +5,20 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- **Tooltips never initialised on the UI → General page.** The page's inline
+  `<script>` ran before the app bundle, which is a deferred module, so
+  `bootstrap` was undefined and the call threw — leaving all four tooltip
+  targets dead. Both that page and the Components page (whose
+  `window.bootstrap` guard swallowed the same race, so its toast simply never
+  appeared) now use `<script type="module">`, which runs after the bundle.
+- **Mailbox rows forced 638px of horizontal scroll on a phone.** The row link
+  and its elastic middle column were missing the `min-width: 0` core carries,
+  so `text-truncate` could not shrink below its content width.
+- **The jsVectorMap zoom buttons rendered outside the card.** Its stylesheet was
+  never imported, so the `+`/`−` controls laid out as ordinary content instead
+  of being positioned inside the map box.
+
 ### Changed
 
 - **Dependency refresh across the demo and the packaging metadata.** Everything

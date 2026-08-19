@@ -109,10 +109,15 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
+{# Module, for the same reason as UI/general: the app bundle is deferred, so a
+   classic script here would run first. The `window.bootstrap` guard used to
+   swallow that race silently — the toast simply never appeared. #}
+<script type="module">
   document.getElementById("toastBtn")?.addEventListener("click", () => {
-    const el = document.getElementById("demoToast");
-    if (el && window.bootstrap) bootstrap.Toast.getOrCreateInstance(el).show();
-  });
+    const el = document.getElementById("demoToast")
+    if (el) {
+      bootstrap.Toast.getOrCreateInstance(el).show()
+    }
+  })
 </script>
 {% endblock %}

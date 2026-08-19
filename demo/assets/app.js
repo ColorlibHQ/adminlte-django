@@ -25,6 +25,9 @@ const loaders = {
   },
   jsvectormap: async () => {
     const { default: jsVectorMap } = await import("jsvectormap");
+    // Its stylesheet is what positions the +/- zoom controls inside the map
+    // box; without it they lay out as ordinary content and spill out of the card.
+    await import("jsvectormap/dist/jsvectormap.min.css");
     window.jsVectorMap = jsVectorMap; // map files register against the global
     await import("jsvectormap/dist/maps/world.js");
     return jsVectorMap;
