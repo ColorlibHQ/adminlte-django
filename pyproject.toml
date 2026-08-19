@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "adminlte-django"
-version = "0.1.1"
+version = "0.2.0"
 description = "Official AdminLTE 4 integration for Django — Bootstrap 5.3, vanilla JS, Vite-ready."
 readme = "README.md"
 license = { file = "LICENSE" }

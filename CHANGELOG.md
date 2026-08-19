@@ -5,6 +5,13 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-19
+
+### Changed
+- **Bundled AdminLTE updated to 4.8.4**, and `ADMINLTE_VERSION` with it. Adds the
+  fix for every page scrolling sideways at phone widths (4.8.3) on top of the
+  4.8.1 work already recorded below.
+
 ### Fixed
 - **Tooltips never initialised on the UI → General page.** The page's inline
   `<script>` ran before the app bundle, which is a deferred module, so

@@ -17,7 +17,7 @@
     "@fullcalendar/list": "^6.1.21",
     "@fullcalendar/timegrid": "^6.1.21",
     "@popperjs/core": "^2.11.8",
-    "admin-lte": "^4.8.1",
+    "admin-lte": "^4.8.4",
     "apexcharts": "^6.10.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
