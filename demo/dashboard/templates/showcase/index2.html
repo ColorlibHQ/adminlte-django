@@ -1079,6 +1079,12 @@ document.addEventListener("DOMContentLoaded", function () {
             '2023-06-01',
             '2023-07-01',
           ],
+          // One point per month — pin the tick format so ApexCharts 4+ doesn't
+          // fall back to its own day grid ("09 Jan", "23 Jan", …).
+          labels: {
+            format: "MMM 'yy",
+          },
+          tickAmount: 6,
         },
         tooltip: {
           x: {
@@ -1162,7 +1168,11 @@ document.addEventListener("DOMContentLoaded", function () {
           type: 'donut',
           // Pin an explicit height to avoid an ApexCharts ResizeObserver feedback
           // loop on browser zoom (most visible on Edge). Fixes #6019.
-          height: 350,
+          // 220 is what the donut actually occupies in this column once the
+          // legend has taken its width — ApexCharts 3 ignored the pinned height
+          // and shrink-wrapped; 4+ honours it, so an oversized value would just
+          // leave dead space under the chart.
+          height: 220,
         },
         labels: ['Chrome', 'Edge', 'FireFox', 'Safari', 'Opera', 'IE'],
         dataLabels: {

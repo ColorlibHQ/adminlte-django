@@ -7,6 +7,71 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- **Dependency refresh across the demo and the packaging metadata.** Everything
+  the demo installs from npm and everything the package declares in Python is on
+  its current release, with one deliberate hold-back (below). The headline is
+  **ApexCharts 3.54 → 6.10** — three majors — covered in its own entry further
+  down. Also on npm: **Vite 6 → 8** (a major; Vite 8 builds with Rolldown, which
+  cut the demo's production build from ~2.2 s to ~0.5 s and shaved ~3 % off the
+  emitted JS), Sass 1.80 → 1.102, Tabulator 6.3 → 6.5.2, jsVectorMap 1.6 → 1.7,
+  OverlayScrollbars 2.11 → 2.16, and FullCalendar 6.1.20 → 6.1.21 across `core`,
+  `daygrid`, `interaction`, `list` and `timegrid`. `admin-lte` stays at 4.8.1.
+- **Four high-severity advisories cleared** in the demo's transitive tree — Vite
+  (`server.fs.deny` bypass on Windows alternate paths, plus a `launch-editor`
+  NTLMv2 hash disclosure), PostCSS (path traversal via `sourceMappingURL`),
+  nanoid and immutable. These moved with the lockfile; no direct dependency
+  changed for them. One low-severity advisory remains open against Quill 2.0.3,
+  which is the latest published release — there is nothing to upgrade to yet.
+- **Python dependencies verified against their current releases** — Django 6.1,
+  django-components 0.151.1, django-filter 26.1, django-crispy-forms 2.7,
+  django-allauth 65.19.1, django-environ 0.14, pytest 9.1.1, pytest-django 4.14
+  and mkdocs-material 9.7.7 — with the full suite (74 tests) and every demo URL
+  green. The declared floors in `pyproject.toml` are unchanged, because they are
+  minimums and the package still supports them; the one exception is
+  `django-components`, whose cap moves from `<0.151` to `<0.152` now that 0.151
+  is tested. `Framework :: Django :: 6.1` joins the classifiers.
+- **The Vite scaffold written by `adminlte_install`** (`package.json.stub`) picks
+  up the same Sass, Vite and OverlayScrollbars versions as the demo, so a fresh
+  project starts on the toolchain the demo is actually tested with.
+
+### Changed — ApexCharts 3 → 6
+
+The demo's charting library jumps three majors. Every chart on every dashboard
+was rendered in a headless browser before and after and compared, both by DOM
+inspection and by screenshot; the curves, bars, slices and colours are
+unchanged. Three call sites needed adjusting, all in demo templates — the
+`adminlte_chart` component and the `adminlte-plugins.js` initializer that ship
+in the package were already using only the stable API (`new ApexCharts(el,
+config).render()`) and are untouched.
+
+- **Datetime axes name their own tick format now.** ApexCharts 4 reworked
+  datetime tick generation: the monthly series on Dashboard v1 (`#revenue-chart`)
+  and Dashboard v2 (`#sales-chart`) started drawing a fortnightly *day* grid
+  ("09 Jan", "23 Jan", …) that no longer lined up with the data points, instead
+  of one tick per month. Both charts now set `xaxis.labels.format` and
+  `tickAmount` explicitly, which restores the previous "Jan '23 … Jun '23" axis.
+- **The donut's pinned height is sized to what it actually occupies.** The
+  `height: 350` on Dashboard v2's `#pie-chart` exists to break an ApexCharts
+  ResizeObserver feedback loop on browser zoom (#6019) and is still needed, but
+  ApexCharts 3 quietly ignored it and shrink-wrapped the container to 221 px
+  while 4+ honours it — leaving ~130 px of dead space under the chart. Pinned to
+  220 px instead: the workaround stands and the card is its original height.
+- **`plotOptions.bar.endingShape` removed** from Dashboard v3's `#sales-chart`.
+  It was deprecated in ApexCharts 3.24 and deleted in 4, and it was already a
+  no-op — the bars render square before and after.
+- **Note on payload:** the ApexCharts chunk grows from ~142 kB to ~266 kB
+  gzipped. It is behind a dynamic `import()`, so only pages with charts pay for
+  it. ApexCharts 6 also ships per-chart-type entry points (`apexcharts/area`,
+  `apexcharts/bar`, …) which would cut this substantially; adopting them means
+  reworking the `window.ApexCharts` global the page scripts share, so it is left
+  as a follow-up.
+
+### Held back
+
+- **`@fullcalendar/core` 7.0.2.** Only `core` has a stable 7 — `daygrid`,
+  `interaction`, `list` and `timegrid` are still on 6.1.21 — so the family stays
+  together on 6.1.x rather than mixing a v7 core with v6 plugins.
+
 - Target **AdminLTE 4.8.1** (was 4.0.0). Bumped in all three places the version
   is pinned — the demo's `package.json`, the `package.json` stub written by
   `adminlte_install`, and the `ADMINLTE_VERSION` marker reported by

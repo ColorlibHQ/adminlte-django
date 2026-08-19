@@ -500,6 +500,13 @@ document.addEventListener("DOMContentLoaded", function () {
           xaxis: {
             type: 'datetime',
             categories: categories,
+            // The series is one point per month. ApexCharts 4+ picks its own
+            // datetime tick interval and lands on a day grid ("02 Mar", "16
+            // Mar"), so name the format the data is actually in.
+            labels: {
+              format: "MMM 'yy",
+            },
+            tickAmount: categories.length - 1,
           },
           tooltip: {
             x: {
