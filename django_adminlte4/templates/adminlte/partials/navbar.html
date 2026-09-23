@@ -23,6 +23,9 @@
 
         {# Right side #}
         <ul class="navbar-nav ms-auto">
+            {% for item in adminlte_menu_navbar_right %}
+                <li class="nav-item d-none d-md-block"><a href="{{ item.href|default:'#' }}" class="nav-link">{{ item.text }}</a></li>
+            {% endfor %}
             {% if adminlte.navbar_search %}
             <li class="nav-item">
                 <a class="nav-link" data-widget="navbar-search" href="#" role="button" aria-label="{% trans 'Search' %}">
