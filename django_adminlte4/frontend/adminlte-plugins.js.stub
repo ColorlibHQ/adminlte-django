@@ -13,14 +13,15 @@ const parse = (json) => {
   try { return JSON.parse(json || "{}"); } catch { return {}; }
 };
 
-async function initApexCharts(root) {
-  const els = root.querySelectorAll("[data-apexchart]");
+async function initCharts(root) {
+  const els = root.querySelectorAll("[data-chartjs]");
   if (!els.length) return;
-  const { default: ApexCharts } = await import("apexcharts");
+  // Chart.js + the AdminLTE theme preset (light/dark aware), see adminlte-charts.js.
+  const { renderChart } = await import("./adminlte-charts.js");
   els.forEach((el) => {
     if (el.dataset.lteInit) return;
     el.dataset.lteInit = "1";
-    new ApexCharts(el, parse(el.dataset.apexchartConfig)).render();
+    renderChart(el);
   });
 }
 
@@ -73,7 +74,7 @@ async function initSortable(root) {
 }
 
 export function initAdminltePlugins(root = document) {
-  initApexCharts(root);
+  initCharts(root);
   initVectorMaps(root);
   initTabulator(root);
   initQuill(root);

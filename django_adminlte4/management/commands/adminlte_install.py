@@ -21,6 +21,7 @@ STUBS = {
     "app.js.stub": Path("assets") / "app.js",
     "app.scss.stub": Path("assets") / "app.scss",
     "adminlte-plugins.js.stub": Path("assets") / "adminlte-plugins.js",
+    "adminlte-charts.js.stub": Path("assets") / "adminlte-charts.js",
     "vite.config.stub.js": Path("vite.config.js"),
     "package.json.stub": Path("package.json"),
 }

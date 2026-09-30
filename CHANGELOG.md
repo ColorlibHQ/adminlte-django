@@ -5,6 +5,61 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+- **Charts are now [Chart.js](https://www.chartjs.org/) (MIT) instead of
+  ApexCharts.** From 5.2 ApexCharts ships under its own commercial licence, so
+  it can no longer be part of a free, MIT-licensed package. `adminlte_chart`
+  keeps its tag name and props and renders the same charts with Chart.js 4.5;
+  all 15 demo charts (Dashboard v1, v2 and v3, and the Components page) were
+  rebuilt with the same data and colours. The demo's chart code shrinks from
+  266 kB to 72 kB gzipped.
+- **New `assets/adminlte-charts.js` stub** (copied by `adminlte_install`): the
+  AdminLTE theme preset for Chart.js. It reads the Bootstrap colours and font
+  from the page into `Chart.defaults`, and re-themes every chart in place when
+  the Light/Dark/Auto toggle, the text direction or the Bootstrap colour
+  variables change. It also exports `chartColor()`, `verticalGradient()` and
+  `withAlpha()` for page scripts that draw their own charts.
+- `adminlte_chart` gains `colors` (palette names such as `primary`/`teal`, CSS
+  variables or CSS colours; palette names follow the colour mode) and `label`
+  (the canvas's accessible name). `type` takes every Chart.js type plus `area`;
+  `donut` and `column` still work as aliases. `series` accepts the old
+  `{"name", "data"}` dicts, a flat list for pie charts, or Chart.js datasets.
+  The container fires an `adminlte:chart` event with the chart instance, for
+  callbacks that JSON cannot carry.
+- The demo's lazy plugin loader is now `adminlteUse("chartjs")` (was
+  `adminlteUse("apexcharts")`); it resolves with `Chart` and puts the theme
+  helpers on `window.adminlteCharts`.
+
+### Migrating from 0.2.x
+Nothing changes for projects that do not use `adminlte_chart` or the demo's
+chart code. If you do:
+
+1. Copy the new front-end stubs into `assets/`: `adminlte-charts.js` (new) and
+   `adminlte-plugins.js` (it now looks for `data-chartjs` containers instead of
+   `data-apexchart`). `python manage.py adminlte_install` adds the new file and
+   skips existing ones; `--force` overwrites **all** stubs, including an
+   `app.js`, `package.json` or `vite.config.js` you may have edited.
+2. Swap the npm package: `npm uninstall apexcharts && npm i chart.js`.
+3. `options` passed to `adminlte_chart` are now Chart.js options, merged over
+   the defaults. ApexCharts keys (`chart`, `xaxis`, `yaxis`, `stroke`,
+   `dataLabels`, `colors`, `legend`, `tooltip`, …) are dropped with a
+   `DeprecationWarning`; move them to their Chart.js equivalents (for example
+   `colors` → the new `colors` prop, `legend.show` →
+   `plugins.legend.display`, `plotOptions.bar.horizontal` → `indexAxis: "y"`).
+4. Page scripts that called `new ApexCharts(el, options).render()` need a
+   `<canvas>` inside a sized, `position: relative` box and a Chart.js config;
+   `docs/assets.md` has the pattern, and the Dashboard v1–v3 templates are
+   worked examples.
+5. CSS that targeted `.apexcharts-*` or `[data-apexchart]` can go.
+
+### Fixed
+- **`npm ci` failed in the demo.** `demo/package.json` has asked for
+  `admin-lte ^4.8.4` since 0.2.0, but the lockfile still pinned 4.8.1. The
+  lockfile now pins 4.8.4, the version the package bundles.
+- The Dashboard v1 activity chart labelled only five of its six months.
+- The Dashboard v3 visitors chart drew light-grey bands across the plot in dark
+  mode; the bands now use the theme's tertiary background.
+
 ## [0.2.1] - 2026-09-30
 
 ### Changed

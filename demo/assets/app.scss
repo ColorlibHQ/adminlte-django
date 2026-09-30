@@ -4,14 +4,15 @@
 
 // Keep plugin widgets inside their cards: allow shrinking in flex/grid
 // contexts and never let the rendered canvas exceed the container width.
-[data-apexchart],
+[data-chartjs],
 [data-jsvectormap] {
   width: 100%;
   min-width: 0;
   max-width: 100%;
 }
 .card-body { min-width: 0; }
-.apexcharts-canvas { max-width: 100% !important; }
+// Chart.js sizes its canvas to this box; it must be positioned and sized.
+[data-chartjs] { position: relative; }
 
 // Keep the sidebar "View documentation" CTA usable when the sidebar collapses
 // to its icon-only mini rail (~4.6rem). The labelled, full-width button can't

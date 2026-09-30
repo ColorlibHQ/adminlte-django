@@ -20,7 +20,7 @@
     }
   });
 
-  // --- ApexCharts/jsVectorMap can overflow before the grid settles; nudge once. ---
+  // --- Widgets sized at render time (jsVectorMap) can overflow before the grid settles; nudge once. ---
   document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () { window.dispatchEvent(new Event("resize")); }, 250);
   });

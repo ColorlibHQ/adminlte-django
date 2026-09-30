@@ -66,11 +66,11 @@ For rendering a whole form in one line, see [Forms](forms.md) (crispy-forms).
 
 Each emits a `data-*` container with a JSON config; the front-end initialiser
 lazily loads the matching library. Install only the plugins you use
-(`npm i apexcharts jsvectormap tabulator-tables quill sortablejs`).
+(`npm i chart.js jsvectormap tabulator-tables quill sortablejs`).
 
 | Component | Library | Props |
 |---|---|---|
-| `adminlte_chart` | ApexCharts | `type`, `series`, `categories`, `options`, `id`, `height` |
+| `adminlte_chart` | Chart.js | `type`, `series`, `categories`, `colors`, `options`, `label`, `id`, `height` |
 | `adminlte_vector_map` | jsVectorMap | `map`, `markers`, `regions`, `options`, `id`, `height` |
 | `adminlte_datatable` | Tabulator | `id`, `columns`, `data`, `api_url`, `options` |
 | `adminlte_editor` | Quill | rich-text editor bound to a hidden input |
@@ -82,6 +82,58 @@ lazily loads the matching library. Install only the plugins you use
 {% component "adminlte_datatable" columns=columns data=rows %}{% endcomponent %}
 {% component "adminlte_tabs" items=tabs %}{% endcomponent %}
 ```
+
+### Charts
+
+`adminlte_chart` renders a [Chart.js](https://www.chartjs.org/) (MIT) chart
+from context data — no JavaScript to write:
+
+```django
+{% component "adminlte_chart" type="area" series=series categories=labels colors=colors height="300px" label="Monthly sales" %}{% endcomponent %}
+```
+
+```python
+series = [{"name": "Sales", "data": [30, 40, 35, 50]}, {"name": "Returns", "data": [3, 5, 2, 4]}]
+labels = ["Jan", "Feb", "Mar", "Apr"]
+colors = ["primary", "teal"]
+```
+
+| Prop | Meaning |
+|---|---|
+| `type` | Any Chart.js type — `line`, `bar`, `pie`, `doughnut`, `polarArea`, `radar`, `scatter`, `bubble` — plus `area` (a filled line, the default). `donut` and `column` are accepted as aliases. |
+| `series` | A list of `{"name": ..., "data": [...]}` dicts. Any other key is passed through as a Chart.js dataset option (`borderColor`, `stack`, `type`, …). Pie-style charts also take a flat list of numbers. |
+| `categories` | The labels along the x axis (or of the slices). |
+| `colors` | Palette names (`primary`, `success`, `teal`, …), CSS variables (`--bs-info`) or CSS colours, one per series (per slice for pie charts). Palette names follow the colour mode. Leave it out for the AdminLTE series palette. |
+| `options` | Chart.js [options](https://www.chartjs.org/docs/latest/general/options.html), merged over the defaults, e.g. `{"indexAxis": "y"}` or `{"plugins": {"legend": {"position": "top"}}}`. |
+| `label` | Accessible name for the chart (`aria-label` on the canvas). |
+| `height` | CSS height of the chart box (`300px` by default; a bare number means pixels). |
+
+The look comes from `assets/adminlte-charts.js` (installed by
+`adminlte_install`), a theme preset that reads the Bootstrap colours and font
+from the page and pushes them into `Chart.defaults`. Charts re-theme in place
+when the Light/Dark/Auto toggle changes, flip their legends and tooltips under
+RTL, and resize with their container (including the sidebar toggle).
+
+JSON cannot carry functions, so for tick or tooltip formatters listen for the
+`adminlte:chart` event the container fires once the chart exists:
+
+```js
+document.addEventListener("adminlte:chart", ({ target, detail: { chart } }) => {
+  if (target.id !== "sales") return;
+  chart.options.plugins.tooltip.callbacks.label = (item) => `$${item.parsed.y}k`;
+  chart.update();
+});
+```
+
+!!! note "Upgrading from 0.2.x"
+    The tag name and props are unchanged, but the container is now
+    `data-chartjs` and `options` means Chart.js options. Copy the new
+    `adminlte-plugins.js` and `adminlte-charts.js` stubs into `assets/`
+    (`python manage.py adminlte_install --force` overwrites *all* stubs), swap
+    the npm package for `chart.js`, and move any old-style `options` keys
+    (`chart`, `xaxis`, `stroke`, `dataLabels`, …) to their Chart.js
+    equivalents — they are now dropped with a `DeprecationWarning`. The
+    step-by-step note is in the [changelog](changelog.md).
 
 !!! tip
     The demo's **Components** page exercises every Tool/Widget component with

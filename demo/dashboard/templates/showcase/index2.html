@@ -123,7 +123,9 @@
                           <strong>Sales: 1 Jan, 2023 - 30 Jul, 2023</strong>
                         </p>
 
-                        <div id="sales-chart"></div>
+                        <div class="position-relative" style="height: 180px">
+                          <canvas id="sales-chart" role="img" aria-label="Monthly sales of digital goods and electronics, January to July 2023"></canvas>
+                        </div>
                       </div>
                       <!-- /.col -->
                       <div class="col-md-4">
@@ -687,7 +689,9 @@
                               <span class="badge text-bg-success"> Shipped </span>
                             </td>
                             <td>
-                              <div id="table-sparkline-1"></div>
+                              <div class="position-relative" style="width: 150px; height: 30px">
+                                <canvas id="table-sparkline-1" role="img" aria-label="Popularity trend"></canvas>
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -703,7 +707,9 @@
                               <span class="badge text-bg-warning">Pending</span>
                             </td>
                             <td>
-                              <div id="table-sparkline-2"></div>
+                              <div class="position-relative" style="width: 150px; height: 30px">
+                                <canvas id="table-sparkline-2" role="img" aria-label="Popularity trend"></canvas>
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -719,7 +725,9 @@
                               <span class="badge text-bg-danger"> Delivered </span>
                             </td>
                             <td>
-                              <div id="table-sparkline-3"></div>
+                              <div class="position-relative" style="width: 150px; height: 30px">
+                                <canvas id="table-sparkline-3" role="img" aria-label="Popularity trend"></canvas>
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -735,7 +743,9 @@
                               <span class="badge text-bg-info">Processing</span>
                             </td>
                             <td>
-                              <div id="table-sparkline-4"></div>
+                              <div class="position-relative" style="width: 150px; height: 30px">
+                                <canvas id="table-sparkline-4" role="img" aria-label="Popularity trend"></canvas>
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -751,7 +761,9 @@
                               <span class="badge text-bg-warning">Pending</span>
                             </td>
                             <td>
-                              <div id="table-sparkline-5"></div>
+                              <div class="position-relative" style="width: 150px; height: 30px">
+                                <canvas id="table-sparkline-5" role="img" aria-label="Popularity trend"></canvas>
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -767,7 +779,9 @@
                               <span class="badge text-bg-danger"> Delivered </span>
                             </td>
                             <td>
-                              <div id="table-sparkline-6"></div>
+                              <div class="position-relative" style="width: 150px; height: 30px">
+                                <canvas id="table-sparkline-6" role="img" aria-label="Popularity trend"></canvas>
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -783,7 +797,9 @@
                               <span class="badge text-bg-success">Shipped</span>
                             </td>
                             <td>
-                              <div id="table-sparkline-7"></div>
+                              <div class="position-relative" style="width: 150px; height: 30px">
+                                <canvas id="table-sparkline-7" role="img" aria-label="Popularity trend"></canvas>
+                              </div>
                             </td>
                           </tr>
                         </tbody>
@@ -876,7 +892,9 @@
                     <!--begin::Row-->
                     <div class="row">
                       <div class="col-12">
-                        <div id="pie-chart"></div>
+                        <div class="position-relative" style="height: 220px">
+                          <canvas id="pie-chart" role="img" aria-label="Browser usage share"></canvas>
+                        </div>
                       </div>
                       <!-- /.col -->
                     </div>
@@ -1022,124 +1040,80 @@
 {% endblock %}
 
 {% block extra_js %}
-    <!-- apexcharts -->
-
+    <!-- Chart.js -->
     <script>
 document.addEventListener("DOMContentLoaded", function () {
-  adminlteUse("apexcharts").then(function () {
+  adminlteUse("chartjs").then(function ([Chart]) {
       // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
       // IT'S ALL JUST JUNK FOR DEMO
       // ++++++++++++++++++++++++++++++++++++++++++
 
-      /* apexcharts
+      /* Chart.js
        * -------
-       * Here we will create a few charts using apexcharts
+       * Here we will create a few charts using Chart.js. Colours are palette
+       * names resolved by the AdminLTE theme preset (assets/adminlte-charts.js),
+       * so every chart follows the Light/Dark switch.
        */
+      const { verticalGradient, chartPalette, chartColor } = window.adminlteCharts;
 
       //-----------------------
       // - MONTHLY SALES CHART -
       //-----------------------
 
-      const sales_chart_options = {
-        series: [
-          {
-            name: 'Digital Goods',
-            data: [28, 48, 40, 19, 86, 27, 90],
-          },
-          {
-            name: 'Electronics',
-            data: [65, 59, 80, 81, 56, 55, 40],
-          },
-        ],
-        chart: {
-          height: 180,
-          type: 'area',
-          toolbar: {
-            show: false,
-          },
-        },
-        legend: {
-          show: false,
-        },
-        colors: ['#0d6efd', '#20c997'],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-        },
-        xaxis: {
-          type: 'datetime',
-          categories: [
-            '2023-01-01',
-            '2023-02-01',
-            '2023-03-01',
-            '2023-04-01',
-            '2023-05-01',
-            '2023-06-01',
-            '2023-07-01',
-          ],
-          // One point per month — pin the tick format so ApexCharts 4+ doesn't
-          // fall back to its own day grid ("09 Jan", "23 Jan", …).
-          labels: {
-            format: "MMM 'yy",
-          },
-          tickAmount: 6,
-        },
-        tooltip: {
-          x: {
-            format: 'MMMM yyyy',
-          },
-        },
-      };
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
-      const sales_chart = new ApexCharts(
-        document.querySelector('#sales-chart'),
-        sales_chart_options,
-      );
-      sales_chart.render();
+      function areaDataset(label, data, color) {
+        return {
+          label: label,
+          data: data,
+          fill: 'origin',
+          borderColor: () => chartColor(color),
+          backgroundColor: verticalGradient(color, 0.45, 0.05),
+          pointBackgroundColor: () => chartPalette().surface,
+          pointBorderColor: () => chartColor(color),
+          pointHoverBackgroundColor: () => chartPalette().surface,
+          pointHoverBorderColor: () => chartColor(color),
+        };
+      }
+
+      new Chart(document.querySelector('#sales-chart'), {
+        type: 'line',
+        data: {
+          labels: months.map((m) => `${m.slice(0, 3)} '23`),
+          datasets: [
+            areaDataset('Digital Goods', [28, 48, 40, 19, 86, 27, 90], 'primary'),
+            areaDataset('Electronics', [65, 59, 80, 81, 56, 55, 40], 'teal'),
+          ],
+        },
+        options: {
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { title: (items) => `${months[items[0].dataIndex]} 2023` } },
+          },
+          scales: { y: { beginAtZero: true, suggestedMax: 100 } },
+        },
+      });
 
       //---------------------------
       // - END MONTHLY SALES CHART -
       //---------------------------
 
+      // Popularity sparklines: a plain trend line, no axes, legend or tooltip.
       function createSparklineChart(selector, data) {
-        const options = {
-          series: [{ data }],
-          chart: {
-            type: 'line',
-            width: 150,
-            height: 30,
-            sparkline: {
-              enabled: true,
-            },
+        new Chart(document.querySelector(selector), {
+          type: 'line',
+          data: {
+            labels: data.map((_, i) => i),
+            datasets: [{ data: data, borderColor: () => chartColor('primary'), tension: 0.4 }],
           },
-          colors: ['var(--bs-primary)'],
-          stroke: {
-            width: 2,
+          options: {
+            animation: { duration: 400 },
+            events: [],
+            layout: { padding: 2 },
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: { x: { display: false }, y: { display: false } },
           },
-          tooltip: {
-            fixed: {
-              enabled: false,
-            },
-            x: {
-              show: false,
-            },
-            y: {
-              title: {
-                formatter() {
-                  return '';
-                },
-              },
-            },
-            marker: {
-              show: false,
-            },
-          },
-        };
-
-        const chart = new ApexCharts(document.querySelector(selector), options);
-        chart.render();
+        });
       }
 
       const table_sparkline_1_data = [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54];
@@ -1162,32 +1136,26 @@ document.addEventListener("DOMContentLoaded", function () {
       // - PIE CHART -
       //-------------
 
-      const pie_chart_options = {
-        series: [700, 500, 400, 600, 300, 100],
-        chart: {
-          type: 'donut',
-          // Pin an explicit height to avoid an ApexCharts ResizeObserver feedback
-          // loop on browser zoom (most visible on Edge). Fixes #6019.
-          // 220 is what the donut actually occupies in this column once the
-          // legend has taken its width — ApexCharts 3 ignored the pinned height
-          // and shrink-wrapped; 4+ honours it, so an oversized value would just
-          // leave dead space under the chart.
-          height: 220,
-        },
-        labels: ['Chrome', 'Edge', 'FireFox', 'Safari', 'Opera', 'IE'],
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ['#0d6efd', '#20c997', '#ffc107', '#d63384', '#6f42c1', '#adb5bd'],
-      };
+      const browsers = ['primary', 'teal', 'warning', 'pink', 'purple', 'gray'];
 
-      const pie_chart = new ApexCharts(document.querySelector('#pie-chart'), pie_chart_options);
-      pie_chart.render();
+      new Chart(document.querySelector('#pie-chart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Chrome', 'Edge', 'FireFox', 'Safari', 'Opera', 'IE'],
+          datasets: [{
+            data: [700, 500, 400, 600, 300, 100],
+            backgroundColor: (ctx) => chartColor(browsers[ctx.dataIndex]),
+          }],
+        },
+        options: {
+          cutout: '65%',
+          plugins: { legend: { position: 'right' } },
+        },
+      });
 
       //-----------------
       // - END PIE CHART -
       //-----------------
-    
   });
 });
 </script>

@@ -18,10 +18,14 @@ import "admin-lte";
 // Each loader dynamically imports its chunk (Vite code-splits automatically),
 // exposes the library on `window` for the page scripts, and resolves with it.
 const loaders = {
-  apexcharts: async () => {
-    const { default: ApexCharts } = await import("apexcharts");
-    window.ApexCharts = ApexCharts;
-    return ApexCharts;
+  // Chart.js (MIT) with the AdminLTE theme preset (see adminlte-charts.js).
+  // Page scripts get `Chart` plus the theme helpers on `window.adminlteCharts`.
+  chartjs: async () => {
+    const charts = await import("./adminlte-charts.js");
+    const Chart = charts.setupCharts();
+    window.Chart = Chart;
+    window.adminlteCharts = charts;
+    return Chart;
   },
   jsvectormap: async () => {
     const { default: jsVectorMap } = await import("jsvectormap");
@@ -80,7 +84,7 @@ const loadedPlugins = {};
 /**
  * Load the named plugins (deduplicated) and resolve with them in order:
  *
- *   adminlteUse("apexcharts", "jsvectormap").then(([ApexCharts]) => { ... });
+ *   adminlteUse("chartjs", "jsvectormap").then(([Chart]) => { ... });
  *
  * Page scripts call this inside DOMContentLoaded, which is guaranteed to fire
  * after this module has executed (module scripts delay DOMContentLoaded).
@@ -95,8 +99,7 @@ window.adminlteUse = adminlteUse;
 const parseCfg = (j) => { try { return JSON.parse(j || "{}"); } catch { return {}; } };
 
 const componentInits = [
-  ["[data-apexchart]", "apexcharts", (el, ApexCharts) =>
-    new ApexCharts(el, parseCfg(el.dataset.apexchartConfig)).render()],
+  ["[data-chartjs]", "chartjs", (el) => window.adminlteCharts.renderChart(el)],
   ["[data-jsvectormap]", "jsvectormap", (el, jsVectorMap) =>
     new jsVectorMap({ selector: el, ...parseCfg(el.dataset.jsvectormapConfig) })],
   ["[data-tabulator]", "tabulator", (el, Tabulator) =>
@@ -123,11 +126,12 @@ function initAdminltePlugins(root = document) {
 document.addEventListener("DOMContentLoaded", () => {
   initAdminltePlugins();
 
-  // ApexCharts/jsVectorMap size against their parent at render time, and the
-  // grid (or a sidebar collapse) can change that width afterwards. Observe the
-  // content area and re-fit charts whenever its width actually changes. The
-  // width guard prevents observer feedback loops: a chart redraw can change
-  // heights, never the container's width.
+  // jsVectorMap sizes against its parent at render time and only re-fits on
+  // window resize, but the grid (or a sidebar collapse) can change that width
+  // afterwards. Observe the content area and re-fit whenever its width
+  // actually changes. The width guard prevents observer feedback loops: a
+  // redraw can change heights, never the container's width. (Chart.js
+  // watches its own container and needs none of this.)
   const main = document.querySelector(".app-main");
   if (main && "ResizeObserver" in window) {
     let lastWidth = main.getBoundingClientRect().width;

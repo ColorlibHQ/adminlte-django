@@ -17,5 +17,5 @@
     "overlayscrollbars": "^2.16.0",
     "@popperjs/core": "^2.11.8"
   },
-  "//optionalPlugins": "Install only those whose Tool component you use: npm i apexcharts jsvectormap tabulator-tables quill sortablejs"
+  "//optionalPlugins": "Install only those whose Tool component you use: npm i chart.js jsvectormap tabulator-tables quill sortablejs"
 }

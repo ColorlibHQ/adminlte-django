@@ -147,7 +147,9 @@
                   </div>
 
                   <div class="card-body">
-                    <div id="revenue-chart"></div>
+                    <div class="position-relative" style="height: 300px">
+                      <canvas id="revenue-chart" role="img" aria-label="Projects started and tasks completed per month"></canvas>
+                    </div>
                   </div>
                 </div>
                 <!-- /.card -->
@@ -425,15 +427,21 @@
                     <!--begin::Row-->
                     <div class="row">
                       <div class="col-4 text-center">
-                        <div id="sparkline-1" class="text-dark"></div>
+                        <div class="position-relative" style="height: 50px">
+                          <canvas id="sparkline-1" role="img" aria-label="Visitors trend"></canvas>
+                        </div>
                         <div class="text-white">Visitors</div>
                       </div>
                       <div class="col-4 text-center">
-                        <div id="sparkline-2" class="text-dark"></div>
+                        <div class="position-relative" style="height: 50px">
+                          <canvas id="sparkline-2" role="img" aria-label="Online trend"></canvas>
+                        </div>
                         <div class="text-white">Online</div>
                       </div>
                       <div class="col-4 text-center">
-                        <div id="sparkline-3" class="text-dark"></div>
+                        <div class="position-relative" style="height: 50px">
+                          <canvas id="sparkline-3" role="img" aria-label="Sales trend"></canvas>
+                        </div>
                         <div class="text-white">Sales</div>
                       </div>
                     </div>
@@ -467,157 +475,91 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-    <!-- apexcharts -->
-
-    <!-- ChartJS -->
+    <!-- Chart.js -->
     <script>
 document.addEventListener("DOMContentLoaded", function () {
   // Real data: six months of project/task activity from the demo database,
   // served by the dashboard_activity JSON endpoint (see dashboard/views.py).
-  adminlteUse("apexcharts").then(function () {
+  adminlteUse("chartjs").then(function ([Chart]) {
+    const { verticalGradient, chartPalette, chartColor } = window.adminlteCharts;
     return fetch("{% url 'dashboard_activity' %}")
       .then((response) => response.json())
       .then(({ categories, series }) => {
-        const activity_chart_options = {
-          series: series,
-          chart: {
-            height: 300,
-            type: 'area',
-            toolbar: {
-              show: false,
-            },
-          },
-          legend: {
-            show: true,
-          },
-          colors: ['#0d6efd', '#20c997'],
-          dataLabels: {
-            enabled: false,
-          },
-          stroke: {
-            curve: 'smooth',
-          },
-          xaxis: {
-            type: 'datetime',
-            categories: categories,
-            // The series is one point per month. ApexCharts 4+ picks its own
-            // datetime tick interval and lands on a day grid ("02 Mar", "16
-            // Mar"), so name the format the data is actually in.
-            labels: {
-              format: "MMM 'yy",
-            },
-            tickAmount: categories.length - 1,
-          },
-          tooltip: {
-            x: {
-              format: 'MMMM yyyy',
-            },
-          },
-        };
+        // One point per month; the endpoint sends the first day of each month.
+        const months = categories.map((iso) => {
+          const [year, month] = iso.split('-').map(Number);
+          return new Date(year, month - 1, 1);
+        });
+        const short = new Intl.DateTimeFormat('en', { month: 'short' });
+        const long = new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' });
+        const colors = ['primary', 'teal'];
 
-        new ApexCharts(document.querySelector('#revenue-chart'), activity_chart_options).render();
+        new Chart(document.querySelector('#revenue-chart'), {
+          type: 'line',
+          data: {
+            labels: months.map((d) => `${short.format(d)} '${String(d.getFullYear()).slice(-2)}`),
+            datasets: series.map((s, i) => ({
+              label: s.name,
+              data: s.data,
+              fill: 'origin',
+              borderColor: () => chartColor(colors[i]),
+              backgroundColor: verticalGradient(colors[i], 0.45, 0.05),
+              pointBackgroundColor: () => chartPalette().surface,
+              pointBorderColor: () => chartColor(colors[i]),
+              pointHoverBackgroundColor: () => chartPalette().surface,
+              pointHoverBorderColor: () => chartColor(colors[i]),
+            })),
+          },
+          options: {
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: { callbacks: { title: (items) => long.format(months[items[0].dataIndex]) } },
+            },
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+          },
+        });
       });
   });
 });
 </script>
 
     <!-- jsvectormap -->
-
-    <!-- jsvectormap -->
     <script>
 document.addEventListener("DOMContentLoaded", function () {
-  adminlteUse("jsvectormap", "apexcharts").then(function () {
+  adminlteUse("jsvectormap", "chartjs").then(function ([jsVectorMap, Chart]) {
       // World map by jsVectorMap
       new jsVectorMap({
         selector: '#world-map',
         map: 'world',
       });
 
-      // Sparkline charts
-      const option_sparkline1 = {
-        series: [
-          {
-            data: [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021],
+      // Sparkline charts: filled trend lines, no axes, legend or tooltip.
+      function sparkline(selector, data) {
+        return new Chart(document.querySelector(selector), {
+          type: 'line',
+          data: {
+            labels: data.map((_, i) => i),
+            datasets: [{
+              data: data,
+              fill: 'origin',
+              tension: 0,
+              borderColor: '#DCE6EC',
+              backgroundColor: 'rgba(220, 230, 236, 0.3)',
+            }],
           },
-        ],
-        chart: {
-          type: 'area',
-          height: 50,
-          sparkline: {
-            enabled: true,
+          options: {
+            animation: { duration: 400 },
+            events: [],
+            layout: { padding: { top: 2 } },
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: { x: { display: false }, y: { display: false, min: 0 } },
           },
-        },
-        stroke: {
-          curve: 'straight',
-        },
-        fill: {
-          opacity: 0.3,
-        },
-        yaxis: {
-          min: 0,
-        },
-        colors: ['#DCE6EC'],
-      };
+        });
+      }
 
-      const sparkline1 = new ApexCharts(document.querySelector('#sparkline-1'), option_sparkline1);
-      sparkline1.render();
-
-      const option_sparkline2 = {
-        series: [
-          {
-            data: [515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921],
-          },
-        ],
-        chart: {
-          type: 'area',
-          height: 50,
-          sparkline: {
-            enabled: true,
-          },
-        },
-        stroke: {
-          curve: 'straight',
-        },
-        fill: {
-          opacity: 0.3,
-        },
-        yaxis: {
-          min: 0,
-        },
-        colors: ['#DCE6EC'],
-      };
-
-      const sparkline2 = new ApexCharts(document.querySelector('#sparkline-2'), option_sparkline2);
-      sparkline2.render();
-
-      const option_sparkline3 = {
-        series: [
-          {
-            data: [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21],
-          },
-        ],
-        chart: {
-          type: 'area',
-          height: 50,
-          sparkline: {
-            enabled: true,
-          },
-        },
-        stroke: {
-          curve: 'straight',
-        },
-        fill: {
-          opacity: 0.3,
-        },
-        yaxis: {
-          min: 0,
-        },
-        colors: ['#DCE6EC'],
-      };
-
-      const sparkline3 = new ApexCharts(document.querySelector('#sparkline-3'), option_sparkline3);
-      sparkline3.render();
-    
+      sparkline('#sparkline-1', [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021]);
+      sparkline('#sparkline-2', [515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921]);
+      sparkline('#sparkline-3', [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21]);
   });
 });
 </script>

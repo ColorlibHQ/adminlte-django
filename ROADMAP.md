@@ -33,7 +33,7 @@ rather than only reproducing AdminLTE's HTML.
 | Date pickers / input masks | referenced | HTML5 inputs only | Add optional picker/mask init |
 | Chat / File manager | static even upstream | static (parity) | leave as UI, or back with real views in CRUD demo |
 
-ApexCharts, jsVectorMap, Tabulator, Quill, SortableJS, OverlayScrollbars are
+Chart.js, jsVectorMap, Tabulator, Quill, SortableJS, OverlayScrollbars are
 already wired.
 
 ## Gap B — Django-native ("everything Django offers")

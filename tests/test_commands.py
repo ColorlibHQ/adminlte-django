@@ -15,6 +15,8 @@ def test_install_copies_stubs(tmp_path):
     call_command("adminlte_install", "--path", str(tmp_path), stdout=out)
     assert (tmp_path / "assets" / "app.js").exists()
     assert (tmp_path / "assets" / "app.scss").exists()
+    assert (tmp_path / "assets" / "adminlte-plugins.js").exists()
+    assert (tmp_path / "assets" / "adminlte-charts.js").exists()
     assert (tmp_path / "vite.config.js").exists()
     assert (tmp_path / "package.json").exists()
     assert "front-end installed" in out.getvalue()
@@ -98,3 +100,15 @@ def test_make_auth_creates_app(tmp_path):
     call_command("adminlte_make_auth", "myauth", "--path", str(tmp_path), stdout=out)
     assert (tmp_path / "myauth" / "urls.py").exists()
     assert "LoginView" in (tmp_path / "myauth" / "urls.py").read_text()
+
+
+def test_chart_theme_stub_matches_the_demo_copy():
+    """The demo's assets/adminlte-charts.js is the stub the package installs."""
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parent.parent
+    stub = root / "django_adminlte4" / "frontend" / "adminlte-charts.js.stub"
+    demo = root / "demo" / "assets" / "adminlte-charts.js"
+    if not demo.exists():  # e.g. testing from an installed sdist without the demo
+        pytest.skip("demo not present")
+    assert stub.read_text() == demo.read_text()

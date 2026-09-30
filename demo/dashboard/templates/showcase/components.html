@@ -11,7 +11,7 @@
 <div class="row g-4">
 
     <div class="col-lg-6">
-        {% component "adminlte_card" title="Chart (ApexCharts)" icon="bi bi-graph-up" theme="primary" outline=True %}
+        {% component "adminlte_card" title="Chart (Chart.js)" icon="bi bi-graph-up" theme="primary" outline=True %}
             {% fill "default" %}
                 {% component "adminlte_chart" type="area" series=chart_series categories=chart_categories height="260px" %}{% endcomponent %}
             {% endfill %}

@@ -18,18 +18,28 @@ python manage.py collectstatic
 ```
 
 `app.js` keeps AdminLTE/Bootstrap in the always-loaded core and **code-splits
-every optional plugin** (ApexCharts, jsVectorMap, Tabulator, Quill, SortableJS,
+every optional plugin** (Chart.js, jsVectorMap, Tabulator, Quill, SortableJS,
 FullCalendar) behind dynamic imports — install only the ones you use, and each
 is fetched only on pages that need it. The Tool components load their plugin
 automatically when present in the DOM; page scripts opt in explicitly:
 
 ```js
-document.addEventListener("DOMContentLoaded", () => {
-  adminlteUse("apexcharts").then(([ApexCharts]) => {
-    new ApexCharts(el, options).render();
+document.addEventListener("DOMContentLoaded", async () => {
+  // Chart.js with the AdminLTE theme preset applied (light/dark aware).
+  const { setupCharts, chartColor, verticalGradient } = await import("./adminlte-charts.js");
+  const Chart = setupCharts();
+  new Chart(canvas, {
+    type: "line",
+    data: { labels, datasets: [{ data, fill: "origin",
+      borderColor: () => chartColor("primary"),              // follows the theme
+      backgroundColor: verticalGradient("primary") }] },
   });
 });
 ```
+
+(The demo wraps the same module in its `adminlteUse("chartjs")` loader.) Pass
+colours as functions — `() => chartColor("primary")` — so an existing chart
+picks up the new colours when the Light/Dark toggle changes.
 
 ## Static (Node-optional)
 

@@ -5,16 +5,17 @@
  * (pre-built assets) path.
  */
 
-/* Keep ApexCharts / jsVectorMap widgets inside their cards: allow shrinking in
+/* Keep Chart.js / jsVectorMap widgets inside their cards: allow shrinking in
    flex/grid contexts and never let the rendered canvas exceed the container. */
-[data-apexchart],
+[data-chartjs],
 [data-jsvectormap] {
   width: 100%;
   min-width: 0;
   max-width: 100%;
 }
 .card-body { min-width: 0; }
-.apexcharts-canvas { max-width: 100% !important; }
+/* Chart.js sizes its canvas to this box; it must be positioned and sized. */
+[data-chartjs] { position: relative; }
 
 /* Sidebar "View documentation" CTA: show only the centered icon when the
    sidebar is collapsed to its mini rail, restore the label on hover-expand. */

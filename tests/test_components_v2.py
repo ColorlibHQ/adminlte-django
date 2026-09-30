@@ -1,5 +1,8 @@
+import html
 import json
+import re
 
+import pytest
 from django.template import Context, Template
 
 
@@ -37,12 +40,56 @@ def test_accordion_expanded_item():
     assert "aa" in out and "bb" in out
 
 
+def chart_config(out):
+    """The Chart.js config a rendered adminlte_chart carries."""
+    match = re.search(r'data-chartjs-config="([^"]*)"', out)
+    assert match, out
+    return json.loads(html.unescape(match.group(1)))
+
+
 def test_chart_emits_config():
     out = render('{% component "adminlte_chart" type="bar" series=s categories=c %}{% endcomponent %}',
                  {"s": [{"name": "X", "data": [1, 2]}], "c": ["a", "b"]})
-    assert "data-apexchart" in out
+    assert "data-chartjs" in out and "<canvas" in out
     # config is JSON, double quotes HTML-escaped in the attribute
     assert "&quot;type&quot;: &quot;bar&quot;" in out
+    config = chart_config(out)
+    assert config["data"] == {"labels": ["a", "b"], "datasets": [{"data": [1, 2], "label": "X"}]}
+    # One series: no legend, as in 0.2.x.
+    assert config["options"]["plugins"]["legend"]["display"] is False
+
+
+def test_chart_area_is_a_filled_line():
+    out = render('{% component "adminlte_chart" series=s categories=c height=260 %}{% endcomponent %}',
+                 {"s": [{"name": "A", "data": [1]}, {"name": "B", "data": [2]}], "c": ["x"]})
+    config = chart_config(out)
+    assert config["type"] == "line"
+    assert [d["fill"] for d in config["data"]["datasets"]] == ["origin", "origin"]
+    assert config["options"]["plugins"]["legend"]["display"] is True
+    assert "height: 260px" in out
+
+
+def test_chart_donut_alias_takes_a_flat_series_and_colors():
+    out = render('{% component "adminlte_chart" type="donut" series=s categories=c colors=k %}{% endcomponent %}',
+                 {"s": [44, 55], "c": ["Chrome", "Edge"], "k": ["primary", "#20c997"]})
+    config = chart_config(out)
+    assert config["type"] == "doughnut"
+    assert config["data"]["datasets"] == [{"data": [44, 55], "backgroundColor": ["primary", "#20c997"]}]
+    assert config["options"]["plugins"]["legend"]["display"] is True
+
+
+def test_chart_merges_chartjs_options_and_drops_legacy_ones():
+    options = {"chart": {"toolbar": {"show": False}}, "plugins": {"legend": {"position": "top"}},
+               "indexAxis": "y"}
+    with pytest.warns(DeprecationWarning, match="chart"):
+        out = render('{% component "adminlte_chart" type="bar" series=s options=o label="Sales" %}{% endcomponent %}',
+                     {"s": [{"name": "X", "data": [1]}], "o": options})
+    config = chart_config(out)
+    assert "chart" not in config["options"]
+    assert config["options"]["indexAxis"] == "y"
+    assert config["options"]["plugins"]["legend"] == {"display": False, "position": "top"}
+    assert 'aria-label="Sales"' in out
+    assert options["chart"] == {"toolbar": {"show": False}}  # caller's dict untouched
 
 
 def test_datatable_emits_columns_and_data():

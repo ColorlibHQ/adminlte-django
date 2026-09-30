@@ -236,7 +236,7 @@ route). `color_mode_toggle` and a fullscreen toggle are always shown.
 `adminlte_tabs`, `adminlte_accordion`, `adminlte_direct_chat`,
 `adminlte_nav_messages`, `adminlte_nav_notifications`.
 
-**Plugin-backed Tool components:** `adminlte_chart` (ApexCharts),
+**Plugin-backed Tool components:** `adminlte_chart` (Chart.js),
 `adminlte_vector_map` (jsVectorMap), `adminlte_datatable` (Tabulator),
 `adminlte_editor` (Quill), `adminlte_sortable` (SortableJS). Each renders a
 `data-*` container with a JSON config; the shipped initializer
@@ -245,7 +245,7 @@ each library only when a matching element is on the page — so you install just
 the plugins you use:
 
 ```bash
-npm i apexcharts jsvectormap tabulator-tables quill sortablejs   # pick what you need
+npm i chart.js jsvectormap tabulator-tables quill sortablejs   # pick what you need
 ```
 
 ```django
@@ -253,6 +253,13 @@ npm i apexcharts jsvectormap tabulator-tables quill sortablejs   # pick what you
 {% component "adminlte_datatable" columns=columns data=rows %}{% endcomponent %}
 {% component "adminlte_tabs" items=tabs %}{% endcomponent %}
 ```
+
+**Charts are [Chart.js](https://www.chartjs.org/) (MIT).** `adminlte_install`
+also copies `assets/adminlte-charts.js`, the AdminLTE theme preset: it reads the
+Bootstrap colours and font from the page, so charts match the dashboard and
+switch live with the Light/Dark toggle (and flip their legends under RTL).
+Upgrading from 0.2.x? See the
+[0.3.0 migration note](CHANGELOG.md#030---2026-10-01).
 
 ## Django admin theme
 
