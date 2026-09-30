@@ -5,6 +5,26 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-09-30
+
+### Changed
+- **`adminlte_scaffold` now generates views with access checks.** The list view
+  is `@login_required`, and the create view also requires the model's `add`
+  permission (`<app>.add_<model>`), answering 403 without it. Previously the
+  generated views were open to anonymous visitors until you added checks
+  yourself. Apps already scaffolded are not touched; re-run with `--force` or
+  add the two decorators by hand to pick this up.
+- **Demo: changing contacts uses Django's model permissions.** Browsing the
+  Contacts list still only needs a sign-in, but adding, editing and deleting
+  now require `crud.add_contact`, `crud.change_contact` and
+  `crud.delete_contact` — checked in the views, with the matching buttons
+  hidden for users who lack them. The seeded `admin` superuser keeps full
+  access; accounts made through the sign-up pages get a read-only list.
+- **The source distribution leaves out repository tooling** (`CLAUDE.md`,
+  `.github/`, and any local `.env` or SQLite file). The wheel is unchanged.
+- `django_adminlte4.__version__` (shown by `adminlte_status`) now matches the
+  released version; it had stayed at 0.1.1 through the 0.2.0 release.
+
 ## [0.2.0] - 2026-08-19
 
 ### Changed
