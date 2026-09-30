@@ -7,7 +7,7 @@
 | `adminlte_install` | Copy the Vite front-end stubs (`app.js`, `app.scss`, `vite.config.js`, plugin initialiser) and static images into your project. |
 | `adminlte_status` | Print the version, merged config, component count and Vite manifest status. |
 | `adminlte_make_auth` | Scaffold login / register / lockscreen (or the `registration/` set) views, urls and templates. |
-| `adminlte_scaffold <app>` | Scaffold a CRUD app using the Card + Form components. |
+| `adminlte_scaffold <app>` | Scaffold a CRUD app using the Card + Form components. The generated views require a signed-in user, and creating records also requires the model's `add` permission. |
 
 ```bash
 python manage.py adminlte_install

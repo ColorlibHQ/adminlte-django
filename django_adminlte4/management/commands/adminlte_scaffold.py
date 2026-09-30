@@ -2,7 +2,8 @@
 
 Django equivalent of Laravel's ``php artisan adminlte:scaffold``. Generates a
 minimal list/create CRUD app whose templates extend ``adminlte/page.html`` and
-use the Card + Form components.
+use the Card + Form components. The generated views require a signed-in user,
+and the create view also requires the model's ``add`` permission.
 """
 
 from __future__ import annotations
@@ -24,16 +25,24 @@ class {model}(models.Model):
         return self.name
 '''
 
-VIEWS_PY = '''from django.shortcuts import redirect, render
+VIEWS_PY = '''from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import redirect, render
 
 from .models import {model}
 
+# Both views start signed-in only, and creating records also needs Django's
+# standard "add" permission for the model (grant it per user or group in the
+# admin). Loosen these deliberately if a page should be public.
 
+
+@login_required
 def {lower}_list(request):
     objects = {model}.objects.all()
     return render(request, "{app}/{lower}_list.html", {{"objects": objects}})
 
 
+@login_required
+@permission_required("{app}.add_{lower}", raise_exception=True)
 def {lower}_create(request):
     if request.method == "POST":
         {model}.objects.create(
