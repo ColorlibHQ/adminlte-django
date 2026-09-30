@@ -259,7 +259,7 @@ also copies `assets/adminlte-charts.js`, the AdminLTE theme preset: it reads the
 Bootstrap colours and font from the page, so charts match the dashboard and
 switch live with the Light/Dark toggle (and flip their legends under RTL).
 Upgrading from 0.2.x? See the
-[0.3.0 migration note](CHANGELOG.md#030---2026-10-01).
+[0.3.0 migration note](https://github.com/ColorlibHQ/adminlte-django/blob/main/CHANGELOG.md#030---2026-10-01).
 
 ## Django admin theme
 

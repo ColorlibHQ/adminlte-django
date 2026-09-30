@@ -5,7 +5,7 @@ a config-driven menu with a filter pipeline, an AdminLTE 4 base layout, and a
 set of django-components for the Form and Widget families.
 """
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 # The AdminLTE upstream release this package targets (npm `admin-lte`).
 ADMINLTE_VERSION = "4.8.4"

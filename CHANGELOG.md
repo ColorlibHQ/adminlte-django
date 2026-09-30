@@ -5,6 +5,8 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-01
+
 ### Changed
 - **Charts are now [Chart.js](https://www.chartjs.org/) (MIT) instead of
   ApexCharts.** From 5.2 ApexCharts ships under its own commercial licence, so
