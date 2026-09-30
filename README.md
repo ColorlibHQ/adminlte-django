@@ -406,7 +406,9 @@ python manage.py runserver        # terminal 2
 The demo ships a small relational schema (`Company → Contact`, `Project ↔ Tag`,
 `Project ↔ Contact` team, `Project → Task`) showcased through the themed admin,
 a **Contacts** CRUD page and a **Projects** list + detail. Re-run `seed_demo`
-any time to reset the sample data.
+any time to reset the sample data. Changing contacts needs the standard
+`crud.add/change/delete_contact` permissions (the seeded superuser has them);
+other signed-in users get a read-only list.
 
 Visitors start **logged out** (sessions end at browser close), and the login
 page comes pre-filled with the demo credentials (`admin` / `adminpass`) plus a

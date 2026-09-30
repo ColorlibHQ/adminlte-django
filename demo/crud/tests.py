@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
@@ -6,10 +7,18 @@ from django.urls import reverse
 from .models import Company, Contact, Project, Tag, Task
 
 
+def _contact_perms():
+    return Permission.objects.filter(
+        content_type__app_label="crud",
+        codename__in=["add_contact", "change_contact", "delete_contact"],
+    )
+
+
 class CrudFlowTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user("tester", password="pw")
+        cls.user.user_permissions.add(*_contact_perms())
 
     def setUp(self):
         self.client.force_login(self.user)
@@ -65,6 +74,90 @@ class CrudFlowTests(TestCase):
         self.assertEqual(c.name, "Renamed")
         self.client.post(reverse("crud:contact_delete", args=[c.pk]))
         self.assertFalse(Contact.objects.filter(pk=c.pk).exists())
+
+
+class ContactWritePermissionTests(TestCase):
+    """A signed-in user without the crud contact permissions (e.g. a fresh
+    self-registered account) can browse contacts but not change them — and the
+    refusal comes from the view, not just a hidden button."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.reader = get_user_model().objects.create_user("reader", password="pw")
+        cls.contact = Contact.objects.create(name="Keep Me", email="keep@example.com")
+
+    def setUp(self):
+        self.client.force_login(self.reader)
+
+    def test_reader_can_list_but_sees_no_write_controls(self):
+        resp = self.client.get(reverse("crud:contact_list"))
+        self.assertEqual(resp.status_code, 200)
+        html = resp.content.decode()
+        self.assertIn("Keep Me", html)
+        self.assertNotIn(reverse("crud:contact_create"), html)
+        self.assertNotIn(reverse("crud:contact_update", args=[self.contact.pk]), html)
+        self.assertNotIn(reverse("crud:contact_delete", args=[self.contact.pk]), html)
+
+    def test_reader_cannot_open_write_pages(self):
+        for url in (
+            reverse("crud:contact_create"),
+            reverse("crud:contact_update", args=[self.contact.pk]),
+            reverse("crud:contact_delete", args=[self.contact.pk]),
+        ):
+            with self.subTest(url=url):
+                self.assertEqual(self.client.get(url).status_code, 403)
+
+    def test_reader_cannot_create(self):
+        resp = self.client.post(
+            reverse("crud:contact_create"),
+            {"name": "Intruder", "email": "x@example.com", "role": "admin", "status": "active"},
+        )
+        self.assertEqual(resp.status_code, 403)
+        self.assertFalse(Contact.objects.filter(name="Intruder").exists())
+
+    def test_reader_cannot_update(self):
+        resp = self.client.post(
+            reverse("crud:contact_update", args=[self.contact.pk]),
+            {"name": "Changed", "email": "keep@example.com", "role": "admin", "status": "active"},
+        )
+        self.assertEqual(resp.status_code, 403)
+        self.contact.refresh_from_db()
+        self.assertEqual(self.contact.name, "Keep Me")
+
+    def test_reader_cannot_delete(self):
+        resp = self.client.post(reverse("crud:contact_delete", args=[self.contact.pk]))
+        self.assertEqual(resp.status_code, 403)
+        self.assertTrue(Contact.objects.filter(pk=self.contact.pk).exists())
+
+    def test_anonymous_write_redirects_to_login(self):
+        self.client.logout()
+        resp = self.client.post(reverse("crud:contact_delete", args=[self.contact.pk]))
+        self.assertEqual(resp.status_code, 302)
+        self.assertIn(reverse("login"), resp["Location"])
+        self.assertTrue(Contact.objects.filter(pk=self.contact.pk).exists())
+
+    def test_each_permission_unlocks_only_its_own_action(self):
+        self.reader.user_permissions.add(
+            Permission.objects.get(content_type__app_label="crud", codename="change_contact")
+        )
+        self.client.force_login(get_user_model().objects.get(pk=self.reader.pk))
+        html = self.client.get(reverse("crud:contact_list")).content.decode()
+        self.assertIn(reverse("crud:contact_update", args=[self.contact.pk]), html)
+        self.assertNotIn(reverse("crud:contact_delete", args=[self.contact.pk]), html)
+        self.assertEqual(
+            self.client.get(reverse("crud:contact_update", args=[self.contact.pk])).status_code, 200
+        )
+        self.assertEqual(
+            self.client.post(reverse("crud:contact_delete", args=[self.contact.pk])).status_code, 403
+        )
+
+    def test_superuser_sees_and_uses_write_controls(self):
+        admin = get_user_model().objects.create_superuser("boss", "boss@example.com", "pw")
+        self.client.force_login(admin)
+        html = self.client.get(reverse("crud:contact_list")).content.decode()
+        self.assertIn(reverse("crud:contact_create"), html)
+        self.client.post(reverse("crud:contact_delete", args=[self.contact.pk]))
+        self.assertFalse(Contact.objects.filter(pk=self.contact.pk).exists())
 
 
 class SeedAndRelationsTests(TestCase):

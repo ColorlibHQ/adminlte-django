@@ -46,7 +46,11 @@ Project ──< Task               (FK)    + assignee → Contact (FK)
 10 projects, 40 tasks. Front-end pages:
 
 - **Contacts** — full CRUD ([tables2 + filter](tables.md), [crispy form](forms.md),
-  [messages](extras.md)).
+  [messages](extras.md)). Any signed-in user can browse the list; adding,
+  editing and deleting use Django's standard model permissions
+  (`crud.add_contact`, `crud.change_contact`, `crud.delete_contact`), checked in
+  the views. The seeded `admin` superuser has all three; accounts created
+  through the sign-up pages start without them, so they see a read-only list.
 - **Projects** — a tables2 list + a detail page rendering the related company,
   lead, team, tags and tasks.
 
