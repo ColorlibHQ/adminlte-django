@@ -64,6 +64,18 @@ Repository = "https://github.com/ColorlibHQ/adminlte-django"
 [tool.hatch.build.targets.wheel]
 packages = ["django_adminlte4"]
 
+# The source distribution carries the package, tests, demo and docs, but not
+# repository tooling (agent notes, GitHub assets, local env files, databases).
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/CLAUDE.md",
+    "/AGENTS.md",
+    "/.claude",
+    "/.github",
+    ".env",
+    "*.sqlite3",
+]
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
 python_files = ["test_*.py", "*_test.py"]
