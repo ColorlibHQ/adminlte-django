@@ -5,6 +5,18 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-10-01
+
+### Fixed
+- **Sign-in behind a reverse proxy.** django-allauth rate-limits sign-in by
+  client IP and answered 403 "Unable to determine client IP address" when the
+  app ran behind nginx talking to gunicorn over a unix socket, where
+  `REMOTE_ADDR` is empty. The demo settings now read
+  `ALLAUTH_TRUSTED_PROXY_COUNT` (proxies appending `X-Forwarded-For`) and
+  `ALLAUTH_TRUSTED_CLIENT_IP_HEADER` (e.g. `CF-Connecting-IP` behind
+  Cloudflare) from the environment; `.env.example` documents both. Set one of
+  them on any proxied deployment. The package itself is unchanged.
+
 ## [0.3.1] - 2026-10-01
 
 A bug-fix release: Django admin add/change pages work again with
