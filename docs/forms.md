@@ -16,8 +16,11 @@ Every form in the project — function-based views, generic CBVs,
 `form-check-input` / `form-range` widgets chosen per widget type, `is-invalid`
 + `invalid-feedback` validation states, `form-text` help text, and non-field
 errors as an alert. No per-form widget attrs, no template changes, no extra
-packages (you do **not** need `django.forms` in `INSTALLED_APPS` — widget
-templates fall back to Django's built-in form engine).
+packages. You do **not** need `django.forms` in `INSTALLED_APPS`: the renderer
+resolves templates through a copy of your `TEMPLATES` engine (your `DIRS`,
+loaders and app overrides still win) with Django's built-in form templates
+appended as a last-resort loader — so templates that `{% include %}` a built-in
+widget, such as the Django admin's date/URL/related-field widgets, work too.
 
 See it live on the demo's `/native/form` page.
 

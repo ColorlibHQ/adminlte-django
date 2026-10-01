@@ -5,6 +5,22 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- **Django admin add/change pages no longer return 500 with
+  `AdminLTEFormRenderer`.** 0.3.0 only wrapped the renderer's top-level
+  `get_template()` in a fallback to Django's form templates, but admin widget
+  templates (`admin/widgets/date.html`, `url.html`, the related-field wrapper,
+  `auth/widgets/read_only_password_hash.html`, …) `{% include %}` built-in
+  widget templates, and an include resolves through the engine that loaded the
+  outer template — so every add/change form raised
+  `TemplateDoesNotExist: django/forms/widgets/input.html` unless
+  `django.forms` happened to be in `INSTALLED_APPS`. The renderer now renders
+  through a private copy of the project's `DjangoTemplates` engine (same
+  `DIRS`, loaders, builtins and libraries) with Django's form templates added
+  as the last loader, so nested includes resolve, project overrides of
+  `django/forms/*` still win, and it works with or without `django.forms`, with
+  `APP_DIRS=True` or explicit (cached or uncached) loaders.
+
 ## [0.3.0] - 2026-10-01
 
 ### Changed

@@ -15,11 +15,19 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_vite",
     "django_adminlte4",
+    # Real django.contrib.admin (after django_adminlte4, so the themed admin
+    # templates win) for the end-to-end admin rendering tests. Note that
+    # "django.forms" is deliberately NOT installed: AdminLTEFormRenderer must
+    # not depend on it.
+    "django.contrib.admin",
+    "django.contrib.sessions",
+    "django.contrib.messages",
 ]
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
 ]
 
 ROOT_URLCONF = "tests.urls"
@@ -35,6 +43,7 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
                 "django_adminlte4.context_processors.adminlte",
             ],
             "loaders": [
