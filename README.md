@@ -455,6 +455,8 @@ which leaves Vite's already-hashed build output under its own names. (Stock
 manifest storages hash it a second time, so a lazily loaded chunk that imports
 the entry loads a second copy of the app and every click handler fires twice.
 Use `ViteManifestStaticFilesStorage` if you don't use WhiteNoise.)
+Upgrading a deployment from 0.3.0? See the
+[0.3.1 upgrade notes](https://github.com/ColorlibHQ/adminlte-django/blob/main/CHANGELOG.md#031---2026-10-01).
 
 ## Upgrade to a Premium Dashboard
 

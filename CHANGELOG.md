@@ -5,6 +5,25 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-01
+
+A bug-fix release: Django admin add/change pages work again with
+`AdminLTEFormRenderer`, the Vite app is no longer loaded twice under
+WhiteNoise, and the demo/starter is hardened (no superuser demo account, no
+production start with the published `SECRET_KEY`).
+
+### Upgrading from 0.3.0
+- Using `AdminLTEFormRenderer`: nothing to do — upgrade and admin add/change
+  pages render again.
+- Serving a Vite build through `ManifestStaticFilesStorage` or WhiteNoise's
+  `CompressedManifestStaticFilesStorage`: switch `STORAGES["staticfiles"]` to
+  `django_adminlte4.storage.ViteManifestStaticFilesStorage` or
+  `ViteCompressedManifestStaticFilesStorage`, then `npm run build` and
+  `collectstatic --clear` (see the assets docs).
+- Running the demo/starter with `DEBUG=False`: make sure `SECRET_KEY` is set
+  to a real key, or it will not start. Re-run `seed_demo` to convert an
+  existing `admin` superuser into the limited staff demo account.
+
 ### Changed — demo and starter (breaking for deployments)
 - **The starter refuses to run in production without a real `SECRET_KEY`.**
   `demo/config/settings.py` used to fall back to the published
