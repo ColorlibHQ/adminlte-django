@@ -6,6 +6,13 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Changed — demo and starter (breaking for deployments)
+- **The starter refuses to run in production without a real `SECRET_KEY`.**
+  `demo/config/settings.py` used to fall back to the published
+  `django-insecure-dev-only-change-me` key whenever `SECRET_KEY` was unset,
+  including with `DEBUG=False`. It now raises `ImproperlyConfigured` when
+  `DEBUG=False` and the key is missing, blank or that development key; with
+  `DEBUG=True` the convenient fallback stays. Set `SECRET_KEY` in the
+  environment (or `.env`) before deploying — see the deployment docs.
 - **The public demo account is no longer a superuser.** `seed_demo` creates
   `admin` / `adminpass` (configurable via `DEMO_ACCOUNT`) as a **staff,
   non-superuser** account in a *Demo visitors* group: view permission on every

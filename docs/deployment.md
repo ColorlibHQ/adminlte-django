@@ -9,7 +9,7 @@ production-safe (`DEBUG=False`).
 
 | Variable | Default | Notes |
 |---|---|---|
-| `SECRET_KEY` | dev-insecure | **Set a real 50-char key in production.** |
+| `SECRET_KEY` | dev key (DEBUG only) | **Required when `DEBUG=False`**: the settings raise `ImproperlyConfigured` if it is missing, blank or the published `.env.example` dev key. |
 | `DEBUG` | `False` | `True` in local `.env`. |
 | `ALLOWED_HOSTS` | `localhost,127.0.0.1` | Comma-separated. |
 | `DATABASE_URL` | `sqlite:///db.sqlite3` | `postgres://user:pass@host:5432/db` for PostgreSQL. |
@@ -19,6 +19,16 @@ production-safe (`DEBUG=False`).
 | `SECURE_HSTS_SECONDS` | `31536000` (prod) | HSTS max-age. |
 
 ## Going to production
+
+!!! warning "A real `SECRET_KEY` is required"
+    With `DEBUG=True` the starter falls back to the published development key
+    so `runserver` works out of the box. With `DEBUG=False` it **refuses to
+    start** unless `SECRET_KEY` is set to something else — anyone who knows the
+    key can forge sessions, password-reset links and signed cookies. Generate
+    one with `python -c "import secrets; print(secrets.token_urlsafe(50))"` and
+    put it in the real environment (or the server's `.env`). Build steps that
+    import settings with `DEBUG=False` (e.g. `collectstatic` in a Docker
+    build) need a key too.
 
 ```bash
 # In the environment:

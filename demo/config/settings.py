@@ -4,12 +4,14 @@ Twelve-factor style: secrets and environment-specific values are read from the
 environment. In development, copy ``.env.example`` to ``.env`` (the local file
 is loaded automatically and git-ignored). Defaults are production-safe — set
 ``SECRET_KEY``, ``DEBUG``, ``ALLOWED_HOSTS``, ``DATABASE_URL`` and ``EMAIL_URL``
-in the real environment to deploy.
+in the real environment to deploy. With ``DEBUG=False`` the project refuses to
+start (ImproperlyConfigured) unless ``SECRET_KEY`` is set to a real key.
 """
 
 from pathlib import Path
 
 import environ
+from django.core.exceptions import ImproperlyConfigured
 
 from django_adminlte4.storage import immutable_file_test
 
@@ -23,8 +25,22 @@ env = environ.Env(
 # Load a local .env in development; real environment variables take precedence.
 environ.Env.read_env(BASE_DIR / ".env")
 
-SECRET_KEY = env("SECRET_KEY", default="django-insecure-dev-only-change-me")
 DEBUG = env("DEBUG")
+
+# The well-known development key (also in .env.example). Fine for DEBUG=True;
+# with DEBUG=False the project refuses to start without a real SECRET_KEY,
+# because anyone who knows the key can forge sessions, password-reset links
+# and signed cookies.
+INSECURE_SECRET_KEY = "django-insecure-dev-only-change-me"
+SECRET_KEY = env("SECRET_KEY", default="")
+if not SECRET_KEY.strip() or SECRET_KEY == INSECURE_SECRET_KEY:
+    if not DEBUG:
+        raise ImproperlyConfigured(
+            "SECRET_KEY is missing or is the published development key. With "
+            "DEBUG=False set a real one in the environment or .env, e.g.: "
+            "python -c \"import secrets; print(secrets.token_urlsafe(50))\""
+        )
+    SECRET_KEY = INSECURE_SECRET_KEY
 ALLOWED_HOSTS = ["*"] if DEBUG else env("ALLOWED_HOSTS")
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 

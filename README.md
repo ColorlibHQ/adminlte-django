@@ -439,6 +439,9 @@ Defaults are production-safe. To deploy:
 ```bash
 # Set in the environment: SECRET_KEY, DEBUG=False, ALLOWED_HOSTS,
 # DATABASE_URL=postgres://…  (and optionally EMAIL_URL, CSRF_TRUSTED_ORIGINS)
+# A real SECRET_KEY is required: with DEBUG=False the settings raise
+# ImproperlyConfigured if it is missing or still the .env.example dev key.
+python -c "import secrets; print(secrets.token_urlsafe(50))"   # generate one
 npm run build                                  # compile front-end assets (Vite)
 python manage.py collectstatic --noinput       # WhiteNoise: compressed + hashed
 gunicorn config.wsgi                            # WSGI server
