@@ -5,6 +5,22 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed — demo and starter (breaking for deployments)
+- **The public demo account is no longer a superuser.** `seed_demo` creates
+  `admin` / `adminpass` (configurable via `DEMO_ACCOUNT`) as a **staff,
+  non-superuser** account in a *Demo visitors* group: view permission on every
+  model in the admin, add/change/delete on the demo data (`crud`) only, and
+  nothing that grants rights (users, groups, permissions, e-mail addresses are
+  view-only). A new `DemoAccountGuardMiddleware` lets it open, but not submit,
+  the password-change and e-mail pages (Django, admin and allauth), so a
+  visitor can't lock the next one out; a themed `403.html` explains why.
+  Running `seed_demo` on an existing database demotes the old `admin`
+  superuser and resets its password, group and permissions — idempotently,
+  without re-hashing an unchanged password. `--no-superuser` is now
+  `--no-demo-user` (the old flag still works). The login page shows the same
+  credentials and says the account is a shared staff account that resets
+  nightly.
+
 ### Fixed
 - **Sidebar toggle (and every other handler) firing twice on the Components
   page in production.** WhiteNoise's manifest storage re-hashed Vite's

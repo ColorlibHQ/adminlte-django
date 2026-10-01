@@ -406,7 +406,7 @@ pip install -r requirements.txt   # package + extras + prod deps (env, whitenois
 cp .env.example .env              # local dev config (DEBUG=True)
 npm install && npm run dev        # terminal 1 — Vite dev server / HMR
 python manage.py migrate
-python manage.py seed_demo         # sample relational data + demo superuser (admin/adminpass)
+python manage.py seed_demo         # sample relational data + demo staff account (admin/adminpass)
 python manage.py runserver        # terminal 2
 ```
 
@@ -414,13 +414,21 @@ The demo ships a small relational schema (`Company → Contact`, `Project ↔ Ta
 `Project ↔ Contact` team, `Project → Task`) showcased through the themed admin,
 a **Contacts** CRUD page and a **Projects** list + detail. Re-run `seed_demo`
 any time to reset the sample data. Changing contacts needs the standard
-`crud.add/change/delete_contact` permissions (the seeded superuser has them);
+`crud.add/change/delete_contact` permissions (the seeded demo account has them);
 other signed-in users get a read-only list.
 
 Visitors start **logged out** (sessions end at browser close), and the login
 page comes pre-filled with the demo credentials (`admin` / `adminpass`) plus a
 short tour of what each area shows — so a single click signs you in and the
 sign-in-only pages (Contacts, Projects, the Django admin) become explorable.
+
+The demo account is **staff but not a superuser** (`settings.DEMO_ACCOUNT`):
+it can view everything in the admin and add, change and delete the sample
+data, but users, groups and e-mail addresses are view-only, and it cannot
+change its own password or e-mail — so one visitor can't lock out the next.
+`seed_demo` creates it, and on an existing database demotes an `admin`
+superuser left by older versions and resets its password and permissions; the
+live demo re-runs it nightly to reset the data.
 
 ## Deployment
 

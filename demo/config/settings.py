@@ -67,6 +67,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    # Public demo: the shared demo account may view, but not submit, its own
+    # password / e-mail change pages (see accounts/middleware.py).
+    "accounts.middleware.DemoAccountGuardMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -195,6 +198,15 @@ DJANGO_VITE = {
 }
 
 # --- Auth ---
+# The public demo account: created/reset by `manage.py seed_demo` (run nightly
+# on the live demo) and pre-filled on the login page. It is staff but NOT a
+# superuser — it can view everything in the admin and edit the sample data,
+# but not users, groups or permissions, nor its own password or e-mail.
+DEMO_ACCOUNT = {
+    "username": env("DEMO_USERNAME", default="admin"),
+    "password": env("DEMO_PASSWORD", default="adminpass"),
+    "email": "admin@example.com",
+}
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"

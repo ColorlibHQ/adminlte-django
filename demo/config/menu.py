@@ -120,7 +120,8 @@ ADMINLTE_MENU = [
     },
     # --- GateFilter showcase -------------------------------------------------
     # These items run through the menu's per-request Gate filter. Anonymous
-    # visitors don't see them; log in (admin / adminpass) and they appear.
+    # visitors don't see them; log in (admin / adminpass — the staff demo
+    # account) and they appear.
     # `can` accepts a callable receiving the request, a permission string
     # (checked via user.has_perm), or a list of either.
     {"header": "STAFF ONLY", "can": _is_staff},

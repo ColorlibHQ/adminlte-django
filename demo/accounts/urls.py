@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
@@ -12,6 +13,7 @@ urlpatterns = [
             template_name="accounts/login.html",
             # Already signed in? Skip the login page and go to the dashboard.
             redirect_authenticated_user=True,
+            extra_context={"demo_account": settings.DEMO_ACCOUNT},
         ),
         name="login",
     ),

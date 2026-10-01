@@ -1,15 +1,28 @@
 """Populate the demo database with a small, realistic relational dataset.
 
 Deterministic and idempotent — running it repeatedly yields the same data
-(it clears the crud tables first). Also ensures a demo superuser exists.
+(it clears the crud tables first). It also (re)sets the public demo account
+from ``settings.DEMO_ACCOUNT`` (default ``admin`` / ``adminpass``): a **staff,
+non-superuser** account that can view everything in the admin and add, change
+and delete the sample data, but cannot touch users, groups or permissions. An
+existing account with that username — including the superuser that seed_demo
+created before 0.3.1 — is demoted and its password and permissions reset.
+
+The live demo runs this nightly (systemd timer, 04:00 UTC) to reset the data
+and the account.
 
     python manage.py seed_demo
+    python manage.py seed_demo --no-demo-user   # data only
 """
 
 import datetime
 from decimal import Decimal
 
+from django.conf import settings
+from django.contrib import admin
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -55,14 +68,70 @@ TASK_TITLES = [
 ]
 TASK_STATUS_CYCLE = ["done", "done", "in_progress", "todo"]
 
+DEMO_GROUP = "Demo visitors"
+# Apps whose data the demo account may add/change/delete (reset nightly).
+# Everything else registered in the admin — users, groups, e-mail addresses —
+# is view-only, so the shared account can never grant itself (or anyone)
+# more rights or lock other visitors out.
+DEMO_WRITE_APPS = {"crud"}
+
+
+def demo_account_settings():
+    return {
+        "username": "admin",
+        "password": "adminpass",
+        "email": "admin@example.com",
+        **getattr(settings, "DEMO_ACCOUNT", {}),
+    }
+
+
+def demo_permissions():
+    """View on every model in the admin; add/change/delete on the demo data."""
+    perms = []
+    for model in sorted(admin.site._registry, key=lambda m: m._meta.label):
+        opts = model._meta
+        actions = ["view"]
+        if opts.app_label in DEMO_WRITE_APPS:
+            actions += ["add", "change", "delete"]
+        content_type = ContentType.objects.get_for_model(model)
+        perms += Permission.objects.filter(
+            content_type=content_type,
+            codename__in=[f"{action}_{opts.model_name}" for action in actions],
+        )
+    return perms
+
+
+def ensure_demo_account():
+    """Create or reset the public demo account (staff, never superuser)."""
+    cfg = demo_account_settings()
+    User = get_user_model()
+    user, created = User.objects.get_or_create(username=cfg["username"])
+    user.email = cfg["email"]
+    user.is_active = True
+    user.is_staff = True
+    user.is_superuser = False
+    if not user.check_password(cfg["password"]):
+        # Only when it differs: re-hashing would sign out every visitor.
+        user.set_password(cfg["password"])
+    user.save()
+    group, _ = Group.objects.get_or_create(name=DEMO_GROUP)
+    group.permissions.set(demo_permissions())
+    user.groups.set([group])
+    user.user_permissions.clear()
+    return user, created
+
 
 class Command(BaseCommand):
     help = "Seed the demo database with a relational sample dataset (idempotent)."
 
     def add_arguments(self, parser):
         parser.add_argument(
+            "--no-demo-user", action="store_true",
+            help="Do not create/reset the demo account (settings.DEMO_ACCOUNT).",
+        )
+        parser.add_argument(
             "--no-superuser", action="store_true",
-            help="Do not create the demo superuser (admin / adminpass).",
+            help="Deprecated alias of --no-demo-user (the demo account is no longer a superuser).",
         )
 
     @transaction.atomic
@@ -123,17 +192,14 @@ class Command(BaseCommand):
                 task_total += 1
 
         verbose = int(options.get("verbosity", 1))
-        if not options["no_superuser"]:
-            User = get_user_model()
-            user, created = User.objects.get_or_create(
-                username="admin",
-                defaults={"is_staff": True, "is_superuser": True, "email": "admin@example.com"},
-            )
-            if created:
-                user.set_password("adminpass")
-                user.save()
-                if verbose:
-                    self.stdout.write(self.style.WARNING("Created superuser  admin / adminpass"))
+        if not (options["no_demo_user"] or options["no_superuser"]):
+            user, created = ensure_demo_account()
+            if verbose:
+                self.stdout.write(self.style.WARNING(
+                    f"{'Created' if created else 'Reset'} demo account  "
+                    f"{user.get_username()} / {demo_account_settings()['password']}  "
+                    "(staff, not superuser)"
+                ))
 
         if verbose:
             self.stdout.write(self.style.SUCCESS(

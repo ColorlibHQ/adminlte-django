@@ -10,7 +10,8 @@
 
     <div class="alert alert-info py-2 px-3 mb-3" role="alert">
         <p class="mb-1"><i class="bi bi-info-circle-fill me-1"></i><strong>Demo account</strong> — pre-filled below, just press <strong>Sign In</strong>.</p>
-        <p class="mb-0 small">Username <code>admin</code> &middot; Password <code>adminpass</code></p>
+        <p class="mb-1 small">Username <code>{{ demo_account.username }}</code> &middot; Password <code>{{ demo_account.password }}</code></p>
+        <p class="mb-0 small">A shared <strong>staff</strong> account (not a superuser): it can browse everything and edit the sample data, which resets every night.</p>
     </div>
 
     {% if form.non_field_errors %}
@@ -25,7 +26,7 @@
 
         <div class="input-group mb-3">
             <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}"
-                   value="{{ form.username.value|default:'admin' }}"
+                   value="{{ form.username.value|default:demo_account.username }}"
                    class="form-control{% if form.username.errors %} is-invalid{% endif %}"
                    placeholder="{{ form.username.label|default:_('Username') }}" required autofocus>
             <div class="input-group-text"><span class="bi bi-person-fill"></span></div>
@@ -34,7 +35,7 @@
 
         <div class="input-group mb-3">
             <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}"
-                   value="adminpass"
+                   value="{{ demo_account.password }}"
                    class="form-control{% if form.password.errors %} is-invalid{% endif %}"
                    placeholder="{% trans 'Password' %}" required>
             <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
@@ -59,7 +60,7 @@
     <ul class="list-unstyled small mb-0">
         <li class="mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i><strong>Dashboard</strong> &mdash; AdminLTE layout, pages &amp; components (open to everyone).</li>
         <li class="mb-1"><i class="bi bi-person-rolodex text-primary me-2"></i><strong>Contacts &amp; Projects</strong> &mdash; relational CRUD over seeded data (sign-in required).</li>
-        <li class="mb-1"><i class="bi bi-shield-lock text-primary me-2"></i><strong><a href="/admin/">Django admin</a></strong> &mdash; same credentials, AdminLTE-themed.</li>
+        <li class="mb-1"><i class="bi bi-shield-lock text-primary me-2"></i><strong><a href="/admin/">Django admin</a></strong> &mdash; same credentials, AdminLTE-themed (view-only for users &amp; groups).</li>
         <li class="mb-0"><i class="bi bi-box-arrow-in-right text-primary me-2"></i><strong><a href="/accounts/login/">Accounts</a></strong> &mdash; django-allauth login/signup pages.</li>
     </ul>
 

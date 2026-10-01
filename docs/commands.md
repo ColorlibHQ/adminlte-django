@@ -22,11 +22,11 @@ The demo project adds:
 
 | Command | Purpose |
 |---|---|
-| `seed_demo` | Populate the demo DB with a deterministic, idempotent relational dataset (companies, contacts, tags, projects, tasks) + an optional demo superuser. |
+| `seed_demo` | Populate the demo DB with a deterministic, idempotent relational dataset (companies, contacts, tags, projects, tasks) and create/reset the demo staff account (not a superuser). |
 
 ```bash
-python manage.py seed_demo                 # data + superuser (admin / adminpass)
-python manage.py seed_demo --no-superuser  # data only
+python manage.py seed_demo                 # data + demo staff account (admin / adminpass)
+python manage.py seed_demo --no-demo-user  # data only (--no-superuser still works)
 ```
 
 See [Demo project](demo.md).
