@@ -248,6 +248,15 @@ ACCOUNT_LOGIN_METHODS = {"username"}
 ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
+# allauth rate-limits sign-in by client IP and answers 403 ("Unable to determine
+# client IP address") when it cannot find one -- e.g. behind a reverse proxy that
+# talks to gunicorn over a unix socket, where REMOTE_ADDR is empty. Behind a
+# proxy, tell it where the real address is: either the number of trusted proxies
+# that append to X-Forwarded-For, or a single header your edge sets (Cloudflare:
+# CF-Connecting-IP). Only trust a header your own proxy controls.
+ALLAUTH_TRUSTED_PROXY_COUNT = env.int("ALLAUTH_TRUSTED_PROXY_COUNT", default=0)
+ALLAUTH_TRUSTED_CLIENT_IP_HEADER = env("ALLAUTH_TRUSTED_CLIENT_IP_HEADER", default=None)
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # --- AdminLTE configuration (mirrors config/adminlte.php and the HTML demo) ---
