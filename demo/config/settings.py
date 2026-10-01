@@ -11,6 +11,8 @@ from pathlib import Path
 
 import environ
 
+from django_adminlte4.storage import immutable_file_test
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
@@ -152,16 +154,23 @@ STATICFILES_FINDERS = [
 
 # Plain storage in dev (no collectstatic needed); WhiteNoise compressed +
 # manifest storage in production (run `npm run build` then `collectstatic`).
+# The django_adminlte4 variant keeps Vite's already content-hashed build output
+# under its own names: re-hashing it would make the page load the app entry as
+# app-XXXX.<hash>.js while lazily imported chunks import "./app-XXXX.js" — two
+# copies of the app, so every click handler (e.g. the sidebar toggle) fires twice.
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {
         "BACKEND": (
             "django.contrib.staticfiles.storage.StaticFilesStorage"
             if DEBUG
-            else "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            else "django_adminlte4.storage.ViteCompressedManifestStaticFilesStorage"
         ),
     },
 }
+# Far-future cache headers for Vite-hashed files too (WhiteNoise's default only
+# recognises Django's hashes). Must be the function itself, not a dotted path.
+WHITENOISE_IMMUTABLE_FILE_TEST = immutable_file_test
 
 # --- Production security (applied only when DEBUG is off) ---
 if not DEBUG:

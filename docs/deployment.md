@@ -32,9 +32,14 @@ gunicorn config.wsgi                       # WSGI server
 
 With `DEBUG=False` the project automatically enables **HSTS, SSL redirect,
 secure session/CSRF cookies and content-type nosniff**, and switches static
-serving to WhiteNoise's **compressed, manifest** storage. Static files (the
-AdminLTE bundle, admin assets, Vite build output) are served by WhiteNoise — no
-separate web server needed for static.
+serving to WhiteNoise's **compressed, manifest** storage — the package's
+`ViteCompressedManifestStaticFilesStorage`, which keeps Vite's already-hashed
+build output under its own names so lazily loaded chunks and the page load the
+same module URLs (see [Assets](assets.md#production-static-storage)). Static
+files (the AdminLTE bundle, admin assets, Vite build output) are served by
+WhiteNoise — no separate web server needed for static. Run
+`collectstatic --clear` after every `npm run build` so stale chunks don't pile
+up in `STATIC_ROOT`.
 
 !!! tip "No Node in production?"
     Set `ADMINLTE["assets_mode"] = "static"` to serve the pre-built bundle and

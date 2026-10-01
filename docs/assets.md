@@ -41,6 +41,43 @@ document.addEventListener("DOMContentLoaded", async () => {
 colours as functions — `() => chartColor("primary")` — so an existing chart
 picks up the new colours when the Light/Dark toggle changes.
 
+### Production static storage
+
+Vite already content-hashes everything it builds (`assets/app-CjSNY8Oz.js`),
+and its chunks import each other by those names. Django's
+`ManifestStaticFilesStorage` and WhiteNoise's `CompressedManifestStaticFilesStorage`
+hash the files *again* (`app-CjSNY8Oz.4f2a….js`) and `{% vite_asset %}` loads
+that name, but the imports inside the JavaScript are not rewritten. A lazily
+loaded chunk that imports the entry (Vite puts code shared with the entry
+there — the Quill editor chunk does) then fetches `./app-CjSNY8Oz.js`: a
+different URL, so the browser runs a **second copy of the app** and every
+handler — the sidebar toggle, the colour-mode switch — fires twice.
+
+Use the package's Vite-aware storages in production. They find the Vite
+manifest among the collected files and keep every file it lists under its own
+name; everything else is hashed as usual:
+
+```python
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        # WhiteNoise (compressed + manifest):
+        "BACKEND": "django_adminlte4.storage.ViteCompressedManifestStaticFilesStorage",
+        # without WhiteNoise:
+        # "BACKEND": "django_adminlte4.storage.ViteManifestStaticFilesStorage",
+    },
+}
+
+# With WhiteNoise serving static files: far-future cache headers for the
+# Vite-hashed files too. Assign the function itself (a string is a regex).
+from django_adminlte4.storage import immutable_file_test
+WHITENOISE_IMMUTABLE_FILE_TEST = immutable_file_test
+```
+
+If you write your own storage, mix in
+`django_adminlte4.storage.ViteManifestFilesMixin` before the manifest storage
+class.
+
 ## Static (Node-optional)
 
 Serve the **pre-built bundle shipped in the package** — zero Node/npm:

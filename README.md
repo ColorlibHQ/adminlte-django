@@ -438,7 +438,12 @@ gunicorn config.wsgi                            # WSGI server
 
 `DATABASE_URL` swaps SQLite → PostgreSQL (`psycopg[binary]`), `EMAIL_URL` swaps
 the console backend → SMTP. With `DEBUG=False` the project automatically enables
-HSTS, SSL redirect, secure cookies, and WhiteNoise's manifest static storage.
+HSTS, SSL redirect, secure cookies, and WhiteNoise's manifest static storage —
+through `django_adminlte4.storage.ViteCompressedManifestStaticFilesStorage`,
+which leaves Vite's already-hashed build output under its own names. (Stock
+manifest storages hash it a second time, so a lazily loaded chunk that imports
+the entry loads a second copy of the app and every click handler fires twice.
+Use `ViteManifestStaticFilesStorage` if you don't use WhiteNoise.)
 
 ## Upgrade to a Premium Dashboard
 

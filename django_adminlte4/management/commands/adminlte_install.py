@@ -77,7 +77,12 @@ class Command(BaseCommand):
             "       # includes 'django_components.template_loader.Loader' (see the README).\n"
             "       # Add 'django_adminlte4.context_processors.adminlte' to context_processors.\n"
             "       DJANGO_VITE = {'default': {'dev_mode': DEBUG, "
-            "'manifest_path': BASE_DIR / 'assets' / 'dist' / 'manifest.json'}}"
+            "'manifest_path': BASE_DIR / 'assets' / 'dist' / 'manifest.json'}}\n"
+            "       # Production (hashed static files): keep Vite's own hashed names, or\n"
+            "       # lazily loaded chunks load a second copy of the app:\n"
+            "       STORAGES['staticfiles'] = {'BACKEND':\n"
+            "           'django_adminlte4.storage.ViteManifestStaticFilesStorage'}\n"
+            "       # (with WhiteNoise: ...storage.ViteCompressedManifestStaticFilesStorage)"
         )
         self.stdout.write("  4. Define your sidebar in settings.ADMINLTE = {'menu': [...]}")
         self.stdout.write(self.style.SUCCESS("\nAdminLTE 4 front-end installed."))

@@ -6,6 +6,18 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Fixed
+- **Sidebar toggle (and every other handler) firing twice on the Components
+  page in production.** WhiteNoise's manifest storage re-hashed Vite's
+  already-hashed output: the page loaded the entry as `app-XXXX.<hash>.js`,
+  while the lazily imported Quill chunk — which imports code it shares with
+  the entry — fetched `./app-XXXX.js`, a second URL and so a second copy of
+  the app. New `django_adminlte4.storage.ViteManifestStaticFilesStorage` and
+  `ViteCompressedManifestStaticFilesStorage` (WhiteNoise) keep every file a
+  Vite manifest lists under its own name, so the page and the chunks agree on
+  one URL per module whatever the chunk graph; everything else is hashed as
+  before. `immutable_file_test` gives those files WhiteNoise's far-future
+  cache headers. The demo uses them in production, and `adminlte_install`
+  points to them.
 - **Django admin add/change pages no longer return 500 with
   `AdminLTEFormRenderer`.** 0.3.0 only wrapped the renderer's top-level
   `get_template()` in a fallback to Django's form templates, but admin widget
