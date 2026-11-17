@@ -8,6 +8,6 @@ set of django-components for the Form and Widget families.
 __version__ = "0.3.2"
 
 # The AdminLTE upstream release this package targets (npm `admin-lte`).
-ADMINLTE_VERSION = "4.8.4"
+ADMINLTE_VERSION = "4.10.2"
 
 default_app_config = "django_adminlte4.apps.AdminLteConfig"
