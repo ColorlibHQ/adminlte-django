@@ -71,7 +71,7 @@ mkdocs serve        # http://127.0.0.1:8000  (or: mkdocs build)
 
 - Python 3.12+
 - Django 6.0+
-- `django-components` 0.150, `django-vite` 3.1+
+- `django-components` 0.150–0.152, `django-vite` 3.1+
 - Node 18+ (Vite build for the front-end assets)
 
 ## Installation

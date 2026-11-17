@@ -36,7 +36,7 @@
     <div class="card">
       <div class="card-header"><div class="card-title">{% trans 'Tasks' %} ({{ object.tasks.count }})</div></div>
       <div class="card-body p-0">
-        <table class="table table-striped align-middle mb-0">
+        <div class="table-responsive"><table class="table table-striped align-middle mb-0">
           <thead><tr><th>{% trans 'Task' %}</th><th>{% trans 'Assignee' %}</th><th>{% trans 'Status' %}</th><th>{% trans 'Due' %}</th></tr></thead>
           <tbody>
             {% for task in object.tasks.all %}
@@ -50,7 +50,7 @@
               <tr><td colspan="4" class="text-secondary">{% trans 'No tasks.' %}</td></tr>
             {% endfor %}
           </tbody>
-        </table>
+        </table></div>
       </div>
     </div>
   </div>
