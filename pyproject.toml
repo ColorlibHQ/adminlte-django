@@ -27,7 +27,7 @@ classifiers = [
 ]
 dependencies = [
     "Django>=6.0",
-    "django-components>=0.150,<0.152",
+    "django-components>=0.150,<0.153",
     "django-vite>=3.1,<4.0",
 ]
 
