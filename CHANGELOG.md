@@ -5,6 +5,27 @@ based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-11-17
+
+Bundled AdminLTE moves to 4.10.2 (Bootstrap 5.3.9) and the demo's npm and Python
+dependencies are refreshed.
+
+### Changed
+- **Bundled AdminLTE updated to 4.10.2** (`ADMINLTE_VERSION` too), compiled on
+  Bootstrap 5.3.9, with Bootstrap Icons 1.13.2 and OverlayScrollbars 2.17.0.
+  Adds AdminLTE's print defaults (the app shell no longer prints), the opt-in
+  `data-lte-primary` / `data-lte-contrast` attributes and colour sheets.
+- The `adminlte_install` `package.json` stub targets `admin-lte ^4.10.2`,
+  Bootstrap `^5.3.9`, Vite 8 and Sass 1.108.
+- `django-components` 0.152 is now allowed (`>=0.150,<0.153`).
+- Demo npm dependencies refreshed (Chart.js 4.6, Vite 8.3, Tabulator 6.7, Quill
+  2.0.3, FullCalendar 6.1.22). FullCalendar 7 is held back: its daygrid,
+  timegrid, list and interaction plugins still pin core 6.1.
+
+### Fixed
+- Demo: no horizontal page overflow at 390 px on the project detail page (tasks
+  table is now responsive) and the Calendar page (toolbar wraps).
+
 ## [0.3.2] - 2026-10-01
 
 ### Fixed
